@@ -9,11 +9,7 @@ import Foundation
 
 class ContentViewModel: ObservableObject {
 
-    var deeplinks: [String]? {
-        didSet {
-            self.error = nil
-        }
-    }
+    var deeplinks: [String]?
 
     @Published var isLoading: Bool = true
     @Published var error: DeeplinkError?
@@ -27,6 +23,7 @@ class ContentViewModel: ObservableObject {
 
             DispatchQueue.main.async {
                 self.deeplinks = deeplinks
+                self.error = nil
                 self.isLoading = false
             }
 
@@ -34,6 +31,7 @@ class ContentViewModel: ObservableObject {
             guard let self = self else { return }
 
             DispatchQueue.main.async {
+                self.deeplinks = nil
                 self.error = error
                 self.isLoading = false
             }
