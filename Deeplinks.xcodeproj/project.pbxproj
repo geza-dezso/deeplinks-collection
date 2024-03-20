@@ -19,7 +19,6 @@
 		0FCBB3A22BA892E800D80DB7 /* DeeplinkContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FCBB3A02BA892E800D80DB7 /* DeeplinkContent.swift */; };
 		0FCBB3A32BA892E800D80DB7 /* DeeplinkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FCBB3A12BA892E800D80DB7 /* DeeplinkError.swift */; };
 		0FCBB3A52BA893D500D80DB7 /* ContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FCBB3A42BA893D500D80DB7 /* ContentViewModel.swift */; };
-		0FCBB3A72BA89E7E00D80DB7 /* Deeplinks.json in Resources */ = {isa = PBXBuildFile; fileRef = 0FCBB3A62BA89E7E00D80DB7 /* Deeplinks.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,7 +35,6 @@
 		0FCBB3A02BA892E800D80DB7 /* DeeplinkContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeeplinkContent.swift; sourceTree = "<group>"; };
 		0FCBB3A12BA892E800D80DB7 /* DeeplinkError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeeplinkError.swift; sourceTree = "<group>"; };
 		0FCBB3A42BA893D500D80DB7 /* ContentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewModel.swift; sourceTree = "<group>"; };
-		0FCBB3A62BA89E7E00D80DB7 /* Deeplinks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Deeplinks.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,7 +91,6 @@
 		0FCBB3982BA8910F00D80DB7 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				0FCBB3A62BA89E7E00D80DB7 /* Deeplinks.json */,
 				0FCBB3992BA8914300D80DB7 /* GoogleService-Info.plist */,
 				0FCBB3862BA88C7400D80DB7 /* Assets.xcassets */,
 				0FCBB3882BA88C7400D80DB7 /* LaunchScreen.storyboard */,
@@ -165,7 +162,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 0FCBB3752BA88C7300D80DB7 /* Build configuration list for PBXProject "Deeplinks Collection" */;
+			buildConfigurationList = 0FCBB3752BA88C7300D80DB7 /* Build configuration list for PBXProject "Deeplinks" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -192,7 +189,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				0FCBB3872BA88C7400D80DB7 /* Assets.xcassets in Resources */,
-				0FCBB3A72BA89E7E00D80DB7 /* Deeplinks.json in Resources */,
 				0FCBB38A2BA88C7400D80DB7 /* Base in Resources */,
 				0FCBB39A2BA8914300D80DB7 /* GoogleService-Info.plist in Resources */,
 			);
@@ -412,7 +408,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		0FCBB3752BA88C7300D80DB7 /* Build configuration list for PBXProject "Deeplinks Collection" */ = {
+		0FCBB3752BA88C7300D80DB7 /* Build configuration list for PBXProject "Deeplinks" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				0FCBB38C2BA88C7400D80DB7 /* Debug */,

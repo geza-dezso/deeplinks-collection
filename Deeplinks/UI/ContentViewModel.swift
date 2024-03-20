@@ -14,7 +14,11 @@ class ContentViewModel: ObservableObject {
     @Published var isLoading: Bool = true
     @Published var error: DeeplinkError?
 
-    private var database = FirebaseDatabase()
+    private var database: DatabaseProtocol
+
+    init(database: DatabaseProtocol) {
+        self.database = database
+    }
 
     func onAppear() {
         isLoading = true
