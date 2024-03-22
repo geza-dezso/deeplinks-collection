@@ -8,34 +8,40 @@
 import SwiftUI
 
 struct ContentView: View {
-
+    @Environment(\.openURL) private var openURL
     @ObservedObject var viewModel: ContentViewModel
 
     var body: some View {
-        VStack {
 
-            Text("Title")
+        ZStack {
 
-            if let error = viewModel.error {
-                Text(error.displayText)
+            if viewModel.isLoading {
+                ActivityIndicator()
             }
 
-            else if viewModel.isLoading {
-                // loading indicator
-            }
+            VStack {
 
-            else {
-                if let deeplinks = viewModel.deeplinks {
-                    ScrollView(.vertical, showsIndicators: false) {
-                        ForEach(deeplinks, id: \.self) { deeplink in
-                            Text(deeplink)
+                Text("Deeplinks")
+
+                if let error = viewModel.error {
+                    Text(error.displayText)
+                } else {
+                    if let deeplinks = viewModel.deeplinks {
+                        VStack {
+                            List {
+                                ForEach(deeplinks, id: \.self) { deeplink in
+                                    Link(deeplink, destination: URL(string: deeplink)!)
+                                }
+                            }
                         }
                     }
                 }
+
+                Spacer()
             }
-        }
-        .onAppear {
-            viewModel.onAppear()
+            .onAppear {
+                viewModel.onAppear()
+            }
         }
     }
 }

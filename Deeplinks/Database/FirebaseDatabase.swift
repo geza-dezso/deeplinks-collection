@@ -7,17 +7,21 @@
 
 import FirebaseCore
 import FirebaseDatabase
+import Combine
 
 
 protocol DatabaseProtocol {
 
     func deeplinks(for user: String, pwd: String, success: @escaping ([String]?) -> Void, failure: @escaping(DeeplinkError) -> Void)
+    func deeplinkUpdates(for user: String) -> AnyPublisher<[String]?, Never>
 }
 
 
 class FirebaseDatabase: DatabaseProtocol {
 
-    private var collection: [DeeplinkContent]?
+    @Published public var collection: [DeeplinkContent] = []
+
+    private var databaseListener: DatabaseHandle?
 
     func deeplinks(for user: String, pwd: String, success: @escaping ([String]?) -> Void, failure: @escaping(DeeplinkError) -> Void) {
         fetch(success: { collection in
@@ -29,18 +33,20 @@ class FirebaseDatabase: DatabaseProtocol {
         }, failure: failure)
     }
 
+    public func deeplinkUpdates(for user: String) -> AnyPublisher<[String]?, Never> {
+        $collection
+            .map { $0.first(where: { $0.user == user })?.deeplinks }
+            .eraseToAnyPublisher()
+    }
+
     // MARK: - Private
 
     private func fetch(success: @escaping ([DeeplinkContent]?) -> Void, failure: @escaping (DeeplinkError) -> Void) {
-        guard collection == nil else {
-            success(collection)
-            return
-        }
-
         Task {
             do {
                 if let collection = try await snapshot() {
                     self.collection = collection
+                    setupDatabaseListener()
                     success(collection)
                 } else {
                     failure(DeeplinkError(code: .notAvailable))
@@ -54,6 +60,17 @@ class FirebaseDatabase: DatabaseProtocol {
     private func snapshot() async throws -> [DeeplinkContent]? {
         let reference = Database.database().reference()
         let snapshot = try await reference.child("content").getData()
-        return try snapshot.data(as: [DeeplinkContent]?.self)
+        return try snapshot.data(as: [DeeplinkContent].self)
+    }
+
+    private func setupDatabaseListener() {
+        guard databaseListener == nil else { return }
+
+        let reference = Database.database().reference()
+        databaseListener = reference.observe(.childChanged, with: { snapshot in
+            do {
+                self.collection = try snapshot.data(as: [DeeplinkContent].self)
+            } catch {}
+        })
     }
 }
