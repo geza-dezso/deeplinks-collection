@@ -24,8 +24,8 @@ class ContentViewModel: ObservableObject {
 
     init(database: DatabaseProtocol) {
         self.database = database
-        self.user = "user1"
-        self.pwd = "pwd1"
+        self.user = "dt"
+        self.pwd = "pwd"
     }
 
     func onAppear() {
