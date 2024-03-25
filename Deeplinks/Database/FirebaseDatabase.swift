@@ -10,49 +10,66 @@ import FirebaseDatabase
 import Combine
 
 
+enum DatabaseQueryStatus {
+    case fetching
+    case success([String]?)
+    case error(DeeplinkError)
+}
+
+
 protocol DatabaseProtocol {
 
-    func deeplinks(for user: String, pwd: String, success: @escaping ([String]?) -> Void, failure: @escaping(DeeplinkError) -> Void)
-    func deeplinkUpdates(for user: String) -> AnyPublisher<[String]?, Never>
+    func deeplinkUpdates(for user: String, pwd: String) -> AnyPublisher<DatabaseQueryStatus, Never>
 }
 
 
 class FirebaseDatabase: DatabaseProtocol {
 
-    @Published public var collection: [DeeplinkContent] = []
+    @Published public var status: DatabaseQueryStatus = .fetching
+
+    private var user: String = ""
+    private var pwd: String = ""
+
+    private var collection: [DeeplinkContent]? {
+        didSet {
+            if let collection = collection {
+                if let deeplinks = collection.first(where: { $0.user == user && $0.pwd == pwd })?.deeplinks {
+                    status = .success(deeplinks)
+                } else {
+                    status = .error(DeeplinkError(code: .invalidCredentials))
+                }
+            } else {
+                status = .error(DeeplinkError(code: .notAvailable))
+            }
+        }
+    }
 
     private var databaseListener: DatabaseHandle?
 
-    func deeplinks(for user: String, pwd: String, success: @escaping ([String]?) -> Void, failure: @escaping(DeeplinkError) -> Void) {
-        fetch(success: { collection in
-            if let deeplinks = collection?.filter({ $0.user == user }).first?.deeplinks {
-                success(deeplinks)
-            } else {
-                failure(DeeplinkError(code: .invalidCredentials))
-            }
-        }, failure: failure)
-    }
+    public func deeplinkUpdates(for user: String, pwd: String) -> AnyPublisher<DatabaseQueryStatus, Never> {
 
-    public func deeplinkUpdates(for user: String) -> AnyPublisher<[String]?, Never> {
-        $collection
-            .map { $0.first(where: { $0.user == user })?.deeplinks }
+        self.user = user
+        self.pwd = pwd
+
+        fetch()
+
+        return $status
             .eraseToAnyPublisher()
     }
 
     // MARK: - Private
 
-    private func fetch(success: @escaping ([DeeplinkContent]?) -> Void, failure: @escaping (DeeplinkError) -> Void) {
+    private func fetch() {
         Task {
             do {
                 if let collection = try await snapshot() {
                     self.collection = collection
                     setupDatabaseListener()
-                    success(collection)
                 } else {
-                    failure(DeeplinkError(code: .notAvailable))
+                    self.status = .error(DeeplinkError(code: .notAvailable))
                 }
             } catch {
-                failure(DeeplinkError(code: .notAvailable))
+                self.status = .error(DeeplinkError(code: .notAvailable))
             }
         }
     }
@@ -70,7 +87,9 @@ class FirebaseDatabase: DatabaseProtocol {
         databaseListener = reference.observe(.childChanged, with: { snapshot in
             do {
                 self.collection = try snapshot.data(as: [DeeplinkContent].self)
-            } catch {}
+            } catch {
+                self.status = .error(DeeplinkError(code: .notAvailable))
+            }
         })
     }
 }

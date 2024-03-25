@@ -29,52 +29,26 @@ class ContentViewModel: ObservableObject {
     }
 
     func onAppear() {
-        fetchDeeplinks(for: self.user, pwd: self.pwd) { [weak self] success in
-            guard let self = self else { return }
-
-            if success {
-                self.listenToDatabaseChanges(for: self.user)
-            }
-        }
-    }
-
-    private func fetchDeeplinks(for user: String, pwd: String, completion: @escaping (Bool) ->Void) {
-        guard !user.isEmpty, !pwd.isEmpty else {
-            self.deeplinks = nil
-            self.error = DeeplinkError(code: .invalidCredentials)
-            completion(false)
-            return
-        }
 
         isLoading = true
-        database.deeplinks(for: user, pwd: pwd) { [weak self] deeplinks in
-            guard let self = self else { return }
 
-            DispatchQueue.main.async {
-                self.deeplinks = deeplinks
-                self.error = nil
-                self.isLoading = false
-                completion(true)
-            }
-
-        } failure: { [weak self] error in
-            guard let self = self else { return }
-
-            DispatchQueue.main.async {
-                self.deeplinks = nil
-                self.error = error
-                self.isLoading = false
-                completion(false)
-            }
-        }
-    }
-
-    private func listenToDatabaseChanges(for user: String) {
         databaseListener?.cancel()
-        databaseListener = database.deeplinkUpdates(for: user)
+        databaseListener = database.deeplinkUpdates(for: user, pwd: pwd)
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] deeplinks in
-                self?.deeplinks = deeplinks ?? []
+            .sink { [weak self] status in
+
+                switch status {
+                case .success(let deeplinks):
+                    self?.deeplinks = deeplinks ?? []
+                    self?.isLoading = false
+
+                case .error(let error):
+                    self?.error = error
+                    self?.isLoading = false
+
+                default:
+                    break
+                }
             }
     }
 }
