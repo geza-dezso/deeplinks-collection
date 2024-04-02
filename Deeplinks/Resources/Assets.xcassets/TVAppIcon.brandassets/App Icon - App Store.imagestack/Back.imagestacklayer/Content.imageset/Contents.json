@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "deeplink_app_icon_background_gradient.png",
+      "idiom" : "tv"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

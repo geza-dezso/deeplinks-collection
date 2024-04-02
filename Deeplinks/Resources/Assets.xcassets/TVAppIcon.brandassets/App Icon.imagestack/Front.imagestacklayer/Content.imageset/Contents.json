@@ -1,0 +1,18 @@
+{
+  "images" : [
+    {
+      "filename" : "deeplink_icon.png",
+      "idiom" : "tv",
+      "scale" : "1x"
+    },
+    {
+      "filename" : "deeplink_icon@2x.png",
+      "idiom" : "tv",
+      "scale" : "2x"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

@@ -15,6 +15,10 @@ struct ContentView: View {
 
         ZStack {
 
+            Image(uiImage: UIImage(named: "Background")!)
+                .resizable()
+                .edgesIgnoringSafeArea(.all)
+
             if viewModel.isLoading {
                 ActivityIndicator()
             }
@@ -22,17 +26,29 @@ struct ContentView: View {
             VStack {
 
                 Text("Deeplinks")
+                    .foregroundColor(.white)
 
                 if let error = viewModel.error {
                     Text(error.displayText)
                 } else {
                     if let deeplinks = viewModel.deeplinks {
-                        VStack {
-                            List {
+
+                        ScrollView {
+                            VStack(spacing: 4) {
                                 ForEach(deeplinks, id: \.self) { deeplink in
-                                    Link(deeplink, destination: URL(string: deeplink)!)
+                                    HStack {
+                                        Link(destination: URL(string: deeplink)!) {
+                                            Text(deeplink)
+                                                .multilineTextAlignment(.leading)
+                                        }
+                                        Spacer()
+                                    }
+                                    .padding(8)
+                                    .background(Color.white)
+                                    .cornerRadius(4)
                                 }
                             }
+                            .padding(.horizontal, 12)
                         }
                     }
                 }
