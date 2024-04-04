@@ -8,34 +8,56 @@
 import SwiftUI
 
 struct ContentView: View {
-
+    @Environment(\.openURL) private var openURL
     @ObservedObject var viewModel: ContentViewModel
 
     var body: some View {
-        VStack {
 
-            Text("Title")
+        ZStack {
 
-            if let error = viewModel.error {
-                Text(error.displayText)
+            Image(uiImage: UIImage(named: "Background")!)
+                .resizable()
+                .edgesIgnoringSafeArea(.all)
+
+            if viewModel.isLoading {
+                ActivityIndicator()
             }
 
-            else if viewModel.isLoading {
-                // loading indicator
-            }
+            VStack {
 
-            else {
-                if let deeplinks = viewModel.deeplinks {
-                    ScrollView(.vertical, showsIndicators: false) {
-                        ForEach(deeplinks, id: \.self) { deeplink in
-                            Text(deeplink)
+                Text("Deeplinks")
+                    .foregroundColor(.white)
+
+                if let error = viewModel.error {
+                    Text(error.displayText)
+                } else {
+                    if let deeplinks = viewModel.deeplinks {
+
+                        ScrollView {
+                            VStack(spacing: 4) {
+                                ForEach(deeplinks, id: \.self) { deeplink in
+                                    HStack {
+                                        Link(destination: URL(string: deeplink)!) {
+                                            Text(deeplink)
+                                                .multilineTextAlignment(.leading)
+                                        }
+                                        Spacer()
+                                    }
+                                    .padding(8)
+                                    .background(Color.white)
+                                    .cornerRadius(4)
+                                }
+                            }
+                            .padding(.horizontal, 12)
                         }
                     }
                 }
+
+                Spacer()
             }
-        }
-        .onAppear {
-            viewModel.onAppear()
+            .onAppear {
+                viewModel.onAppear()
+            }
         }
     }
 }

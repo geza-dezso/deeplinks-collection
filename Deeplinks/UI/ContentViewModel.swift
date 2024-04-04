@@ -6,39 +6,49 @@
 //
 
 import Foundation
+import Combine
 
 class ContentViewModel: ObservableObject {
 
-    var deeplinks: [String]?
+    @Published var deeplinks: [String]?
 
     @Published var isLoading: Bool = true
     @Published var error: DeeplinkError?
 
     private var database: DatabaseProtocol
+    private var bag: Set<AnyCancellable> = []
+    private var databaseListener: AnyCancellable?
+
+    private var user: String
+    private var pwd: String
 
     init(database: DatabaseProtocol) {
         self.database = database
+        self.user = "dt"
+        self.pwd = "pwd"
     }
 
     func onAppear() {
+
         isLoading = true
-        database.deeplinks(for: "user1", pwd: "pwd1") { [weak self] deeplinks in
-            guard let self = self else { return }
 
-            DispatchQueue.main.async {
-                self.deeplinks = deeplinks
-                self.error = nil
-                self.isLoading = false
+        databaseListener?.cancel()
+        databaseListener = database.deeplinkUpdates(for: user, pwd: pwd)
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] status in
+
+                switch status {
+                case .success(let deeplinks):
+                    self?.deeplinks = deeplinks ?? []
+                    self?.isLoading = false
+
+                case .error(let error):
+                    self?.error = error
+                    self?.isLoading = false
+
+                default:
+                    break
+                }
             }
-
-        } failure: { [weak self] error in
-            guard let self = self else { return }
-
-            DispatchQueue.main.async {
-                self.deeplinks = nil
-                self.error = error
-                self.isLoading = false
-            }
-        }
     }
 }

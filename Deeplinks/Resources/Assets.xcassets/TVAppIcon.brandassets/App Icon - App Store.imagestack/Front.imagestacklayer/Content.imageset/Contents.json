@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "deeplink_app_icon_transparent.png",
+      "idiom" : "tv"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
