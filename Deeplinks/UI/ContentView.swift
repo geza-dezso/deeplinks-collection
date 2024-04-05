@@ -11,11 +11,26 @@ struct ContentView: View {
     @Environment(\.openURL) private var openURL
     @ObservedObject var viewModel: ContentViewModel
 
+    @State private var isPortrait = false
+
+    private var background: UIImage? {
+        if isIPhone {
+            return UIImage(named: "Back_iPhone")
+        } else if isIPad && isPortrait {
+            return UIImage(named: "Back_iPad_portrait")
+        } else if isIPad && !isPortrait {
+            return UIImage(named: "Back_iPad_landscape")
+        } else if isTV {
+            return UIImage(named: "Back_TV")
+        }
+        return nil
+    }
+
     var body: some View {
 
         ZStack {
 
-            Image(uiImage: UIImage(named: "Background")!)
+            Image(uiImage: background ?? UIImage())
                 .resizable()
                 .edgesIgnoringSafeArea(.all)
 
@@ -55,9 +70,13 @@ struct ContentView: View {
 
                 Spacer()
             }
-            .onAppear {
-                viewModel.onAppear()
-            }
+        }
+        .onAppear {
+            viewModel.onAppear()
+            isPortrait = UIApplication.shared.isPortrait
+        }
+        .onDeviceRotation { _ in
+            isPortrait = UIApplication.shared.isPortrait
         }
     }
 }
