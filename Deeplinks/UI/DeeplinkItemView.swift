@@ -28,6 +28,7 @@ struct DeeplinkItemView: View {
             }
             .buttonStyle(DeeplinkItemStyle())
         }
+        .listRowBackground(Color.clear)
     }
 
     private func title(_ text: String) -> some View {

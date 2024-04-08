@@ -48,14 +48,15 @@ struct ContentView: View {
                 } else {
                     if let deeplinks = viewModel.deeplinks {
 
-                        ScrollView {
-                            VStack(spacing: isTV ? 12 : 8) {
-                                ForEach(deeplinks, id: \.self) { deeplink in
-                                    DeeplinkItemView(title: deeplink, link: deeplink)
-                                }
+                        List {
+                            ForEach(deeplinks, id: \.self) { deeplink in
+                                DeeplinkItemView(title: deeplink, link: deeplink)
+                                    .padding(.horizontal, 16)
+                                    .padding(.vertical, 1)
+                                    .listRowInsets(EdgeInsets())
                             }
-                            .padding(.horizontal, isIPhone ? 16 : 24)
                         }
+                        .listStyle(PlainListStyle())
                     }
                 }
 
