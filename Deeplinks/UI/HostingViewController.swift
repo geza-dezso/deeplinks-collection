@@ -13,5 +13,11 @@ class HostingViewController<Content>: UIHostingController<Content> where Content
         super.viewDidLoad()
         view.clipsToBounds = true
     }
+
+    #if os(iOS)
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return isIPad ? .all : .portrait
+    }
+    #endif
 }
 

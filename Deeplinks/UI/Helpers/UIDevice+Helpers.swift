@@ -1,5 +1,5 @@
 //
-//  UIScreen+Helpers.swift
+//  UIDevice+Helpers.swift
 //  Deeplinks
 //
 //  Created by Geza Dezso on 04/04/2024.
