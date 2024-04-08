@@ -13,6 +13,12 @@ struct ContentView: View {
 
     @State private var isPortrait = false
 
+    init(viewModel: ContentViewModel) {
+        self.viewModel = viewModel
+        // only for iOS 15
+        UITableView.appearance().backgroundColor = .clear
+    }
+
     private var background: UIImage? {
         if isIPhone {
             return UIImage(named: "Back_iPhone")
@@ -49,14 +55,19 @@ struct ContentView: View {
                     if let deeplinks = viewModel.deeplinks {
 
                         List {
-                            ForEach(deeplinks, id: \.self) { deeplink in
-                                DeeplinkItemView(title: deeplink, link: deeplink)
-                                    .padding(.horizontal, 16)
-                                    .padding(.vertical, 1)
-                                    .listRowInsets(EdgeInsets())
+                            Section("Deeplinks") {
+                                ForEach(deeplinks, id: \.self) { deeplink in
+                                    DeeplinkItemView(title: deeplink, link: deeplink)
+                                        .padding(.horizontal, 16)
+                                        .padding(.vertical, 1)
+                                        .listRowInsets(EdgeInsets())
+                                }
                             }
+                            .font(isTV ? .system(.headline) : isIPad ? .system(size: 22) : .system(size: 16))
+                            .foregroundColor(.white)
                         }
-                        .listStyle(PlainListStyle())
+                        .contentBackground(.hidden)
+                        .listStyle(GroupedListStyle())
                     }
                 }
 

@@ -35,8 +35,8 @@
 		0FEBC5C92BC040A600EBECC8 /* UIApplication+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FEBC5C52BC040A600EBECC8 /* UIApplication+Utils.swift */; };
 		0FEBC5CA2BC040A600EBECC8 /* UIDevice+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FEBC5C62BC040A600EBECC8 /* UIDevice+Helpers.swift */; };
 		0FEBC5CB2BC040A600EBECC8 /* UIDevice+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FEBC5C62BC040A600EBECC8 /* UIDevice+Helpers.swift */; };
-		0FEBC5CC2BC040A600EBECC8 /* DeviceRotation+Modifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FEBC5C72BC040A600EBECC8 /* DeviceRotation+Modifier.swift */; };
-		0FEBC5CD2BC040A600EBECC8 /* DeviceRotation+Modifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FEBC5C72BC040A600EBECC8 /* DeviceRotation+Modifier.swift */; };
+		0FEBC5CC2BC040A600EBECC8 /* View+Modifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FEBC5C72BC040A600EBECC8 /* View+Modifiers.swift */; };
+		0FEBC5CD2BC040A600EBECC8 /* View+Modifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FEBC5C72BC040A600EBECC8 /* View+Modifiers.swift */; };
 		0FEBC5CF2BC3FD3C00EBECC8 /* DeeplinkItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FEBC5CE2BC3FD3C00EBECC8 /* DeeplinkItemView.swift */; };
 		0FEBC5D02BC3FD3C00EBECC8 /* DeeplinkItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FEBC5CE2BC3FD3C00EBECC8 /* DeeplinkItemView.swift */; };
 		0FEBC5D52BC41E1B00EBECC8 /* DeeplinkItemStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FEBC5D42BC41E1B00EBECC8 /* DeeplinkItemStyle.swift */; };
@@ -61,7 +61,7 @@
 		0FCBB3A42BA893D500D80DB7 /* ContentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewModel.swift; sourceTree = "<group>"; };
 		0FEBC5C52BC040A600EBECC8 /* UIApplication+Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIApplication+Utils.swift"; sourceTree = "<group>"; };
 		0FEBC5C62BC040A600EBECC8 /* UIDevice+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIDevice+Helpers.swift"; sourceTree = "<group>"; };
-		0FEBC5C72BC040A600EBECC8 /* DeviceRotation+Modifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DeviceRotation+Modifier.swift"; sourceTree = "<group>"; };
+		0FEBC5C72BC040A600EBECC8 /* View+Modifiers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "View+Modifiers.swift"; sourceTree = "<group>"; };
 		0FEBC5CE2BC3FD3C00EBECC8 /* DeeplinkItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeeplinkItemView.swift; sourceTree = "<group>"; };
 		0FEBC5D42BC41E1B00EBECC8 /* DeeplinkItemStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeeplinkItemStyle.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -169,7 +169,7 @@
 		0FEBC5C42BC035D600EBECC8 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				0FEBC5C72BC040A600EBECC8 /* DeviceRotation+Modifier.swift */,
+				0FEBC5C72BC040A600EBECC8 /* View+Modifiers.swift */,
 				0FEBC5C52BC040A600EBECC8 /* UIApplication+Utils.swift */,
 				0FEBC5C62BC040A600EBECC8 /* UIDevice+Helpers.swift */,
 			);
@@ -287,7 +287,7 @@
 				0F25788F2BBC2C7A000491D3 /* ContentViewModel.swift in Sources */,
 				0FEBC5D02BC3FD3C00EBECC8 /* DeeplinkItemView.swift in Sources */,
 				0F2578902BBC2C7A000491D3 /* FirebaseDatabase.swift in Sources */,
-				0FEBC5CD2BC040A600EBECC8 /* DeviceRotation+Modifier.swift in Sources */,
+				0FEBC5CD2BC040A600EBECC8 /* View+Modifiers.swift in Sources */,
 				0F2578912BBC2C7A000491D3 /* HostingViewController.swift in Sources */,
 				0F2578922BBC2C7A000491D3 /* AppDelegate.swift in Sources */,
 				0F2578932BBC2C7A000491D3 /* DeeplinkError.swift in Sources */,
@@ -307,7 +307,7 @@
 				0FCBB3A52BA893D500D80DB7 /* ContentViewModel.swift in Sources */,
 				0FEBC5CF2BC3FD3C00EBECC8 /* DeeplinkItemView.swift in Sources */,
 				0FCBB39E2BA892A700D80DB7 /* FirebaseDatabase.swift in Sources */,
-				0FEBC5CC2BC040A600EBECC8 /* DeviceRotation+Modifier.swift in Sources */,
+				0FEBC5CC2BC040A600EBECC8 /* View+Modifiers.swift in Sources */,
 				0FCBB3822BA88C7300D80DB7 /* HostingViewController.swift in Sources */,
 				0FCBB37E2BA88C7300D80DB7 /* AppDelegate.swift in Sources */,
 				0FCBB3A32BA892E800D80DB7 /* DeeplinkError.swift in Sources */,
