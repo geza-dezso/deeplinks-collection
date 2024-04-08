@@ -35,7 +35,7 @@ struct ContentView: View {
                 .edgesIgnoringSafeArea(.all)
 
             if viewModel.isLoading {
-                ActivityIndicator()
+                ProgressView()
             }
 
             VStack {
@@ -49,21 +49,12 @@ struct ContentView: View {
                     if let deeplinks = viewModel.deeplinks {
 
                         ScrollView {
-                            VStack(spacing: 4) {
+                            VStack(spacing: isTV ? 12 : 8) {
                                 ForEach(deeplinks, id: \.self) { deeplink in
-                                    HStack {
-                                        Link(destination: URL(string: deeplink)!) {
-                                            Text(deeplink)
-                                                .multilineTextAlignment(.leading)
-                                        }
-                                        Spacer()
-                                    }
-                                    .padding(8)
-                                    .background(Color.white)
-                                    .cornerRadius(4)
+                                    DeeplinkItemView(title: deeplink, link: deeplink)
                                 }
                             }
-                            .padding(.horizontal, 12)
+                            .padding(.horizontal, isIPhone ? 16 : 24)
                         }
                     }
                 }
