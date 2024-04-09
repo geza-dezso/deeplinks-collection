@@ -15,13 +15,15 @@ struct DeeplinkItemStyle: ButtonStyle {
 
     struct DeeplinkItem: View {
 
+        private let padding: CGFloat = isTV ? 16 : isIPad ? 12 : 8
+
         let configuration: ButtonStyle.Configuration
 
         #if os(iOS)
 
         var body: some View {
             configuration.label
-                .padding(isIPad ? 12 : 8)
+                .padding(padding)
                 .background(Color.black)
                 .cornerRadius(4)
         }
@@ -31,7 +33,7 @@ struct DeeplinkItemStyle: ButtonStyle {
         @Environment(\.isFocused) var isFocused: Bool
         var body: some View {
             configuration.label
-                .padding(16)
+                .padding(padding)
                 .background(isFocused ? Color(red: 0.15, green: 0.15, blue: 0.15) : Color.black)
                 .cornerRadius(8)
                 .scaleEffect(isFocused ? 1.01 : 1.0)

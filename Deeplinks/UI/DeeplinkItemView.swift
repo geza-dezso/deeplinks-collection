@@ -33,14 +33,14 @@ struct DeeplinkItemView: View {
 
     private func title(_ text: String) -> some View {
         Text(text)
-            .font(isTV ? .system(.headline) : isIPad ? .system(size: 22) : .system(size: 16))
+            .font(primary)
             .foregroundColor(.white)
             .multilineTextAlignment(.leading)
     }
 
     private func subtitle(_ text: String) -> some View {
         Text(text)
-            .font(isTV ? .system(.body) : isIPad ? .system(size: 16) : .system(size: 12))
+            .font(secondary)
             .foregroundColor(.gray)
             .multilineTextAlignment(.leading)
     }

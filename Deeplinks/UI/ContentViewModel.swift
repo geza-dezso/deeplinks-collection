@@ -10,7 +10,7 @@ import Combine
 
 class ContentViewModel: ObservableObject {
 
-    @Published var deeplinks: [String]?
+    @Published var deeplinkGroups: [DeeplinkGroup]?
 
     @Published var isLoading: Bool = true
     @Published var error: DeeplinkError?
@@ -38,8 +38,8 @@ class ContentViewModel: ObservableObject {
             .sink { [weak self] status in
 
                 switch status {
-                case .success(let deeplinks):
-                    self?.deeplinks = deeplinks ?? []
+                case .success(let deeplinkGroups):
+                    self?.deeplinkGroups = deeplinkGroups ?? []
                     self?.isLoading = false
 
                 case .error(let error):

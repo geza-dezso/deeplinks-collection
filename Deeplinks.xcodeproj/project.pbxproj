@@ -31,6 +31,10 @@
 		0FCBB3A22BA892E800D80DB7 /* DeeplinkContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FCBB3A02BA892E800D80DB7 /* DeeplinkContent.swift */; };
 		0FCBB3A32BA892E800D80DB7 /* DeeplinkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FCBB3A12BA892E800D80DB7 /* DeeplinkError.swift */; };
 		0FCBB3A52BA893D500D80DB7 /* ContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FCBB3A42BA893D500D80DB7 /* ContentViewModel.swift */; };
+		0FD1259C2BC570B00056F3AE /* DeeplinkSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FD1259B2BC570B00056F3AE /* DeeplinkSectionHeaderView.swift */; };
+		0FD1259D2BC570B00056F3AE /* DeeplinkSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FD1259B2BC570B00056F3AE /* DeeplinkSectionHeaderView.swift */; };
+		0FD1259F2BC578220056F3AE /* Font+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FD1259E2BC578220056F3AE /* Font+Helpers.swift */; };
+		0FD125A02BC578220056F3AE /* Font+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FD1259E2BC578220056F3AE /* Font+Helpers.swift */; };
 		0FEBC5C82BC040A600EBECC8 /* UIApplication+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FEBC5C52BC040A600EBECC8 /* UIApplication+Utils.swift */; };
 		0FEBC5C92BC040A600EBECC8 /* UIApplication+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FEBC5C52BC040A600EBECC8 /* UIApplication+Utils.swift */; };
 		0FEBC5CA2BC040A600EBECC8 /* UIDevice+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FEBC5C62BC040A600EBECC8 /* UIDevice+Helpers.swift */; };
@@ -59,6 +63,8 @@
 		0FCBB3A02BA892E800D80DB7 /* DeeplinkContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeeplinkContent.swift; sourceTree = "<group>"; };
 		0FCBB3A12BA892E800D80DB7 /* DeeplinkError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeeplinkError.swift; sourceTree = "<group>"; };
 		0FCBB3A42BA893D500D80DB7 /* ContentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewModel.swift; sourceTree = "<group>"; };
+		0FD1259B2BC570B00056F3AE /* DeeplinkSectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeeplinkSectionHeaderView.swift; sourceTree = "<group>"; };
+		0FD1259E2BC578220056F3AE /* Font+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Font+Helpers.swift"; sourceTree = "<group>"; };
 		0FEBC5C52BC040A600EBECC8 /* UIApplication+Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIApplication+Utils.swift"; sourceTree = "<group>"; };
 		0FEBC5C62BC040A600EBECC8 /* UIDevice+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIDevice+Helpers.swift"; sourceTree = "<group>"; };
 		0FEBC5C72BC040A600EBECC8 /* View+Modifiers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "View+Modifiers.swift"; sourceTree = "<group>"; };
@@ -126,6 +132,7 @@
 				0FCBB3A42BA893D500D80DB7 /* ContentViewModel.swift */,
 				0FEBC5CE2BC3FD3C00EBECC8 /* DeeplinkItemView.swift */,
 				0FEBC5D42BC41E1B00EBECC8 /* DeeplinkItemStyle.swift */,
+				0FD1259B2BC570B00056F3AE /* DeeplinkSectionHeaderView.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -172,6 +179,7 @@
 				0FEBC5C72BC040A600EBECC8 /* View+Modifiers.swift */,
 				0FEBC5C52BC040A600EBECC8 /* UIApplication+Utils.swift */,
 				0FEBC5C62BC040A600EBECC8 /* UIDevice+Helpers.swift */,
+				0FD1259E2BC578220056F3AE /* Font+Helpers.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -288,6 +296,7 @@
 				0FEBC5D02BC3FD3C00EBECC8 /* DeeplinkItemView.swift in Sources */,
 				0F2578902BBC2C7A000491D3 /* FirebaseDatabase.swift in Sources */,
 				0FEBC5CD2BC040A600EBECC8 /* View+Modifiers.swift in Sources */,
+				0FD125A02BC578220056F3AE /* Font+Helpers.swift in Sources */,
 				0F2578912BBC2C7A000491D3 /* HostingViewController.swift in Sources */,
 				0F2578922BBC2C7A000491D3 /* AppDelegate.swift in Sources */,
 				0F2578932BBC2C7A000491D3 /* DeeplinkError.swift in Sources */,
@@ -297,6 +306,7 @@
 				0F2578952BBC2C7A000491D3 /* SceneDelegate.swift in Sources */,
 				0F2578972BBC2C7A000491D3 /* DeeplinkContent.swift in Sources */,
 				0FEBC5CB2BC040A600EBECC8 /* UIDevice+Helpers.swift in Sources */,
+				0FD1259D2BC570B00056F3AE /* DeeplinkSectionHeaderView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -308,6 +318,7 @@
 				0FEBC5CF2BC3FD3C00EBECC8 /* DeeplinkItemView.swift in Sources */,
 				0FCBB39E2BA892A700D80DB7 /* FirebaseDatabase.swift in Sources */,
 				0FEBC5CC2BC040A600EBECC8 /* View+Modifiers.swift in Sources */,
+				0FD1259F2BC578220056F3AE /* Font+Helpers.swift in Sources */,
 				0FCBB3822BA88C7300D80DB7 /* HostingViewController.swift in Sources */,
 				0FCBB37E2BA88C7300D80DB7 /* AppDelegate.swift in Sources */,
 				0FCBB3A32BA892E800D80DB7 /* DeeplinkError.swift in Sources */,
@@ -317,6 +328,7 @@
 				0FCBB3802BA88C7300D80DB7 /* SceneDelegate.swift in Sources */,
 				0FCBB3A22BA892E800D80DB7 /* DeeplinkContent.swift in Sources */,
 				0FEBC5CA2BC040A600EBECC8 /* UIDevice+Helpers.swift in Sources */,
+				0FD1259C2BC570B00056F3AE /* DeeplinkSectionHeaderView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

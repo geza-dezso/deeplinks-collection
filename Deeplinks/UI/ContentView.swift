@@ -46,25 +46,30 @@ struct ContentView: View {
 
             VStack {
 
-                Text("Deeplinks")
+                Text("Deeplinks Collection")
+                    .font(primary)
                     .foregroundColor(.white)
+                    .padding(.vertical, 16)
 
                 if let error = viewModel.error {
                     Text(error.displayText)
+
                 } else {
-                    if let deeplinks = viewModel.deeplinks {
+                    if let groups = viewModel.deeplinkGroups {
 
                         List {
-                            Section("Deeplinks") {
-                                ForEach(deeplinks, id: \.self) { deeplink in
-                                    DeeplinkItemView(title: deeplink, link: deeplink)
-                                        .padding(.horizontal, 16)
-                                        .padding(.vertical, 1)
-                                        .listRowInsets(EdgeInsets())
+                            ForEach(groups, id: \.self) { group in
+                                Section(header: DeeplinkSectionHeaderView(title: group.title)) {
+                                    if let deeplinks = group.deeplinks {
+                                        ForEach(deeplinks, id: \.self) { deeplink in
+                                            DeeplinkItemView(title: deeplink.title, link: deeplink.url)
+                                                .padding(.vertical, 1)
+                                        }
+                                    }
                                 }
+                                .listRowInsets(EdgeInsets())
                             }
-                            .font(isTV ? .system(.headline) : isIPad ? .system(size: 22) : .system(size: 16))
-                            .foregroundColor(.white)
+                            .padding(.horizontal, 16)
                         }
                         .contentBackground(.hidden)
                         .listStyle(GroupedListStyle())

@@ -12,7 +12,7 @@ import Combine
 
 enum DatabaseQueryStatus {
     case fetching
-    case success([String]?)
+    case success([DeeplinkGroup]?)
     case error(DeeplinkError)
 }
 
@@ -33,7 +33,7 @@ class FirebaseDatabase: DatabaseProtocol {
     private var collection: [DeeplinkContent]? {
         didSet {
             if let collection = collection {
-                if let deeplinks = collection.first(where: { $0.user == user && $0.pwd == pwd })?.deeplinks {
+                if let deeplinks = collection.first(where: { $0.user == user && $0.pwd == pwd })?.groups {
                     status = .success(deeplinks)
                 } else {
                     status = .error(DeeplinkError(code: .invalidCredentials))
