@@ -14,12 +14,11 @@ class ContentViewModel: ObservableObject {
 
     @Published var isLoading: Bool = true
     @Published var error: DeeplinkError?
+    @Published var user: String
 
     private var database: DatabaseProtocol
     private var bag: Set<AnyCancellable> = []
     private var databaseListener: AnyCancellable?
-
-    private var user: String
     private var pwd: String
 
     init(database: DatabaseProtocol) {

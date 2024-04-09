@@ -13,6 +13,8 @@ struct ContentView: View {
 
     @State private var isPortrait = false
 
+    private let padding: CGFloat = isTV ? 16 : isIPad ? 12 : 8
+
     init(viewModel: ContentViewModel) {
         self.viewModel = viewModel
         // only for iOS 15
@@ -46,10 +48,8 @@ struct ContentView: View {
 
             VStack {
 
-                Text("Deeplinks Collection")
-                    .font(primary)
-                    .foregroundColor(.white)
-                    .padding(.vertical, 16)
+                titleView
+                    .padding(.horizontal, 16)
 
                 if let error = viewModel.error {
                     Text(error.displayText)
@@ -59,7 +59,7 @@ struct ContentView: View {
 
                         List {
                             ForEach(groups, id: \.self) { group in
-                                Section(header: DeeplinkSectionHeaderView(title: group.title)) {
+                                Section(header: sectionHeaderView(group.title)) {
                                     if let deeplinks = group.deeplinks {
                                         ForEach(deeplinks, id: \.self) { deeplink in
                                             DeeplinkItemView(title: deeplink.title, link: deeplink.url)
@@ -86,5 +86,42 @@ struct ContentView: View {
         .onDeviceRotation { _ in
             isPortrait = UIApplication.shared.isPortrait
         }
+    }
+
+    @ViewBuilder
+    private var titleView: some View {
+        let iconSize: CGFloat = isTV ? 64 : 32
+
+        HStack {
+            Text("Deeplinks Collection")
+                .font(primary)
+                .bold()
+                .foregroundColor(.white)
+
+            Spacer()
+
+            HStack(spacing: 0) {
+                Image(uiImage: UIImage(named: "UserIcon")!)
+                    .resizable()
+                    .frame(width: iconSize, height: iconSize)
+
+                Text(viewModel.user)
+                    .font(primary)
+                    .foregroundColor(.white)
+                    .padding(.horizontal, isTV ? 24 : 12)
+            }
+            .background(Color.white.opacity(0.1))
+            .cornerRadius(iconSize/2)
+        }
+        .padding(.horizontal, padding)
+        .padding(.vertical, 16)
+    }
+
+    @ViewBuilder
+    private func sectionHeaderView(_ title: String) -> some View {
+        Text(title)
+            .font(primary)
+            .foregroundColor(.gray)
+            .padding(EdgeInsets(top: 0, leading: padding, bottom: 16, trailing: padding))
     }
 }
