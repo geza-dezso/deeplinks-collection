@@ -8,28 +8,43 @@
 import Foundation
 import Combine
 
+
+enum ContentViewModelState: Equatable {
+    case initial
+    case login
+    case fetching
+    case ready
+    case error(DeeplinkError)
+}
+
 class ContentViewModel: ObservableObject {
 
     @Published var deeplinkGroups: [DeeplinkGroup]?
-
-    @Published var isLoading: Bool = true
-    @Published var error: DeeplinkError?
-    @Published var user: String
+    @Published var user: String = ""
+    @Published var state: ContentViewModelState = .initial
 
     private var database: DatabaseProtocol
     private var bag: Set<AnyCancellable> = []
     private var databaseListener: AnyCancellable?
-    private var pwd: String
+    private var pwd: String = ""
 
     init(database: DatabaseProtocol) {
         self.database = database
-        self.user = "dt"
-        self.pwd = "pwd"
     }
 
     func onAppear() {
+        state = .login
+    }
 
-        isLoading = true
+    func onLogin() {
+        user = "dt"
+        pwd = "pwd"
+        state = .fetching
+
+        setupListener()
+    }
+
+    private func setupListener() {
 
         databaseListener?.cancel()
         databaseListener = database.deeplinkUpdates(for: user, pwd: pwd)
@@ -39,11 +54,10 @@ class ContentViewModel: ObservableObject {
                 switch status {
                 case .success(let deeplinkGroups):
                     self?.deeplinkGroups = deeplinkGroups ?? []
-                    self?.isLoading = false
+                    self?.state = .ready
 
                 case .error(let error):
-                    self?.error = error
-                    self?.isLoading = false
+                    self?.state = .error(error)
 
                 default:
                     break

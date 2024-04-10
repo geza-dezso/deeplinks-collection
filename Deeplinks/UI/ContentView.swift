@@ -34,49 +34,49 @@ struct ContentView: View {
         return nil
     }
 
+    private var backgroundColor = Color(red: 0.0, green: 0.15, blue: 0.20)
+
     var body: some View {
 
         ZStack {
 
-            Image(uiImage: background ?? UIImage())
-                .resizable()
-                .edgesIgnoringSafeArea(.all)
+            if viewModel.state != .ready {
+                welcomeView
 
-            if viewModel.isLoading {
-                ProgressView()
-            }
+            } else {
 
-            VStack {
+                ZStack {
+                    backgroundColor
+                        .edgesIgnoringSafeArea(.all)
 
-                titleView
-                    .padding(.horizontal, 16)
+                    VStack {
 
-                if let error = viewModel.error {
-                    Text(error.displayText)
+                        titleView
+                            .padding(.horizontal, 16)
 
-                } else {
-                    if let groups = viewModel.deeplinkGroups {
+                        if let groups = viewModel.deeplinkGroups {
 
-                        List {
-                            ForEach(groups, id: \.self) { group in
-                                Section(header: sectionHeaderView(group.title)) {
-                                    if let deeplinks = group.deeplinks {
-                                        ForEach(deeplinks, id: \.self) { deeplink in
-                                            DeeplinkItemView(title: deeplink.title, link: deeplink.url)
-                                                .padding(.vertical, 1)
+                            List {
+                                ForEach(groups, id: \.self) { group in
+                                    Section(header: sectionHeaderView(group.title)) {
+                                        if let deeplinks = group.deeplinks {
+                                            ForEach(deeplinks, id: \.self) { deeplink in
+                                                DeeplinkItemView(title: deeplink.title, link: deeplink.url)
+                                                    .padding(.vertical, 1)
+                                            }
                                         }
                                     }
+                                    .listRowInsets(EdgeInsets())
                                 }
-                                .listRowInsets(EdgeInsets())
+                                .padding(.horizontal, 16)
                             }
-                            .padding(.horizontal, 16)
+                            .contentBackground(.hidden)
+                            .listStyle(GroupedListStyle())
                         }
-                        .contentBackground(.hidden)
-                        .listStyle(GroupedListStyle())
+
+                        Spacer()
                     }
                 }
-
-                Spacer()
             }
         }
         .onAppear {
@@ -86,6 +86,34 @@ struct ContentView: View {
         .onDeviceRotation { _ in
             isPortrait = UIApplication.shared.isPortrait
         }
+    }
+
+    @ViewBuilder
+    private var welcomeView: some View {
+        ZStack {
+            Image(uiImage: background ?? UIImage())
+                .resizable()
+                .edgesIgnoringSafeArea(.all)
+
+            if viewModel.state == .login {
+                loginView
+
+            } else if viewModel.state == .fetching {
+                ProgressView()
+
+            } else if case .error(let error) = viewModel.state {
+                // handle error
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var loginView: some View {
+        Button(action: {
+            viewModel.onLogin()
+        }, label: {
+            Text("Login")
+        })
     }
 
     @ViewBuilder
