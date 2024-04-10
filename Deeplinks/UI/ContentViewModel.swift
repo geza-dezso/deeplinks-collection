@@ -10,16 +10,15 @@ import Combine
 
 class ContentViewModel: ObservableObject {
 
-    @Published var deeplinks: [String]?
+    @Published var deeplinkGroups: [DeeplinkGroup]?
 
     @Published var isLoading: Bool = true
     @Published var error: DeeplinkError?
+    @Published var user: String
 
     private var database: DatabaseProtocol
     private var bag: Set<AnyCancellable> = []
     private var databaseListener: AnyCancellable?
-
-    private var user: String
     private var pwd: String
 
     init(database: DatabaseProtocol) {
@@ -38,8 +37,8 @@ class ContentViewModel: ObservableObject {
             .sink { [weak self] status in
 
                 switch status {
-                case .success(let deeplinks):
-                    self?.deeplinks = deeplinks ?? []
+                case .success(let deeplinkGroups):
+                    self?.deeplinkGroups = deeplinkGroups ?? []
                     self?.isLoading = false
 
                 case .error(let error):

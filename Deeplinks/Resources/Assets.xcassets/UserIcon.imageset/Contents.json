@@ -1,8 +1,8 @@
 {
   "images" : [
     {
-      "filename" : "top_shelf.png",
-      "idiom" : "tv"
+      "filename" : "user.svg",
+      "idiom" : "universal"
     }
   ],
   "info" : {

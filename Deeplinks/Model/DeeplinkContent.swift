@@ -7,8 +7,18 @@
 
 import Foundation
 
+struct Deeplink: Codable, Hashable {
+    let title: String
+    let url: String
+}
+
+struct DeeplinkGroup: Codable, Hashable {
+    let title: String
+    let deeplinks: [Deeplink]?
+}
+
 struct DeeplinkContent: Codable {
     let user: String
     let pwd: String
-    let deeplinks: [String]?
+    let groups: [DeeplinkGroup]?
 }
