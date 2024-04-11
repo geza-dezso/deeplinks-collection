@@ -21,12 +21,12 @@ class ContentViewModel: ObservableObject {
 
     @Published var deeplinkGroups: [DeeplinkGroup]?
     @Published var user: String = ""
+    @Published var pwd: String = ""
     @Published var state: ContentViewModelState = .initial
 
     private var database: DatabaseProtocol
     private var bag: Set<AnyCancellable> = []
     private var databaseListener: AnyCancellable?
-    private var pwd: String = ""
 
     init(database: DatabaseProtocol) {
         self.database = database
@@ -37,10 +37,7 @@ class ContentViewModel: ObservableObject {
     }
 
     func onLogin() {
-        user = "dt"
-        pwd = "pwd"
         state = .fetching
-
         setupListener()
     }
 

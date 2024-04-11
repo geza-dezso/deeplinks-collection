@@ -100,35 +100,30 @@ struct ContentView: View {
                 Spacer()
 
                 Text("Deeplinks Collection")
-                    .font(primary)
+                    .font(headline)
                     .bold()
                     .foregroundColor(.white)
 
                 Group {
                     if viewModel.state == .login {
-                        loginView
+                        LoginView(viewModel: viewModel)
 
                     } else if viewModel.state == .fetching {
                         ProgressView()
 
                     } else if case .error(let error) = viewModel.state {
                         Text(error.displayText)
+                            .font(primary)
+                            .foregroundColor(.white)
                     }
                 }
-                .padding(48)
+                .frame(width: isIPad ? 320 : 280, height: isIPad ? 240 : 180)
 
                 Spacer()
             }
+            .offset(y: -32)
+            .ignoresSafeArea(.keyboard)
         }
-    }
-
-    @ViewBuilder
-    private var loginView: some View {
-        Button(action: {
-            viewModel.onLogin()
-        }, label: {
-            Text("Login")
-        })
     }
 
     @ViewBuilder
