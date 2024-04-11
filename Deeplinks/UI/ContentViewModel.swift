@@ -7,7 +7,7 @@
 
 import Foundation
 import Combine
-
+import SwiftUI
 
 enum ContentViewModelState: Equatable {
     case initial
@@ -54,7 +54,9 @@ class ContentViewModel: ObservableObject {
                 switch status {
                 case .success(let deeplinkGroups):
                     self?.deeplinkGroups = deeplinkGroups ?? []
-                    self?.state = .ready
+                    withAnimation {
+                        self?.state = .ready
+                    }
 
                 case .error(let error):
                     self?.state = .error(error)

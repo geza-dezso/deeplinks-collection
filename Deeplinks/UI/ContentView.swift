@@ -95,14 +95,29 @@ struct ContentView: View {
                 .resizable()
                 .edgesIgnoringSafeArea(.all)
 
-            if viewModel.state == .login {
-                loginView
+            VStack {
 
-            } else if viewModel.state == .fetching {
-                ProgressView()
+                Spacer()
 
-            } else if case .error(let error) = viewModel.state {
-                // handle error
+                Text("Deeplinks Collection")
+                    .font(primary)
+                    .bold()
+                    .foregroundColor(.white)
+
+                Group {
+                    if viewModel.state == .login {
+                        loginView
+
+                    } else if viewModel.state == .fetching {
+                        ProgressView()
+
+                    } else if case .error(let error) = viewModel.state {
+                        Text(error.displayText)
+                    }
+                }
+                .padding(48)
+
+                Spacer()
             }
         }
     }
