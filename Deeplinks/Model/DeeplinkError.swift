@@ -13,7 +13,7 @@ enum DeeplinkErrorCode: Int, Codable, CaseIterable {
     case notAvailable
 } 
 
-struct DeeplinkError: Error {
+struct DeeplinkError: Error, Equatable {
 
     let code: DeeplinkErrorCode
 }
