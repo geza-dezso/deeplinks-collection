@@ -33,7 +33,9 @@ struct LoginView: View {
             }, label: {
                 Text("Login")
                     .font(primary)
+                    .padding(8)
             })
+            .border(.secondary)
         }
         .frame(width: 280)
     }

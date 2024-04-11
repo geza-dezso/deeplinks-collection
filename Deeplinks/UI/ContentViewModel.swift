@@ -21,7 +21,7 @@ class ContentViewModel: ObservableObject {
 
     @Published var deeplinkGroups: [DeeplinkGroup]?
     @Published var user: String = ""
-    @Published  var pwd: String = ""
+    @Published var pwd: String = ""
     @Published var state: ContentViewModelState = .initial
 
     private var database: DatabaseProtocol
