@@ -113,9 +113,11 @@ struct ContentView: View {
 
                     } else if case .error(let error) = viewModel.state {
                         Text(error.displayText)
+                            .font(primary)
+                            .foregroundColor(.white)
                     }
                 }
-                .frame(height: 180)
+                .frame(width: isIPad ? 320 : 280, height: isIPad ? 240 : 180)
 
                 Spacer()
             }

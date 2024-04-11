@@ -37,10 +37,7 @@ class ContentViewModel: ObservableObject {
     }
 
     func onLogin() {
-        user = "dt"
-        pwd = "pwd"
         state = .fetching
-
         setupListener()
     }
 

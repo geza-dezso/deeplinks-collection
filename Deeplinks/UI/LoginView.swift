@@ -18,6 +18,10 @@ struct LoginView: View {
 
     private let placeholderTextColor = Color(red: 0.33, green: 0.33, blue: 0.33)
 
+    private var isLoginDisabled: Bool {
+        viewModel.user.isEmpty || viewModel.pwd.isEmpty
+    }
+
     var body: some View {
         VStack {
             usernameTextField
@@ -32,12 +36,10 @@ struct LoginView: View {
                 viewModel.onLogin()
             }, label: {
                 Text("Login")
-                    .font(primary)
-                    .padding(8)
             })
-            .border(.secondary)
+            .buttonStyle(ActionButtonStyle())
+            .disabled(isLoginDisabled)
         }
-        .frame(width: 280)
     }
 
     private var usernameTextField: some View {

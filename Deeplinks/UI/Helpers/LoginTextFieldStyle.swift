@@ -17,9 +17,14 @@ struct LoginTextFieldStyle: TextFieldStyle {
             .accentColor(textColor)
             .foregroundColor(textColor)
             .padding(8)
-            .border(.secondary)
             .background(Color.white.opacity(0.1))
             .disableAutocorrection(true)
             .keyboardType(.alphabet)
+            .autocapitalization(.none)
+            .cornerRadius(4.0)
+            .overlay(
+                RoundedRectangle(cornerRadius: 4)
+                    .stroke(Color(red: 0.33, green: 0.33, blue: 0.33), lineWidth: 1)
+            )
     }
 }
