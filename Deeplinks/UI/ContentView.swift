@@ -11,27 +11,12 @@ struct ContentView: View {
     @Environment(\.openURL) private var openURL
     @ObservedObject var viewModel: ContentViewModel
 
-    @State private var isPortrait = false
-
     private let padding: CGFloat = isTV ? 16 : isIPad ? 12 : 8
 
     init(viewModel: ContentViewModel) {
         self.viewModel = viewModel
         // only for iOS 15
         UITableView.appearance().backgroundColor = .clear
-    }
-
-    private var background: UIImage? {
-        if isIPhone {
-            return UIImage(named: "Back_iPhone")
-        } else if isIPad && isPortrait {
-            return UIImage(named: "Back_iPad_portrait")
-        } else if isIPad && !isPortrait {
-            return UIImage(named: "Back_iPad_landscape")
-        } else if isTV {
-            return UIImage(named: "Back_TV")
-        }
-        return nil
     }
 
     private var backgroundColor = Color(red: 0.0, green: 0.15, blue: 0.20)
@@ -41,7 +26,7 @@ struct ContentView: View {
         ZStack {
 
             if viewModel.state != .ready {
-                welcomeView
+                WelcomeView(viewModel: viewModel)
 
             } else {
 
@@ -81,48 +66,6 @@ struct ContentView: View {
         }
         .onAppear {
             viewModel.onAppear()
-            isPortrait = UIApplication.shared.isPortrait
-        }
-        .onDeviceRotation { _ in
-            isPortrait = UIApplication.shared.isPortrait
-        }
-    }
-
-    @ViewBuilder
-    private var welcomeView: some View {
-        ZStack {
-            Image(uiImage: background ?? UIImage())
-                .resizable()
-                .edgesIgnoringSafeArea(.all)
-
-            VStack {
-
-                Spacer()
-
-                Text("Deeplinks Collection")
-                    .font(headline)
-                    .bold()
-                    .foregroundColor(.white)
-
-                Group {
-                    if viewModel.state == .login {
-                        LoginView(viewModel: viewModel)
-
-                    } else if viewModel.state == .fetching {
-                        ProgressView()
-
-                    } else if case .error(let error) = viewModel.state {
-                        Text(error.displayText)
-                            .font(primary)
-                            .foregroundColor(.white)
-                    }
-                }
-                .frame(width: isIPad ? 320 : 280, height: isIPad ? 240 : 180)
-
-                Spacer()
-            }
-            .offset(y: -32)
-            .ignoresSafeArea(.keyboard)
         }
     }
 

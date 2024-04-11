@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "background_iPad_landscape.png",
+      "filename" : "background_iPad_portrait.png",
       "idiom" : "universal"
     }
   ],

@@ -25,6 +25,8 @@
 		0F581DCA2BC81CAD0038DDD9 /* LoginTextFieldStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F581DC82BC81CAD0038DDD9 /* LoginTextFieldStyle.swift */; };
 		0F581DCF2BC82EC10038DDD9 /* ActionButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F581DCE2BC82EC10038DDD9 /* ActionButtonStyle.swift */; };
 		0F581DD02BC82EC10038DDD9 /* ActionButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F581DCE2BC82EC10038DDD9 /* ActionButtonStyle.swift */; };
+		0F581DD22BC846520038DDD9 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F581DD12BC846520038DDD9 /* WelcomeView.swift */; };
+		0F581DD32BC846520038DDD9 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F581DD12BC846520038DDD9 /* WelcomeView.swift */; };
 		0FCBB37E2BA88C7300D80DB7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FCBB37D2BA88C7300D80DB7 /* AppDelegate.swift */; };
 		0FCBB3802BA88C7300D80DB7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FCBB37F2BA88C7300D80DB7 /* SceneDelegate.swift */; };
 		0FCBB3822BA88C7300D80DB7 /* HostingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FCBB3812BA88C7300D80DB7 /* HostingViewController.swift */; };
@@ -39,8 +41,6 @@
 		0FCBB3A52BA893D500D80DB7 /* ContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FCBB3A42BA893D500D80DB7 /* ContentViewModel.swift */; };
 		0FD1259F2BC578220056F3AE /* Font+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FD1259E2BC578220056F3AE /* Font+Helpers.swift */; };
 		0FD125A02BC578220056F3AE /* Font+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FD1259E2BC578220056F3AE /* Font+Helpers.swift */; };
-		0FEBC5C82BC040A600EBECC8 /* UIApplication+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FEBC5C52BC040A600EBECC8 /* UIApplication+Utils.swift */; };
-		0FEBC5C92BC040A600EBECC8 /* UIApplication+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FEBC5C52BC040A600EBECC8 /* UIApplication+Utils.swift */; };
 		0FEBC5CA2BC040A600EBECC8 /* UIDevice+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FEBC5C62BC040A600EBECC8 /* UIDevice+Helpers.swift */; };
 		0FEBC5CB2BC040A600EBECC8 /* UIDevice+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FEBC5C62BC040A600EBECC8 /* UIDevice+Helpers.swift */; };
 		0FEBC5CC2BC040A600EBECC8 /* View+Modifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FEBC5C72BC040A600EBECC8 /* View+Modifiers.swift */; };
@@ -57,6 +57,7 @@
 		0F581DC52BC803460038DDD9 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		0F581DC82BC81CAD0038DDD9 /* LoginTextFieldStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginTextFieldStyle.swift; sourceTree = "<group>"; };
 		0F581DCE2BC82EC10038DDD9 /* ActionButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionButtonStyle.swift; sourceTree = "<group>"; };
+		0F581DD12BC846520038DDD9 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
 		0FCBB37A2BA88C7300D80DB7 /* Deeplinks Collection iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Deeplinks Collection iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0FCBB37D2BA88C7300D80DB7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0FCBB37F2BA88C7300D80DB7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -71,7 +72,6 @@
 		0FCBB3A12BA892E800D80DB7 /* DeeplinkError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeeplinkError.swift; sourceTree = "<group>"; };
 		0FCBB3A42BA893D500D80DB7 /* ContentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewModel.swift; sourceTree = "<group>"; };
 		0FD1259E2BC578220056F3AE /* Font+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Font+Helpers.swift"; sourceTree = "<group>"; };
-		0FEBC5C52BC040A600EBECC8 /* UIApplication+Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIApplication+Utils.swift"; sourceTree = "<group>"; };
 		0FEBC5C62BC040A600EBECC8 /* UIDevice+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIDevice+Helpers.swift"; sourceTree = "<group>"; };
 		0FEBC5C72BC040A600EBECC8 /* View+Modifiers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "View+Modifiers.swift"; sourceTree = "<group>"; };
 		0FEBC5CE2BC3FD3C00EBECC8 /* DeeplinkItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeeplinkItemView.swift; sourceTree = "<group>"; };
@@ -136,6 +136,7 @@
 				0FCBB3812BA88C7300D80DB7 /* HostingViewController.swift */,
 				0FCBB3912BA88E2700D80DB7 /* ContentView.swift */,
 				0FCBB3A42BA893D500D80DB7 /* ContentViewModel.swift */,
+				0F581DD12BC846520038DDD9 /* WelcomeView.swift */,
 				0F581DC52BC803460038DDD9 /* LoginView.swift */,
 				0FEBC5CE2BC3FD3C00EBECC8 /* DeeplinkItemView.swift */,
 			);
@@ -182,7 +183,6 @@
 			isa = PBXGroup;
 			children = (
 				0FEBC5C72BC040A600EBECC8 /* View+Modifiers.swift */,
-				0FEBC5C52BC040A600EBECC8 /* UIApplication+Utils.swift */,
 				0FEBC5C62BC040A600EBECC8 /* UIDevice+Helpers.swift */,
 				0FD1259E2BC578220056F3AE /* Font+Helpers.swift */,
 				0FEBC5D42BC41E1B00EBECC8 /* DeeplinkItemStyle.swift */,
@@ -313,7 +313,7 @@
 				0F2578932BBC2C7A000491D3 /* DeeplinkError.swift in Sources */,
 				0FEBC5D62BC41E1B00EBECC8 /* DeeplinkItemStyle.swift in Sources */,
 				0F2578942BBC2C7A000491D3 /* ContentView.swift in Sources */,
-				0FEBC5C92BC040A600EBECC8 /* UIApplication+Utils.swift in Sources */,
+				0F581DD32BC846520038DDD9 /* WelcomeView.swift in Sources */,
 				0F2578952BBC2C7A000491D3 /* SceneDelegate.swift in Sources */,
 				0F2578972BBC2C7A000491D3 /* DeeplinkContent.swift in Sources */,
 				0FEBC5CB2BC040A600EBECC8 /* UIDevice+Helpers.swift in Sources */,
@@ -337,7 +337,7 @@
 				0FCBB3A32BA892E800D80DB7 /* DeeplinkError.swift in Sources */,
 				0FEBC5D52BC41E1B00EBECC8 /* DeeplinkItemStyle.swift in Sources */,
 				0FCBB3922BA88E2700D80DB7 /* ContentView.swift in Sources */,
-				0FEBC5C82BC040A600EBECC8 /* UIApplication+Utils.swift in Sources */,
+				0F581DD22BC846520038DDD9 /* WelcomeView.swift in Sources */,
 				0FCBB3802BA88C7300D80DB7 /* SceneDelegate.swift in Sources */,
 				0FCBB3A22BA892E800D80DB7 /* DeeplinkContent.swift in Sources */,
 				0FEBC5CA2BC040A600EBECC8 /* UIDevice+Helpers.swift in Sources */,
