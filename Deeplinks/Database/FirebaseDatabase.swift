@@ -32,15 +32,7 @@ class FirebaseDatabase: DatabaseProtocol {
 
     private var collection: [DeeplinkContent]? {
         didSet {
-            if let collection = collection {
-                if let deeplinks = collection.first(where: { $0.user == user && $0.pwd == pwd })?.groups {
-                    status = .success(deeplinks)
-                } else {
-                    status = .error(DeeplinkError(code: .invalidCredentials))
-                }
-            } else {
-                status = .error(DeeplinkError(code: .notAvailable))
-            }
+            updateStatus()
         }
     }
 
@@ -51,7 +43,7 @@ class FirebaseDatabase: DatabaseProtocol {
         self.user = user
         self.pwd = pwd
 
-        fetch()
+        fetchIfNeeded()
 
         return $status
             .eraseToAnyPublisher()
@@ -59,17 +51,18 @@ class FirebaseDatabase: DatabaseProtocol {
 
     // MARK: - Private
 
-    private func fetch() {
+    private func fetchIfNeeded() {
+        guard collection == nil else {
+            updateStatus()
+            return
+        }
+
         Task {
             do {
-                if let collection = try await snapshot() {
-                    self.collection = collection
-                    setupDatabaseListener()
-                } else {
-                    self.status = .error(DeeplinkError(code: .notAvailable))
-                }
+                self.collection = try await snapshot()
+                setupDatabaseListener()
             } catch {
-                self.status = .error(DeeplinkError(code: .notAvailable))
+                updateStatus()
             }
         }
     }
@@ -88,8 +81,20 @@ class FirebaseDatabase: DatabaseProtocol {
             do {
                 self.collection = try snapshot.data(as: [DeeplinkContent].self)
             } catch {
-                self.status = .error(DeeplinkError(code: .notAvailable))
+                self.updateStatus()
             }
         })
+    }
+
+    private func updateStatus() {
+        if let collection = collection {
+            if let deeplinks = collection.first(where: { $0.user == user && $0.pwd == pwd })?.groups {
+                status = .success(deeplinks)
+            } else {
+                status = .error(DeeplinkError(code: .invalidCredentials))
+            }
+        } else {
+            status = .error(DeeplinkError(code: .notAvailable))
+        }
     }
 }
