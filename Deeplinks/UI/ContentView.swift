@@ -60,10 +60,16 @@ struct ContentView: View {
                         }
 
                         Spacer()
+
+                        if !isTV {
+                            logoutButton
+                                .padding(.vertical, 16)
+                        }
                     }
                 }
             }
         }
+        .ignoresSafeArea(.keyboard)
         .onAppear {
             viewModel.onAppear()
         }
@@ -93,9 +99,23 @@ struct ContentView: View {
             }
             .background(Color.white.opacity(0.1))
             .cornerRadius(iconSize/2)
+
+            if isTV {
+                logoutButton
+            }
         }
         .padding(.horizontal, padding)
         .padding(.vertical, 16)
+    }
+
+    @ViewBuilder
+    private var logoutButton: some View {
+        Button(action: {
+            viewModel.onAppear()
+        }, label: {
+            Text("Logout")
+        })
+        .buttonStyle(ActionButtonStyle())
     }
 
     @ViewBuilder
