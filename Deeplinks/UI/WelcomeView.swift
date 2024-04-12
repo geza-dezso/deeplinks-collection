@@ -24,7 +24,7 @@ struct WelcomeView: View {
                 .resizable()
                 .edgesIgnoringSafeArea(.all)
 
-            VStack {
+            VStack(spacing: 0) {
 
                 Spacer()
 
@@ -40,10 +40,8 @@ struct WelcomeView: View {
                     } else if viewModel.state == .fetching {
                         ProgressView()
 
-                    } else if case .error(let error) = viewModel.state {
-                        Text(error.displayText)
-                            .font(primary)
-                            .foregroundColor(.white)
+                    } else {
+                        Spacer()
                     }
                 }
                 .frame(width: isIPad ? 320 : 280, height: isIPad ? 240 : 180)

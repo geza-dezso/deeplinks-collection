@@ -22,7 +22,16 @@ class ContentViewModel: ObservableObject {
     @Published var deeplinkGroups: [DeeplinkGroup]?
     @Published var user: String = ""
     @Published var pwd: String = ""
-    @Published var state: ContentViewModelState = .initial
+    @Published var state: ContentViewModelState = .initial {
+        didSet {
+            if case .error(let error) = state {
+                shouldPresentErrorAlert = true
+            } else {
+                shouldPresentErrorAlert = false
+            }
+        }
+    }
+    @Published var shouldPresentErrorAlert: Bool = false
 
     private var database: DatabaseProtocol
     private var bag: Set<AnyCancellable> = []
@@ -33,12 +42,36 @@ class ContentViewModel: ObservableObject {
     }
 
     func onAppear() {
+        user = ""
+        pwd = ""
         state = .login
     }
 
     func onLogin() {
         state = .fetching
         setupListener()
+    }
+
+    func alertButtonAction(for error: DeeplinkError) -> (() -> Void) {
+        switch error.code {
+        case .invalidCredentials:
+            return {
+                self.onAppear()
+            }
+        case .notAvailable:
+            return {
+                self.onLogin()
+            }
+        }
+    }
+
+    func alertButtonText(for error: DeeplinkError) -> String {
+        switch error.code {
+        case .invalidCredentials:
+            return "Ok"
+        case .notAvailable:
+            return "Retry"
+        }
     }
 
     private func setupListener() {

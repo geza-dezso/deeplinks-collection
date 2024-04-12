@@ -42,6 +42,7 @@ class FirebaseDatabase: DatabaseProtocol {
 
         self.user = user
         self.pwd = pwd
+        self.status = .fetching
 
         fetchIfNeeded()
 

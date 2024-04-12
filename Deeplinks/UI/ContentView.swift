@@ -77,6 +77,17 @@ struct ContentView: View {
         .onAppear {
             viewModel.onAppear()
         }
+        .alert("Error", isPresented: $viewModel.shouldPresentErrorAlert) {
+            if let error = error {
+                Button(viewModel.alertButtonText(for: error), role: .cancel) {
+                    viewModel.shouldPresentErrorAlert = false
+                    viewModel.alertButtonAction(for: error)()
+                }
+            }
+        }
+        message: {
+            Text(error?.message ?? "")
+        }
     }
 
     @ViewBuilder
@@ -135,5 +146,12 @@ struct ContentView: View {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             isLogoutDisabled = false
         }
+    }
+
+    private var error: DeeplinkError? {
+        if case let .error(error) = viewModel.state {
+            return error
+        }
+        return nil
     }
 }
