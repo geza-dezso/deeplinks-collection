@@ -10,6 +10,7 @@ import SwiftUI
 struct ContentView: View {
     @Environment(\.openURL) private var openURL
     @ObservedObject var viewModel: ContentViewModel
+    @State private var isLogoutDisabled: Bool = true
 
     private let padding: CGFloat = isTV ? 16 : isIPad ? 12 : 8
 
@@ -60,10 +61,19 @@ struct ContentView: View {
                         }
 
                         Spacer()
+
+                        if !isTV {
+                            logoutButton
+                                .padding(.vertical, 16)
+                        }
+                    }
+                    .onAppear {
+                        enableLogout()
                     }
                 }
             }
         }
+        .ignoresSafeArea(.keyboard)
         .onAppear {
             viewModel.onAppear()
         }
@@ -93,9 +103,24 @@ struct ContentView: View {
             }
             .background(Color.white.opacity(0.1))
             .cornerRadius(iconSize/2)
+
+            if isTV {
+                logoutButton
+                    .disabled(isLogoutDisabled)
+            }
         }
         .padding(.horizontal, padding)
         .padding(.vertical, 16)
+    }
+
+    @ViewBuilder
+    private var logoutButton: some View {
+        Button(action: {
+            viewModel.onAppear()
+        }, label: {
+            Text("Logout")
+        })
+        .buttonStyle(ActionButtonStyle())
     }
 
     @ViewBuilder
@@ -104,5 +129,11 @@ struct ContentView: View {
             .font(primary)
             .foregroundColor(.gray)
             .padding(EdgeInsets(top: 0, leading: padding, bottom: 16, trailing: padding))
+    }
+
+    private func enableLogout() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            isLogoutDisabled = false
+        }
     }
 }
