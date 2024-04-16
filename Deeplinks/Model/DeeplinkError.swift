@@ -20,12 +20,12 @@ struct DeeplinkError: Error, Equatable {
 
 extension DeeplinkError {
 
-    var displayText: String {
+    var message: String {
         switch code {
             case .notAvailable:
                 return "Data not available!"
             case .invalidCredentials:
-                return "Invalid user or password!"
+                return "Login failed! Please check your credentials and try again."
         }
     }
 }
