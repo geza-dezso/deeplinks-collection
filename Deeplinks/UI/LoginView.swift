@@ -29,7 +29,7 @@ struct LoginView: View {
             passwordTextField
 
             Spacer()
-                .frame(height: 24)
+                .frame(height: isTV ? 48 : isIPad ? 32 : 24)
 
             Button(action: {
                 focusedField = nil

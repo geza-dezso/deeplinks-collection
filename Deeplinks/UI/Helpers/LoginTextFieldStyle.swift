@@ -11,6 +11,8 @@ struct LoginTextFieldStyle: TextFieldStyle {
 
     private var textColor = Color(red: 0.66, green: 0.66, blue: 0.66)
 
+    #if os(iOS)
+
     func _body(configuration: TextField<Self._Label>) -> some View {
         configuration
             .font(primary)
@@ -24,7 +26,22 @@ struct LoginTextFieldStyle: TextFieldStyle {
             .cornerRadius(4.0)
             .overlay(
                 RoundedRectangle(cornerRadius: 4)
-                    .stroke(Color(red: 0.33, green: 0.33, blue: 0.33), lineWidth: 1)
+                    .stroke(.gray, lineWidth: 1)
             )
     }
+
+    #else
+
+    func _body(configuration: TextField<Self._Label>) -> some View {
+        configuration
+            .font(primary)
+            .accentColor(textColor)
+            .foregroundColor(textColor)
+            .background(Color.white.opacity(0.1))
+            .disableAutocorrection(true)
+            .keyboardType(.alphabet)
+            .autocapitalization(.none)
+    }
+
+    #endif
 }

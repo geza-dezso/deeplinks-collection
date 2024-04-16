@@ -8,7 +8,7 @@
 import SwiftUI
 
 var headline: Font {
-    isTV ? .system(.headline) : isIPad ? .system(size: 32) : .system(size: 24)
+    isTV ? .system(.title2) : isIPad ? .system(size: 32) : .system(size: 24)
 }
 
 var primary: Font {
