@@ -31,7 +31,7 @@ struct WelcomeView: View {
                 Text("Deeplinks Collection")
                     .font(headline)
                     .bold()
-                    .foregroundColor(.white)
+                    .foregroundColor(.primaryText)
 
                 Group {
                     if viewModel.state == .login {

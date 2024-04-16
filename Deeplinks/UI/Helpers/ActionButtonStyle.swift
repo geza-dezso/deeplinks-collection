@@ -24,12 +24,12 @@ struct ActionButtonStyle: ButtonStyle {
             configuration.label
                 .font(primary)
                 .padding(8)
-                .foregroundColor(isEnabled ? .white : Color(red: 0.33, green: 0.33, blue: 0.33))
-                .background(isEnabled ? Color.white.opacity(0.1) : .clear)
+                .foregroundColor(isEnabled ? .primaryText : .darkGray)
+                .background(isEnabled ? Color.itemBackground : .clear)
                 .cornerRadius(4)
                 .overlay(
                     RoundedRectangle(cornerRadius: 4)
-                        .stroke(isEnabled ? .gray : Color(red: 0.33, green: 0.33, blue: 0.33), lineWidth: 1)
+                        .stroke(isEnabled ? .gray : .darkGray, lineWidth: 1)
                 )
         }
 
@@ -40,12 +40,12 @@ struct ActionButtonStyle: ButtonStyle {
             configuration.label
                 .font(primary)
                 .padding(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
-                .foregroundColor(isEnabled ? .white : Color(red: 0.33, green: 0.33, blue: 0.33))
-                .background(isFocused ? Color.white.opacity(0.2) : isEnabled ? Color.white.opacity(0.1) : .clear)
+                .foregroundColor(isEnabled ? .primaryText : .darkGray)
+                .background(isFocused ? Color.focusedItemBackground : isEnabled ? Color.itemBackground : .clear)
                 .cornerRadius(4)
                 .overlay(
                     RoundedRectangle(cornerRadius: 4)
-                        .stroke(isFocused ? .white : isEnabled ? .gray : Color(red: 0.33, green: 0.33, blue: 0.33), lineWidth: 1)
+                        .stroke(isFocused ? .white : isEnabled ? .gray : .darkGray, lineWidth: 1)
                 )
                 .scaleEffect(isFocused ? 1.1 : 1.0)
                 .animation(.easeInOut, value: isFocused)

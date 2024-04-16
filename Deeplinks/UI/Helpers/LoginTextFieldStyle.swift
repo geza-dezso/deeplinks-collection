@@ -9,17 +9,15 @@ import SwiftUI
 
 struct LoginTextFieldStyle: TextFieldStyle {
 
-    private var textColor = Color(red: 0.66, green: 0.66, blue: 0.66)
-
     #if os(iOS)
 
     func _body(configuration: TextField<Self._Label>) -> some View {
         configuration
             .font(primary)
-            .accentColor(textColor)
-            .foregroundColor(textColor)
+            .accentColor(.lightGray)
+            .foregroundColor(.lightGray)
             .padding(8)
-            .background(Color.white.opacity(0.1))
+            .background(Color.itemBackground)
             .disableAutocorrection(true)
             .keyboardType(.alphabet)
             .autocapitalization(.none)
@@ -35,9 +33,9 @@ struct LoginTextFieldStyle: TextFieldStyle {
     func _body(configuration: TextField<Self._Label>) -> some View {
         configuration
             .font(primary)
-            .accentColor(textColor)
-            .foregroundColor(textColor)
-            .background(Color.white.opacity(0.1))
+            .accentColor(.lightGray)
+            .foregroundColor(.lightGray)
+            .background(Color.itemBackground)
             .disableAutocorrection(true)
             .keyboardType(.alphabet)
             .autocapitalization(.none)
