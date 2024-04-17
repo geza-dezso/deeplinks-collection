@@ -29,10 +29,10 @@
 		0F581DD32BC846520038DDD9 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F581DD12BC846520038DDD9 /* WelcomeView.swift */; };
 		0F581DD82BCF01140038DDD9 /* Color+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F581DD72BCF01140038DDD9 /* Color+Helpers.swift */; };
 		0F581DD92BCF01140038DDD9 /* Color+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F581DD72BCF01140038DDD9 /* Color+Helpers.swift */; };
-		0F581DDB2BD005310038DDD9 /* LocalStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F581DDA2BD005310038DDD9 /* LocalStorage.swift */; };
-		0F581DDC2BD005310038DDD9 /* LocalStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F581DDA2BD005310038DDD9 /* LocalStorage.swift */; };
-		0F581DDE2BD009FC0038DDD9 /* UserTokenHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F581DDD2BD009FC0038DDD9 /* UserTokenHandler.swift */; };
-		0F581DDF2BD009FC0038DDD9 /* UserTokenHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F581DDD2BD009FC0038DDD9 /* UserTokenHandler.swift */; };
+		0F581DE22BD030CD0038DDD9 /* LocalStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F581DE02BD030CD0038DDD9 /* LocalStorage.swift */; };
+		0F581DE32BD030CD0038DDD9 /* LocalStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F581DE02BD030CD0038DDD9 /* LocalStorage.swift */; };
+		0F581DE42BD030CD0038DDD9 /* UserTokenHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F581DE12BD030CD0038DDD9 /* UserTokenHandler.swift */; };
+		0F581DE52BD030CD0038DDD9 /* UserTokenHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F581DE12BD030CD0038DDD9 /* UserTokenHandler.swift */; };
 		0FCBB37E2BA88C7300D80DB7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FCBB37D2BA88C7300D80DB7 /* AppDelegate.swift */; };
 		0FCBB3802BA88C7300D80DB7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FCBB37F2BA88C7300D80DB7 /* SceneDelegate.swift */; };
 		0FCBB3822BA88C7300D80DB7 /* HostingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FCBB3812BA88C7300D80DB7 /* HostingViewController.swift */; };
@@ -65,8 +65,8 @@
 		0F581DCE2BC82EC10038DDD9 /* ActionButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionButtonStyle.swift; sourceTree = "<group>"; };
 		0F581DD12BC846520038DDD9 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
 		0F581DD72BCF01140038DDD9 /* Color+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Color+Helpers.swift"; sourceTree = "<group>"; };
-		0F581DDA2BD005310038DDD9 /* LocalStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalStorage.swift; sourceTree = "<group>"; };
-		0F581DDD2BD009FC0038DDD9 /* UserTokenHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserTokenHandler.swift; sourceTree = "<group>"; };
+		0F581DE02BD030CD0038DDD9 /* LocalStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalStorage.swift; sourceTree = "<group>"; };
+		0F581DE12BD030CD0038DDD9 /* UserTokenHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserTokenHandler.swift; sourceTree = "<group>"; };
 		0FCBB37A2BA88C7300D80DB7 /* Deeplinks Collection iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Deeplinks Collection iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0FCBB37D2BA88C7300D80DB7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0FCBB37F2BA88C7300D80DB7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -182,6 +182,8 @@
 		0FCBB39F2BA892D000D80DB7 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				0F581DE02BD030CD0038DDD9 /* LocalStorage.swift */,
+				0F581DE12BD030CD0038DDD9 /* UserTokenHandler.swift */,
 				0FCBB3A02BA892E800D80DB7 /* DeeplinkContent.swift */,
 				0FCBB3A12BA892E800D80DB7 /* DeeplinkError.swift */,
 			);
@@ -198,8 +200,6 @@
 				0FEBC5D42BC41E1B00EBECC8 /* DeeplinkItemStyle.swift */,
 				0F581DC82BC81CAD0038DDD9 /* LoginTextFieldStyle.swift */,
 				0F581DCE2BC82EC10038DDD9 /* ActionButtonStyle.swift */,
-				0F581DDA2BD005310038DDD9 /* LocalStorage.swift */,
-				0F581DDD2BD009FC0038DDD9 /* UserTokenHandler.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -314,7 +314,6 @@
 			files = (
 				0F25788F2BBC2C7A000491D3 /* ContentViewModel.swift in Sources */,
 				0FEBC5D02BC3FD3C00EBECC8 /* DeeplinkItemView.swift in Sources */,
-				0F581DDF2BD009FC0038DDD9 /* UserTokenHandler.swift in Sources */,
 				0F2578902BBC2C7A000491D3 /* FirebaseDatabase.swift in Sources */,
 				0F581DC72BC803460038DDD9 /* LoginView.swift in Sources */,
 				0FEBC5CD2BC040A600EBECC8 /* View+Modifiers.swift in Sources */,
@@ -324,6 +323,7 @@
 				0F581DD02BC82EC10038DDD9 /* ActionButtonStyle.swift in Sources */,
 				0F581DCA2BC81CAD0038DDD9 /* LoginTextFieldStyle.swift in Sources */,
 				0F2578922BBC2C7A000491D3 /* AppDelegate.swift in Sources */,
+				0F581DE52BD030CD0038DDD9 /* UserTokenHandler.swift in Sources */,
 				0F2578932BBC2C7A000491D3 /* DeeplinkError.swift in Sources */,
 				0FEBC5D62BC41E1B00EBECC8 /* DeeplinkItemStyle.swift in Sources */,
 				0F2578942BBC2C7A000491D3 /* ContentView.swift in Sources */,
@@ -331,7 +331,7 @@
 				0F2578952BBC2C7A000491D3 /* SceneDelegate.swift in Sources */,
 				0F2578972BBC2C7A000491D3 /* DeeplinkContent.swift in Sources */,
 				0FEBC5CB2BC040A600EBECC8 /* UIDevice+Helpers.swift in Sources */,
-				0F581DDC2BD005310038DDD9 /* LocalStorage.swift in Sources */,
+				0F581DE32BD030CD0038DDD9 /* LocalStorage.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -341,7 +341,6 @@
 			files = (
 				0FCBB3A52BA893D500D80DB7 /* ContentViewModel.swift in Sources */,
 				0FEBC5CF2BC3FD3C00EBECC8 /* DeeplinkItemView.swift in Sources */,
-				0F581DDE2BD009FC0038DDD9 /* UserTokenHandler.swift in Sources */,
 				0FCBB39E2BA892A700D80DB7 /* FirebaseDatabase.swift in Sources */,
 				0F581DC62BC803460038DDD9 /* LoginView.swift in Sources */,
 				0FEBC5CC2BC040A600EBECC8 /* View+Modifiers.swift in Sources */,
@@ -351,6 +350,7 @@
 				0F581DCF2BC82EC10038DDD9 /* ActionButtonStyle.swift in Sources */,
 				0F581DC92BC81CAD0038DDD9 /* LoginTextFieldStyle.swift in Sources */,
 				0FCBB37E2BA88C7300D80DB7 /* AppDelegate.swift in Sources */,
+				0F581DE42BD030CD0038DDD9 /* UserTokenHandler.swift in Sources */,
 				0FCBB3A32BA892E800D80DB7 /* DeeplinkError.swift in Sources */,
 				0FEBC5D52BC41E1B00EBECC8 /* DeeplinkItemStyle.swift in Sources */,
 				0FCBB3922BA88E2700D80DB7 /* ContentView.swift in Sources */,
@@ -358,7 +358,7 @@
 				0FCBB3802BA88C7300D80DB7 /* SceneDelegate.swift in Sources */,
 				0FCBB3A22BA892E800D80DB7 /* DeeplinkContent.swift in Sources */,
 				0FEBC5CA2BC040A600EBECC8 /* UIDevice+Helpers.swift in Sources */,
-				0F581DDB2BD005310038DDD9 /* LocalStorage.swift in Sources */,
+				0F581DE22BD030CD0038DDD9 /* LocalStorage.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
