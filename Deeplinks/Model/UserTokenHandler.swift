@@ -12,21 +12,35 @@ struct UserToken: Codable {
     let pwd: String
 }
 
+private struct UserTokenWithTimestamp: Codable {
+    let userToken: UserToken
+    let timestamp: TimeInterval
+}
+
 struct UserTokenHandler {
 
     private var localStorage: LocalStorageProtocol
-    private var localStorageUserKey = "localStorageUserKey"
+    private var localStorageUserKey: String = "localStorageUserKey"
+    private var expirationTimeout: TimeInterval
 
-    init(localStorage: LocalStorageProtocol) {
+    init(localStorage: LocalStorageProtocol, expirationTimeout: TimeInterval? = nil) {
         self.localStorage = localStorage
+        self.expirationTimeout = expirationTimeout ?? 2 * 24 * 60 * 60 // 2 days
     }
 
     func store(_ userToken: UserToken) {
-        localStorage.save(value: userToken, forKey: localStorageUserKey)
+        let tokenToSave = UserTokenWithTimestamp(userToken: userToken, timestamp: Date().timeIntervalSince1970)
+        localStorage.save(value: tokenToSave, forKey: localStorageUserKey)
     }
 
     func load() -> UserToken? {
-        return localStorage.load(for: localStorageUserKey, castTo: UserToken.self)
+        if let token = localStorage.load(for: localStorageUserKey, castTo: UserTokenWithTimestamp.self),
+           token.timestamp + expirationTimeout > Date().timeIntervalSince1970 {
+            return token.userToken
+        } else {
+            delete()
+            return nil
+        }
     }
 
     func delete() {
