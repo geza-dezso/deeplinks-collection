@@ -20,8 +20,6 @@ struct ContentView: View {
         UITableView.appearance().backgroundColor = .clear
     }
 
-    private var backgroundColor = Color(red: 0.0, green: 0.15, blue: 0.20)
-
     var body: some View {
 
         ZStack {
@@ -32,7 +30,7 @@ struct ContentView: View {
             } else {
 
                 ZStack {
-                    backgroundColor
+                    Color.mainBackground
                         .edgesIgnoringSafeArea(.all)
 
                     VStack {
@@ -98,7 +96,7 @@ struct ContentView: View {
             Text("Deeplinks Collection")
                 .font(primary)
                 .bold()
-                .foregroundColor(.white)
+                .foregroundColor(.primaryText)
 
             Spacer()
 
@@ -109,10 +107,10 @@ struct ContentView: View {
 
                 Text(viewModel.user)
                     .font(primary)
-                    .foregroundColor(.white)
+                    .foregroundColor(.primaryText)
                     .padding(.horizontal, isTV ? 24 : 12)
             }
-            .background(Color.white.opacity(0.1))
+            .background(Color.itemBackground)
             .cornerRadius(iconSize/2)
 
             if isTV {
@@ -138,7 +136,7 @@ struct ContentView: View {
     private func sectionHeaderView(_ title: String) -> some View {
         Text(title)
             .font(primary)
-            .foregroundColor(.gray)
+            .foregroundColor(.secondaryText)
             .padding(EdgeInsets(top: 0, leading: padding, bottom: 16, trailing: padding))
     }
 

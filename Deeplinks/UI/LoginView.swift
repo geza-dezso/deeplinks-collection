@@ -16,8 +16,6 @@ struct LoginView: View {
 
     @FocusState private var focusedField: Field?
 
-    private let placeholderTextColor = Color(red: 0.33, green: 0.33, blue: 0.33)
-
     private var isLoginDisabled: Bool {
         viewModel.user.isEmpty || viewModel.pwd.isEmpty
     }
@@ -29,7 +27,7 @@ struct LoginView: View {
             passwordTextField
 
             Spacer()
-                .frame(height: 24)
+                .frame(height: isTV ? 48 : isIPad ? 32 : 24)
 
             Button(action: {
                 focusedField = nil
@@ -46,7 +44,7 @@ struct LoginView: View {
         TextField(
             "",
             text: $viewModel.user,
-            prompt: Text("Username").foregroundColor(placeholderTextColor)
+            prompt: Text("Username").foregroundColor(.darkGray)
         )
         .textFieldStyle(LoginTextFieldStyle())
         .focused($focusedField, equals: .username)
@@ -56,10 +54,10 @@ struct LoginView: View {
     }
 
     private var passwordTextField: some View {
-        TextField(
+        SecureField(
             "",
             text: $viewModel.pwd,
-            prompt: Text("Password").foregroundColor(placeholderTextColor)
+            prompt: Text("Password").foregroundColor(.darkGray)
         )
         .textFieldStyle(LoginTextFieldStyle())
         .focused($focusedField, equals: .password)

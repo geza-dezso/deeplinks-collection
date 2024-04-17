@@ -31,7 +31,7 @@ struct WelcomeView: View {
                 Text("Deeplinks Collection")
                     .font(headline)
                     .bold()
-                    .foregroundColor(.white)
+                    .foregroundColor(.primaryText)
 
                 Group {
                     if viewModel.state == .login {
@@ -44,7 +44,7 @@ struct WelcomeView: View {
                         Spacer()
                     }
                 }
-                .frame(width: isIPad ? 320 : 280, height: isIPad ? 240 : 180)
+                .frame(width: isTV ? 480 : isIPad ? 320 : 280, height: isTV ? 400 : isIPad ? 280 : 200)
 
                 Spacer()
             }
