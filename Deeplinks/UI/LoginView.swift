@@ -54,7 +54,7 @@ struct LoginView: View {
     }
 
     private var passwordTextField: some View {
-        TextField(
+        SecureField(
             "",
             text: $viewModel.pwd,
             prompt: Text("Password").foregroundColor(.darkGray)

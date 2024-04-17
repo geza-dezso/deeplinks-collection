@@ -31,14 +31,8 @@ struct LoginTextFieldStyle: TextFieldStyle {
     #else
 
     func _body(configuration: TextField<Self._Label>) -> some View {
+        // fallback to default style, customization for tvOS not working as expected
         configuration
-            .font(primary)
-            .accentColor(.lightGray)
-            .foregroundColor(.lightGray)
-            .background(Color.itemBackground)
-            .disableAutocorrection(true)
-            .keyboardType(.alphabet)
-            .autocapitalization(.none)
     }
 
     #endif
