@@ -125,7 +125,7 @@ struct ContentView: View {
     @ViewBuilder
     private var logoutButton: some View {
         Button(action: {
-            viewModel.onAppear()
+            viewModel.onLogout()
         }, label: {
             Text("Logout")
         })
