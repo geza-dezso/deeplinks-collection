@@ -43,6 +43,8 @@
 		0FCBB3A52BA893D500D80DB7 /* ContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FCBB3A42BA893D500D80DB7 /* ContentViewModel.swift */; };
 		0FD1259F2BC578220056F3AE /* Font+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FD1259E2BC578220056F3AE /* Font+Helpers.swift */; };
 		0FD125A02BC578220056F3AE /* Font+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FD1259E2BC578220056F3AE /* Font+Helpers.swift */; };
+		0FDC2EE92BD2DCE6001529B9 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 0FDC2EE82BD2DCE6001529B9 /* PrivacyInfo.xcprivacy */; };
+		0FDC2EEA2BD2DCE6001529B9 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 0FDC2EE82BD2DCE6001529B9 /* PrivacyInfo.xcprivacy */; };
 		0FEBC5CA2BC040A600EBECC8 /* UIDevice+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FEBC5C62BC040A600EBECC8 /* UIDevice+Helpers.swift */; };
 		0FEBC5CB2BC040A600EBECC8 /* UIDevice+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FEBC5C62BC040A600EBECC8 /* UIDevice+Helpers.swift */; };
 		0FEBC5CC2BC040A600EBECC8 /* View+Modifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FEBC5C72BC040A600EBECC8 /* View+Modifiers.swift */; };
@@ -75,6 +77,7 @@
 		0FCBB3A12BA892E800D80DB7 /* DeeplinkError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeeplinkError.swift; sourceTree = "<group>"; };
 		0FCBB3A42BA893D500D80DB7 /* ContentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewModel.swift; sourceTree = "<group>"; };
 		0FD1259E2BC578220056F3AE /* Font+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Font+Helpers.swift"; sourceTree = "<group>"; };
+		0FDC2EE82BD2DCE6001529B9 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		0FEBC5C62BC040A600EBECC8 /* UIDevice+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIDevice+Helpers.swift"; sourceTree = "<group>"; };
 		0FEBC5C72BC040A600EBECC8 /* View+Modifiers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "View+Modifiers.swift"; sourceTree = "<group>"; };
 		0FEBC5CE2BC3FD3C00EBECC8 /* DeeplinkItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeeplinkItemView.swift; sourceTree = "<group>"; };
@@ -149,6 +152,7 @@
 		0FCBB3982BA8910F00D80DB7 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				0FDC2EE82BD2DCE6001529B9 /* PrivacyInfo.xcprivacy */,
 				0FCBB3992BA8914300D80DB7 /* GoogleService-Info.plist */,
 				0FCBB3862BA88C7400D80DB7 /* Assets.xcassets */,
 				0FCBB3882BA88C7400D80DB7 /* LaunchScreen.storyboard */,
@@ -281,6 +285,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0FDC2EEA2BD2DCE6001529B9 /* PrivacyInfo.xcprivacy in Resources */,
 				0F25789B2BBC2C7A000491D3 /* Assets.xcassets in Resources */,
 				0F25789D2BBC2C7A000491D3 /* GoogleService-Info.plist in Resources */,
 			);
@@ -293,6 +298,7 @@
 				0FCBB3872BA88C7400D80DB7 /* Assets.xcassets in Resources */,
 				0F2578A42BBC3AD0000491D3 /* Info-tvos.plist in Resources */,
 				0FCBB38A2BA88C7400D80DB7 /* Base in Resources */,
+				0FDC2EE92BD2DCE6001529B9 /* PrivacyInfo.xcprivacy in Resources */,
 				0FCBB39A2BA8914300D80DB7 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -386,7 +392,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "tv.accedo.build-ios-deeplinks-collection";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "appletvos appletvsimulator";
@@ -422,7 +428,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "tv.accedo.build-ios-deeplinks-collection";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "appletvos appletvsimulator";
@@ -576,7 +582,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "tv.accedo.build-ios-deeplinks-collection";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -606,7 +612,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "tv.accedo.build-ios-deeplinks-collection";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
