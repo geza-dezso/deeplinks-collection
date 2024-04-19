@@ -19,24 +19,22 @@ private struct UserTokenWithTimestamp: Codable {
 
 struct UserTokenHandler {
 
-    private var localStorage: LocalStorageProtocol
-    private var localStorageUserKey: String = "localStorageUserKey"
-    private var expirationTimeout: TimeInterval
+    var expirationTimeout: TimeInterval = 2 * 24 * 60 * 60 // 2 days
 
-    init(localStorage: LocalStorageProtocol, expirationTimeout: TimeInterval? = nil) {
-        self.localStorage = localStorage
-        self.expirationTimeout = expirationTimeout ?? 2 * 24 * 60 * 60 // 2 days
-    }
+    private let userDefaults: UserDefaults = .standard
+    private let localStorageUserKey: String = "localStorageUserKey"
 
     func store(_ userToken: UserToken) {
-        let tokenToSave = UserTokenWithTimestamp(userToken: userToken, timestamp: Date().timeIntervalSince1970)
-        localStorage.save(value: tokenToSave, forKey: localStorageUserKey)
+        if let data = try? JSONEncoder().encode(UserTokenWithTimestamp(userToken: userToken, timestamp: Date().timeIntervalSince1970)) {
+            userDefaults.set(data, forKey: localStorageUserKey)
+        }
     }
 
     func load() -> UserToken? {
-        if let token = localStorage.load(for: localStorageUserKey, castTo: UserTokenWithTimestamp.self),
-           token.timestamp + expirationTimeout > Date().timeIntervalSince1970 {
-            return token.userToken
+        if let data = userDefaults.data(forKey: localStorageUserKey),
+           let token = try? JSONDecoder().decode(UserTokenWithTimestamp.self, from: data),
+            token.timestamp + expirationTimeout > Date().timeIntervalSince1970 {
+                return token.userToken
         } else {
             delete()
             return nil
@@ -44,6 +42,6 @@ struct UserTokenHandler {
     }
 
     func delete() {
-        localStorage.deleteObject(forKey: localStorageUserKey)
+        userDefaults.removeObject(forKey: localStorageUserKey)
     }
 }

@@ -38,9 +38,9 @@ class ContentViewModel: ObservableObject {
     private var databaseListener: AnyCancellable?
     private var userTokenHandler: UserTokenHandler
 
-    init(database: DatabaseProtocol, localStorage: LocalStorageProtocol) {
+    init(database: DatabaseProtocol) {
         self.database = database
-        self.userTokenHandler = UserTokenHandler(localStorage: localStorage)
+        self.userTokenHandler = UserTokenHandler()
     }
 
     func onAppear() {

@@ -15,7 +15,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
 
         window = UIWindow(windowScene: windowScene)
-        let viewController = HostingViewController(rootView: ContentView(viewModel: ContentViewModel(database: FirebaseDatabase(), localStorage: LocalStorage())))
+        let viewController = HostingViewController(rootView: ContentView(viewModel: ContentViewModel(database: FirebaseDatabase())))
         window?.rootViewController = viewController
         window?.makeKeyAndVisible()
     }
