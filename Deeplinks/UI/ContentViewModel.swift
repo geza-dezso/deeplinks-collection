@@ -24,7 +24,7 @@ class ContentViewModel: ObservableObject {
     @Published var pwd: String = ""
     @Published var state: ContentViewModelState = .initial {
         didSet {
-            if case .error(let error) = state {
+            if case .error(_) = state {
                 shouldPresentErrorAlert = true
             } else {
                 shouldPresentErrorAlert = false
@@ -36,20 +36,35 @@ class ContentViewModel: ObservableObject {
     private var database: DatabaseProtocol
     private var bag: Set<AnyCancellable> = []
     private var databaseListener: AnyCancellable?
+    private var userTokenHandler: UserTokenHandler
 
     init(database: DatabaseProtocol) {
         self.database = database
+        self.userTokenHandler = UserTokenHandler()
     }
 
     func onAppear() {
-        user = ""
-        pwd = ""
-        state = .login
+        if let userToken = userTokenHandler.load() {
+            user = userToken.user
+            pwd = userToken.pwd
+            onLogin()
+        } else {
+            user = ""
+            pwd = ""
+            state = .login
+        }
     }
 
     func onLogin() {
         state = .fetching
         setupListener()
+    }
+
+    func onLogout() {
+        user = ""
+        pwd = ""
+        userTokenHandler.delete()
+        onAppear()
     }
 
     func alertButtonAction(for error: DeeplinkError) -> (() -> Void) {
@@ -80,16 +95,18 @@ class ContentViewModel: ObservableObject {
         databaseListener = database.deeplinkUpdates(for: user, pwd: pwd)
             .receive(on: DispatchQueue.main)
             .sink { [weak self] status in
+                guard let self = self else { return }
 
                 switch status {
                 case .success(let deeplinkGroups):
-                    self?.deeplinkGroups = deeplinkGroups ?? []
+                    self.deeplinkGroups = deeplinkGroups ?? []
+                    self.userTokenHandler.store(UserToken(user: user, pwd: pwd))
                     withAnimation {
-                        self?.state = .ready
+                        self.state = .ready
                     }
 
                 case .error(let error):
-                    self?.state = .error(error)
+                    self.state = .error(error)
 
                 default:
                     break
