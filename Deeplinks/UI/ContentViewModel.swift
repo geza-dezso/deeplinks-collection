@@ -44,38 +44,45 @@ class ContentViewModel: ObservableObject {
     }
 
     func onAppear() {
-        if let userToken = userTokenHandler.load() {
-            user = userToken.user
-            pwd = userToken.pwd
-            onLogin()
+        if let user = userTokenHandler.load() {
+            self.user = user
+            onAuthenticated()
         } else {
-            user = ""
-            pwd = ""
-            state = .login
+            onEnterCredentials()
         }
     }
 
+    func onEnterCredentials() {
+        clearUserData()
+        state = .login
+    }
+
     func onLogin() {
+        state = .fetching
+        login()
+        setupListener()
+    }
+
+    func onAuthenticated() {
         state = .fetching
         setupListener()
     }
 
     func onLogout() {
-        user = ""
-        pwd = ""
+        clearUserData()
         userTokenHandler.delete()
-        onAppear()
+        onEnterCredentials()
     }
 
     func alertButtonAction(for error: DeeplinkError) -> (() -> Void) {
         switch error.code {
         case .invalidCredentials:
             return {
-                self.onAppear()
+                self.onEnterCredentials()
             }
         case .notAvailable:
             return {
-                self.onLogin()
+                self.onAuthenticated()
             }
         }
     }
@@ -89,10 +96,14 @@ class ContentViewModel: ObservableObject {
         }
     }
 
+    private func login() {
+        database.login(user: user, pwd: pwd)
+    }
+
     private func setupListener() {
 
         databaseListener?.cancel()
-        databaseListener = database.deeplinkUpdates(for: user, pwd: pwd)
+        databaseListener = database.updatesPublisher(for: user)
             .receive(on: DispatchQueue.main)
             .sink { [weak self] status in
                 guard let self = self else { return }
@@ -100,7 +111,7 @@ class ContentViewModel: ObservableObject {
                 switch status {
                 case .success(let deeplinkGroups):
                     self.deeplinkGroups = deeplinkGroups ?? []
-                    self.userTokenHandler.store(UserToken(user: user, pwd: pwd))
+                    self.userTokenHandler.store(user)
                     withAnimation {
                         self.state = .ready
                     }
@@ -112,5 +123,10 @@ class ContentViewModel: ObservableObject {
                     break
                 }
             }
+    }
+
+    private func clearUserData() {
+        user = ""
+        pwd = ""
     }
 }

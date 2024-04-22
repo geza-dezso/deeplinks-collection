@@ -7,13 +7,8 @@
 
 import Foundation
 
-struct UserToken: Codable {
+private struct UserToken: Codable {
     let user: String
-    let pwd: String
-}
-
-private struct UserTokenWithTimestamp: Codable {
-    let userToken: UserToken
     let timestamp: TimeInterval
 }
 
@@ -24,17 +19,17 @@ struct UserTokenHandler {
     private let userDefaults: UserDefaults = .standard
     private let localStorageUserKey: String = "localStorageUserKey"
 
-    func store(_ userToken: UserToken) {
-        if let data = try? JSONEncoder().encode(UserTokenWithTimestamp(userToken: userToken, timestamp: Date().timeIntervalSince1970)) {
+    func store(_ user: String) {
+        if let data = try? JSONEncoder().encode(UserToken(user: user, timestamp: Date().timeIntervalSince1970)) {
             userDefaults.set(data, forKey: localStorageUserKey)
         }
     }
 
-    func load() -> UserToken? {
+    func load() -> String? {
         if let data = userDefaults.data(forKey: localStorageUserKey),
-           let token = try? JSONDecoder().decode(UserTokenWithTimestamp.self, from: data),
+           let token = try? JSONDecoder().decode(UserToken.self, from: data),
             token.timestamp + expirationTimeout > Date().timeIntervalSince1970 {
-                return token.userToken
+                return token.user
         } else {
             delete()
             return nil
