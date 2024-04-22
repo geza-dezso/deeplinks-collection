@@ -10,25 +10,32 @@ import FirebaseDatabase
 import Combine
 
 
-enum DatabaseQueryStatus {
+enum DatabaseQueryStatus: Equatable {
+    case none
     case fetching
     case success([DeeplinkGroup]?)
     case error(DeeplinkError)
 }
 
 
+enum PwdCheckOptions {
+    case none
+    case enabled(pwd: String)
+}
+
 protocol DatabaseProtocol {
 
-    func deeplinkUpdates(for user: String, pwd: String) -> AnyPublisher<DatabaseQueryStatus, Never>
+    func login(user: String, pwd: String)
+    func updatesPublisher(for user: String) -> AnyPublisher<DatabaseQueryStatus, Never>
 }
 
 
 class FirebaseDatabase: DatabaseProtocol {
 
-    @Published public var status: DatabaseQueryStatus = .fetching
+    @Published public var status: DatabaseQueryStatus = .none
 
     private var user: String = ""
-    private var pwd: String = ""
+    private var pwdCheckOptions: PwdCheckOptions = .none
 
     private var collection: [DeeplinkContent]? {
         didSet {
@@ -38,11 +45,18 @@ class FirebaseDatabase: DatabaseProtocol {
 
     private var databaseListener: DatabaseHandle?
 
-    public func deeplinkUpdates(for user: String, pwd: String) -> AnyPublisher<DatabaseQueryStatus, Never> {
+    public func login(user: String, pwd: String) {
 
         self.user = user
-        self.pwd = pwd
-        self.status = .fetching
+        pwdCheckOptions = .enabled(pwd: pwd)
+
+        fetchIfNeeded()
+    }
+
+    public func updatesPublisher(for user: String) -> AnyPublisher<DatabaseQueryStatus, Never> {
+
+        self.user = user
+        pwdCheckOptions = .none
 
         fetchIfNeeded()
 
@@ -53,10 +67,13 @@ class FirebaseDatabase: DatabaseProtocol {
     // MARK: - Private
 
     private func fetchIfNeeded() {
+        guard status != .fetching else { return }
         guard collection == nil else {
             updateStatus()
             return
         }
+
+        status = .fetching
 
         Task {
             do {
@@ -89,8 +106,17 @@ class FirebaseDatabase: DatabaseProtocol {
 
     private func updateStatus() {
         if let collection = collection {
-            if let deeplinks = collection.first(where: { $0.user == user && $0.pwd == pwd })?.groups {
-                status = .success(deeplinks)
+            if let deeplinks = collection.first(where: { $0.user == user }) {
+                if case .enabled(let pwd) = pwdCheckOptions {
+                    if deeplinks.pwd == pwd {
+                        pwdCheckOptions = .none
+                        status = .success(deeplinks.groups)
+                    } else {
+                        status = .error(DeeplinkError(code: .invalidCredentials))
+                    }
+                } else {
+                    status = .success(deeplinks.groups)
+                }
             } else {
                 status = .error(DeeplinkError(code: .invalidCredentials))
             }
