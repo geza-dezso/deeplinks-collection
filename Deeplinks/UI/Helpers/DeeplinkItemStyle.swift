@@ -34,7 +34,7 @@ struct DeeplinkItemStyle: ButtonStyle {
         var body: some View {
             configuration.label
                 .padding(padding)
-                .background(isFocused ? Color(red: 0.15, green: 0.15, blue: 0.15) : Color.black)
+                .background(isFocused ? Color.darkGray : Color.black)
                 .cornerRadius(8)
                 .scaleEffect(isFocused ? 1.01 : 1.0)
                 .animation(.easeInOut, value: isFocused)
