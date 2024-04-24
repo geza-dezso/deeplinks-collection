@@ -55,6 +55,7 @@
 		0FEBC5D02BC3FD3C00EBECC8 /* DeeplinkItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FEBC5CE2BC3FD3C00EBECC8 /* DeeplinkItemView.swift */; };
 		0FEBC5D52BC41E1B00EBECC8 /* DeeplinkItemStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FEBC5D42BC41E1B00EBECC8 /* DeeplinkItemStyle.swift */; };
 		0FEBC5D62BC41E1B00EBECC8 /* DeeplinkItemStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FEBC5D42BC41E1B00EBECC8 /* DeeplinkItemStyle.swift */; };
+		0FFEBCE12BD8207C0039EB26 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 0FFEBCE02BD8207C0039EB26 /* README.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -85,6 +86,9 @@
 		0FEBC5C72BC040A600EBECC8 /* View+Modifiers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "View+Modifiers.swift"; sourceTree = "<group>"; };
 		0FEBC5CE2BC3FD3C00EBECC8 /* DeeplinkItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeeplinkItemView.swift; sourceTree = "<group>"; };
 		0FEBC5D42BC41E1B00EBECC8 /* DeeplinkItemStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeeplinkItemStyle.swift; sourceTree = "<group>"; };
+		0FFEBCE02BD8207C0039EB26 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
+		0FFEBCE32BD929D50039EB26 /* Deeplinks_iPhone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Deeplinks_iPhone.png; sourceTree = "<group>"; };
+		0FFEBCE42BD929E00039EB26 /* Deeplinks_TV.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Deeplinks_TV.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,6 +131,8 @@
 		0FCBB37C2BA88C7300D80DB7 /* Deeplinks */ = {
 			isa = PBXGroup;
 			children = (
+				0FFEBCE22BD929BE0039EB26 /* Screenshots */,
+				0FFEBCE02BD8207C0039EB26 /* README.md */,
 				0FCBB38B2BA88C7400D80DB7 /* Info.plist */,
 				0F2578A32BBC3AD0000491D3 /* Info-tvos.plist */,
 				0FCBB39C2BA8924200D80DB7 /* Database */,
@@ -202,6 +208,15 @@
 				0F581DCE2BC82EC10038DDD9 /* ActionButtonStyle.swift */,
 			);
 			path = Helpers;
+			sourceTree = "<group>";
+		};
+		0FFEBCE22BD929BE0039EB26 /* Screenshots */ = {
+			isa = PBXGroup;
+			children = (
+				0FFEBCE32BD929D50039EB26 /* Deeplinks_iPhone.png */,
+				0FFEBCE42BD929E00039EB26 /* Deeplinks_TV.png */,
+			);
+			path = Screenshots;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -299,6 +314,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0FFEBCE12BD8207C0039EB26 /* README.md in Resources */,
 				0FCBB3872BA88C7400D80DB7 /* Assets.xcassets in Resources */,
 				0F2578A42BBC3AD0000491D3 /* Info-tvos.plist in Resources */,
 				0FCBB38A2BA88C7400D80DB7 /* Base in Resources */,
