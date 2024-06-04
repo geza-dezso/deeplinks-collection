@@ -14,12 +14,6 @@ struct ContentView: View {
 
     private let padding: CGFloat = isTV ? 16 : isIPad ? 12 : 8
 
-    init(viewModel: ContentViewModel) {
-        self.viewModel = viewModel
-        // only for iOS 15
-        UITableView.appearance().backgroundColor = .clear
-    }
-
     var body: some View {
 
         ZStack {
@@ -40,22 +34,44 @@ struct ContentView: View {
 
                         if let groups = viewModel.deeplinkGroups {
 
-                            List {
-                                ForEach(groups, id: \.self) { group in
-                                    Section(header: sectionHeaderView(group.title)) {
-                                        if let deeplinks = group.deeplinks {
-                                            ForEach(deeplinks, id: \.self) { deeplink in
-                                                DeeplinkItemView(title: deeplink.title, link: deeplink.url)
-                                                    .padding(.vertical, 1)
+                            ScrollView(.vertical, showsIndicators: false) {
+                                VStack(spacing: 2) {
+                                    ForEach(groups, id: \.self) { group in
+                                        Section(header: sectionHeaderView(group.title)) {
+                                            if let deeplinks = group.deeplinks {
+                                                ForEach(deeplinks, id: \.self) { deeplink in
+                                                    DeeplinkItemView(title: deeplink.title, link: deeplink.url)
+                                                }
                                             }
                                         }
                                     }
-                                    .listRowInsets(EdgeInsets())
                                 }
-                                .padding(.horizontal, 16)
                             }
-                            .contentBackground(.hidden)
+                            .padding(.horizontal, 16)
                             .listStyle(GroupedListStyle())
+                            .mask(
+                                VStack(spacing: 0) {
+                                    LinearGradient(
+                                        stops: [
+                                            Gradient.Stop(color: .black.opacity(0), location: 0.00),
+                                            Gradient.Stop(color: .black, location: 1.00)
+                                        ],
+                                        startPoint: UnitPoint(x: 0.5, y: 0),
+                                        endPoint: UnitPoint(x: 0.5, y: 1)
+                                    )
+                                    .frame(height: 24, alignment: .top)
+                                    Color.black.frame(maxHeight: .infinity)
+                                    LinearGradient(
+                                        stops: [
+                                            Gradient.Stop(color: .black, location: 0.00),
+                                            Gradient.Stop(color: .black.opacity(0), location: 1.00)
+                                        ],
+                                        startPoint: UnitPoint(x: 0.5, y: 0),
+                                        endPoint: UnitPoint(x: 0.5, y: 1)
+                                    )
+                                    .frame(height: 24, alignment: .top)
+                                }
+                            )
                         }
 
                         Spacer()
@@ -119,7 +135,7 @@ struct ContentView: View {
             }
         }
         .padding(.horizontal, padding)
-        .padding(.vertical, 16)
+        .padding(.top, 16)
     }
 
     @ViewBuilder
@@ -134,10 +150,13 @@ struct ContentView: View {
 
     @ViewBuilder
     private func sectionHeaderView(_ title: String) -> some View {
-        Text(title)
-            .font(primary)
-            .foregroundColor(.secondaryText)
-            .padding(EdgeInsets(top: 0, leading: padding, bottom: 16, trailing: padding))
+        HStack {
+            Text(title)
+                .font(primary)
+                .foregroundColor(.secondaryText)
+                .padding(EdgeInsets(top: 16, leading: padding, bottom: 16, trailing: padding))
+            Spacer()
+        }
     }
 
     private func enableLogout() {
