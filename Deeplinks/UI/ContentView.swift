@@ -46,32 +46,13 @@ struct ContentView: View {
                                         }
                                     }
                                 }
+                                .padding(.bottom, 16)
                             }
                             .padding(.horizontal, 16)
                             .listStyle(GroupedListStyle())
-                            .mask(
-                                VStack(spacing: 0) {
-                                    LinearGradient(
-                                        stops: [
-                                            Gradient.Stop(color: .black.opacity(0), location: 0.00),
-                                            Gradient.Stop(color: .black, location: 1.00)
-                                        ],
-                                        startPoint: UnitPoint(x: 0.5, y: 0),
-                                        endPoint: UnitPoint(x: 0.5, y: 1)
-                                    )
-                                    .frame(height: 24, alignment: .top)
-                                    Color.black.frame(maxHeight: .infinity)
-                                    LinearGradient(
-                                        stops: [
-                                            Gradient.Stop(color: .black, location: 0.00),
-                                            Gradient.Stop(color: .black.opacity(0), location: 1.00)
-                                        ],
-                                        startPoint: UnitPoint(x: 0.5, y: 0),
-                                        endPoint: UnitPoint(x: 0.5, y: 1)
-                                    )
-                                    .frame(height: 24, alignment: .top)
-                                }
-                            )
+                            .mask {
+                                scrollViewGradient
+                            }
                         }
 
                         Spacer()
@@ -156,6 +137,29 @@ struct ContentView: View {
                 .foregroundColor(.secondaryText)
                 .padding(EdgeInsets(top: 16, leading: padding, bottom: 16, trailing: padding))
             Spacer()
+        }
+    }
+
+    @ViewBuilder
+    private var scrollViewGradient: some View {
+
+        VStack(spacing: 0) {
+            LinearGradient(
+                gradient: Gradient(colors: [.black.opacity(0), .black]),
+                startPoint: UnitPoint(x: 0, y: 0),
+                endPoint: UnitPoint(x: 0, y: 1)
+            )
+            .frame(height: 24)
+
+            Color.black
+                .frame(maxHeight: .infinity)
+
+            LinearGradient(
+                gradient: Gradient(colors: [.black, .black.opacity(0)]),
+                startPoint: UnitPoint(x: 0, y: 0),
+                endPoint: UnitPoint(x: 0, y: 1)
+            )
+            .frame(height: 24)
         }
     }
 
