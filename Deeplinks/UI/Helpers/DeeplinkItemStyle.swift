@@ -9,15 +9,16 @@ import SwiftUI
 
 struct DeeplinkItemStyle: ButtonStyle {
 
+    let padding: CGFloat
+
     func makeBody(configuration: Configuration) -> some View {
-        return DeeplinkItem(configuration: configuration)
+        return DeeplinkItem(configuration: configuration, padding: padding)
     }
 
     struct DeeplinkItem: View {
 
-        private let padding: CGFloat = isTV ? 16 : isIPad ? 12 : 8
-
         let configuration: ButtonStyle.Configuration
+        let padding: CGFloat
 
         #if os(iOS)
 

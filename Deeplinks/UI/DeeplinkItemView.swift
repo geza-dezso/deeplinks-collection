@@ -11,6 +11,7 @@ struct DeeplinkItemView: View {
 
     let title: String
     let link: String
+    let padding: CGFloat
 
     var body: some View {
         HStack {
@@ -26,7 +27,7 @@ struct DeeplinkItemView: View {
                     }
                 }
             }
-            .buttonStyle(DeeplinkItemStyle())
+            .buttonStyle(DeeplinkItemStyle(padding: padding))
         }
         .listRowBackground(Color.clear)
     }

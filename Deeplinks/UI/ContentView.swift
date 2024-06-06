@@ -12,7 +12,8 @@ struct ContentView: View {
     @ObservedObject var viewModel: ContentViewModel
     @State private var isLogoutDisabled: Bool = true
 
-    private let padding: CGFloat = isTV ? 16 : isIPad ? 12 : 8
+    private let titlePadding: CGFloat = isTV ? 16 : isIPad ? 12 : 8
+    private let scrollViewGradientHeight: CGFloat = isTV ? 48 : isIPad ? 32 : 24
 
     var body: some View {
 
@@ -35,23 +36,24 @@ struct ContentView: View {
                         if let groups = viewModel.deeplinkGroups {
 
                             ScrollView(.vertical, showsIndicators: false) {
-                                VStack(spacing: 2) {
+                                VStack(spacing: isTV ? 8 : isIPad ? 4 : 2) {
                                     ForEach(groups, id: \.self) { group in
                                         Section(header: sectionHeaderView(group.title)) {
                                             if let deeplinks = group.deeplinks {
                                                 ForEach(deeplinks, id: \.self) { deeplink in
-                                                    DeeplinkItemView(title: deeplink.title, link: deeplink.url)
+                                                    DeeplinkItemView(title: deeplink.title, link: deeplink.url, padding: titlePadding)
                                                 }
                                             }
                                         }
                                     }
+                                    .padding(.horizontal, 16)
                                 }
-                                .padding(.bottom, 16)
+                                .padding(.top, 8)
+                                .padding(.bottom, scrollViewGradientHeight - 8)
                             }
-                            .padding(.horizontal, 16)
                             .listStyle(GroupedListStyle())
                             .mask {
-                                scrollViewGradient
+                                TopBottomGradientView(gradientHeight: scrollViewGradientHeight)
                             }
                         }
 
@@ -62,6 +64,7 @@ struct ContentView: View {
                                 .padding(.vertical, 16)
                         }
                     }
+                    .padding(.horizontal, isIPad ? 24 : 0)
                     .onAppear {
                         enableLogout()
                     }
@@ -115,7 +118,7 @@ struct ContentView: View {
                     .disabled(isLogoutDisabled)
             }
         }
-        .padding(.horizontal, padding)
+        .padding(.horizontal, titlePadding)
         .padding(.top, 16)
     }
 
@@ -135,31 +138,8 @@ struct ContentView: View {
             Text(title)
                 .font(primary)
                 .foregroundColor(.secondaryText)
-                .padding(EdgeInsets(top: 16, leading: padding, bottom: 16, trailing: padding))
+                .padding(EdgeInsets(top: isTV ? 24 : 16, leading: titlePadding, bottom: isTV ? 24 : 16, trailing: titlePadding))
             Spacer()
-        }
-    }
-
-    @ViewBuilder
-    private var scrollViewGradient: some View {
-
-        VStack(spacing: 0) {
-            LinearGradient(
-                gradient: Gradient(colors: [.black.opacity(0), .black]),
-                startPoint: UnitPoint(x: 0, y: 0),
-                endPoint: UnitPoint(x: 0, y: 1)
-            )
-            .frame(height: 24)
-
-            Color.black
-                .frame(maxHeight: .infinity)
-
-            LinearGradient(
-                gradient: Gradient(colors: [.black, .black.opacity(0)]),
-                startPoint: UnitPoint(x: 0, y: 0),
-                endPoint: UnitPoint(x: 0, y: 1)
-            )
-            .frame(height: 24)
         }
     }
 

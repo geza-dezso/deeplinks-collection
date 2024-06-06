@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0F0527E42C10441F0095B5B2 /* TopBottomGradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F0527E32C10441F0095B5B2 /* TopBottomGradientView.swift */; };
+		0F0527E52C10441F0095B5B2 /* TopBottomGradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F0527E32C10441F0095B5B2 /* TopBottomGradientView.swift */; };
 		0F25788F2BBC2C7A000491D3 /* ContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FCBB3A42BA893D500D80DB7 /* ContentViewModel.swift */; };
 		0F2578902BBC2C7A000491D3 /* FirebaseDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FCBB39D2BA892A700D80DB7 /* FirebaseDatabase.swift */; };
 		0F2578912BBC2C7A000491D3 /* HostingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FCBB3812BA88C7300D80DB7 /* HostingViewController.swift */; };
@@ -57,6 +59,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0F0527E32C10441F0095B5B2 /* TopBottomGradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopBottomGradientView.swift; sourceTree = "<group>"; };
 		0F2578A12BBC2C7A000491D3 /* Deeplinks Collection tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Deeplinks Collection tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0F2578A32BBC3AD0000491D3 /* Info-tvos.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Info-tvos.plist"; sourceTree = "<group>"; };
 		0F581DC52BC803460038DDD9 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
@@ -151,6 +154,7 @@
 				0F581DD12BC846520038DDD9 /* WelcomeView.swift */,
 				0F581DC52BC803460038DDD9 /* LoginView.swift */,
 				0FEBC5CE2BC3FD3C00EBECC8 /* DeeplinkItemView.swift */,
+				0F0527E32C10441F0095B5B2 /* TopBottomGradientView.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -344,6 +348,7 @@
 				0F2578952BBC2C7A000491D3 /* SceneDelegate.swift in Sources */,
 				0F2578972BBC2C7A000491D3 /* DeeplinkContent.swift in Sources */,
 				0FEBC5CB2BC040A600EBECC8 /* UIDevice+Helpers.swift in Sources */,
+				0F0527E52C10441F0095B5B2 /* TopBottomGradientView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -369,6 +374,7 @@
 				0FCBB3802BA88C7300D80DB7 /* SceneDelegate.swift in Sources */,
 				0FCBB3A22BA892E800D80DB7 /* DeeplinkContent.swift in Sources */,
 				0FEBC5CA2BC040A600EBECC8 /* UIDevice+Helpers.swift in Sources */,
+				0F0527E42C10441F0095B5B2 /* TopBottomGradientView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
