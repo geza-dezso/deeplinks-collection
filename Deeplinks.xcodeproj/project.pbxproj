@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0F0527E42C10441F0095B5B2 /* TopBottomGradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F0527E32C10441F0095B5B2 /* TopBottomGradientView.swift */; };
+		0F0527E52C10441F0095B5B2 /* TopBottomGradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F0527E32C10441F0095B5B2 /* TopBottomGradientView.swift */; };
 		0F25788F2BBC2C7A000491D3 /* ContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FCBB3A42BA893D500D80DB7 /* ContentViewModel.swift */; };
 		0F2578902BBC2C7A000491D3 /* FirebaseDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FCBB39D2BA892A700D80DB7 /* FirebaseDatabase.swift */; };
 		0F2578912BBC2C7A000491D3 /* HostingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FCBB3812BA88C7300D80DB7 /* HostingViewController.swift */; };
@@ -49,8 +51,6 @@
 		0FDC2EEA2BD2DCE6001529B9 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 0FDC2EE82BD2DCE6001529B9 /* PrivacyInfo.xcprivacy */; };
 		0FEBC5CA2BC040A600EBECC8 /* UIDevice+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FEBC5C62BC040A600EBECC8 /* UIDevice+Helpers.swift */; };
 		0FEBC5CB2BC040A600EBECC8 /* UIDevice+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FEBC5C62BC040A600EBECC8 /* UIDevice+Helpers.swift */; };
-		0FEBC5CC2BC040A600EBECC8 /* View+Modifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FEBC5C72BC040A600EBECC8 /* View+Modifiers.swift */; };
-		0FEBC5CD2BC040A600EBECC8 /* View+Modifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FEBC5C72BC040A600EBECC8 /* View+Modifiers.swift */; };
 		0FEBC5CF2BC3FD3C00EBECC8 /* DeeplinkItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FEBC5CE2BC3FD3C00EBECC8 /* DeeplinkItemView.swift */; };
 		0FEBC5D02BC3FD3C00EBECC8 /* DeeplinkItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FEBC5CE2BC3FD3C00EBECC8 /* DeeplinkItemView.swift */; };
 		0FEBC5D52BC41E1B00EBECC8 /* DeeplinkItemStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FEBC5D42BC41E1B00EBECC8 /* DeeplinkItemStyle.swift */; };
@@ -59,6 +59,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0F0527E32C10441F0095B5B2 /* TopBottomGradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopBottomGradientView.swift; sourceTree = "<group>"; };
 		0F2578A12BBC2C7A000491D3 /* Deeplinks Collection tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Deeplinks Collection tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0F2578A32BBC3AD0000491D3 /* Info-tvos.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Info-tvos.plist"; sourceTree = "<group>"; };
 		0F581DC52BC803460038DDD9 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
@@ -83,7 +84,6 @@
 		0FD1259E2BC578220056F3AE /* Font+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Font+Helpers.swift"; sourceTree = "<group>"; };
 		0FDC2EE82BD2DCE6001529B9 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		0FEBC5C62BC040A600EBECC8 /* UIDevice+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIDevice+Helpers.swift"; sourceTree = "<group>"; };
-		0FEBC5C72BC040A600EBECC8 /* View+Modifiers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "View+Modifiers.swift"; sourceTree = "<group>"; };
 		0FEBC5CE2BC3FD3C00EBECC8 /* DeeplinkItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeeplinkItemView.swift; sourceTree = "<group>"; };
 		0FEBC5D42BC41E1B00EBECC8 /* DeeplinkItemStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeeplinkItemStyle.swift; sourceTree = "<group>"; };
 		0FFEBCE02BD8207C0039EB26 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
@@ -154,6 +154,7 @@
 				0F581DD12BC846520038DDD9 /* WelcomeView.swift */,
 				0F581DC52BC803460038DDD9 /* LoginView.swift */,
 				0FEBC5CE2BC3FD3C00EBECC8 /* DeeplinkItemView.swift */,
+				0F0527E32C10441F0095B5B2 /* TopBottomGradientView.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -200,7 +201,6 @@
 			isa = PBXGroup;
 			children = (
 				0F581DD72BCF01140038DDD9 /* Color+Helpers.swift */,
-				0FEBC5C72BC040A600EBECC8 /* View+Modifiers.swift */,
 				0FEBC5C62BC040A600EBECC8 /* UIDevice+Helpers.swift */,
 				0FD1259E2BC578220056F3AE /* Font+Helpers.swift */,
 				0FEBC5D42BC41E1B00EBECC8 /* DeeplinkItemStyle.swift */,
@@ -334,7 +334,6 @@
 				0FEBC5D02BC3FD3C00EBECC8 /* DeeplinkItemView.swift in Sources */,
 				0F2578902BBC2C7A000491D3 /* FirebaseDatabase.swift in Sources */,
 				0F581DC72BC803460038DDD9 /* LoginView.swift in Sources */,
-				0FEBC5CD2BC040A600EBECC8 /* View+Modifiers.swift in Sources */,
 				0FD125A02BC578220056F3AE /* Font+Helpers.swift in Sources */,
 				0F2578912BBC2C7A000491D3 /* HostingViewController.swift in Sources */,
 				0F581DD92BCF01140038DDD9 /* Color+Helpers.swift in Sources */,
@@ -349,6 +348,7 @@
 				0F2578952BBC2C7A000491D3 /* SceneDelegate.swift in Sources */,
 				0F2578972BBC2C7A000491D3 /* DeeplinkContent.swift in Sources */,
 				0FEBC5CB2BC040A600EBECC8 /* UIDevice+Helpers.swift in Sources */,
+				0F0527E52C10441F0095B5B2 /* TopBottomGradientView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -360,7 +360,6 @@
 				0FEBC5CF2BC3FD3C00EBECC8 /* DeeplinkItemView.swift in Sources */,
 				0FCBB39E2BA892A700D80DB7 /* FirebaseDatabase.swift in Sources */,
 				0F581DC62BC803460038DDD9 /* LoginView.swift in Sources */,
-				0FEBC5CC2BC040A600EBECC8 /* View+Modifiers.swift in Sources */,
 				0FD1259F2BC578220056F3AE /* Font+Helpers.swift in Sources */,
 				0FCBB3822BA88C7300D80DB7 /* HostingViewController.swift in Sources */,
 				0F581DD82BCF01140038DDD9 /* Color+Helpers.swift in Sources */,
@@ -375,6 +374,7 @@
 				0FCBB3802BA88C7300D80DB7 /* SceneDelegate.swift in Sources */,
 				0FCBB3A22BA892E800D80DB7 /* DeeplinkContent.swift in Sources */,
 				0FEBC5CA2BC040A600EBECC8 /* UIDevice+Helpers.swift in Sources */,
+				0F0527E42C10441F0095B5B2 /* TopBottomGradientView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

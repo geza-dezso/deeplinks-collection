@@ -12,13 +12,8 @@ struct ContentView: View {
     @ObservedObject var viewModel: ContentViewModel
     @State private var isLogoutDisabled: Bool = true
 
-    private let padding: CGFloat = isTV ? 16 : isIPad ? 12 : 8
-
-    init(viewModel: ContentViewModel) {
-        self.viewModel = viewModel
-        // only for iOS 15
-        UITableView.appearance().backgroundColor = .clear
-    }
+    private let titlePadding: CGFloat = isTV ? 16 : isIPad ? 12 : 8
+    private let scrollViewGradientHeight: CGFloat = isTV ? 48 : isIPad ? 32 : 24
 
     var body: some View {
 
@@ -40,22 +35,26 @@ struct ContentView: View {
 
                         if let groups = viewModel.deeplinkGroups {
 
-                            List {
-                                ForEach(groups, id: \.self) { group in
-                                    Section(header: sectionHeaderView(group.title)) {
-                                        if let deeplinks = group.deeplinks {
-                                            ForEach(deeplinks, id: \.self) { deeplink in
-                                                DeeplinkItemView(title: deeplink.title, link: deeplink.url)
-                                                    .padding(.vertical, 1)
+                            ScrollView(.vertical, showsIndicators: false) {
+                                VStack(spacing: isTV ? 8 : isIPad ? 4 : 2) {
+                                    ForEach(groups, id: \.self) { group in
+                                        Section(header: sectionHeaderView(group.title)) {
+                                            if let deeplinks = group.deeplinks {
+                                                ForEach(deeplinks, id: \.self) { deeplink in
+                                                    DeeplinkItemView(title: deeplink.title, link: deeplink.url, padding: titlePadding)
+                                                }
                                             }
                                         }
                                     }
-                                    .listRowInsets(EdgeInsets())
+                                    .padding(.horizontal, 16)
                                 }
-                                .padding(.horizontal, 16)
+                                .padding(.top, 8)
+                                .padding(.bottom, scrollViewGradientHeight - 8)
                             }
-                            .contentBackground(.hidden)
                             .listStyle(GroupedListStyle())
+                            .mask {
+                                TopBottomGradientView(gradientHeight: scrollViewGradientHeight)
+                            }
                         }
 
                         Spacer()
@@ -65,6 +64,7 @@ struct ContentView: View {
                                 .padding(.vertical, 16)
                         }
                     }
+                    .padding(.horizontal, isIPad ? 24 : 0)
                     .onAppear {
                         enableLogout()
                     }
@@ -118,8 +118,8 @@ struct ContentView: View {
                     .disabled(isLogoutDisabled)
             }
         }
-        .padding(.horizontal, padding)
-        .padding(.vertical, 16)
+        .padding(.horizontal, titlePadding)
+        .padding(.top, 16)
     }
 
     @ViewBuilder
@@ -134,10 +134,13 @@ struct ContentView: View {
 
     @ViewBuilder
     private func sectionHeaderView(_ title: String) -> some View {
-        Text(title)
-            .font(primary)
-            .foregroundColor(.secondaryText)
-            .padding(EdgeInsets(top: 0, leading: padding, bottom: 16, trailing: padding))
+        HStack {
+            Text(title)
+                .font(primary)
+                .foregroundColor(.secondaryText)
+                .padding(EdgeInsets(top: isTV ? 24 : 16, leading: titlePadding, bottom: isTV ? 24 : 16, trailing: titlePadding))
+            Spacer()
+        }
     }
 
     private func enableLogout() {
