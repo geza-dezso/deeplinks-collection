@@ -11,6 +11,7 @@ struct ContentView: View {
     @Environment(\.openURL) private var openURL
     @ObservedObject var viewModel: ContentViewModel
     @State private var isLogoutDisabled: Bool = true
+    @State private var isPresentingLogoutConfirmation: Bool = false
 
     private let titlePadding: CGFloat = isTV ? 16 : isIPad ? 12 : 8
     private let scrollViewGradientHeight: CGFloat = isTV ? 48 : isIPad ? 32 : 24
@@ -58,13 +59,9 @@ struct ContentView: View {
                         }
 
                         Spacer()
-
-                        if !isTV {
-                            logoutButton
-                                .padding(.vertical, 16)
-                        }
                     }
                     .padding(.horizontal, isIPad ? 24 : 0)
+                    .padding(.vertical, isTV ? 0 : 8)
                     .onAppear {
                         enableLogout()
                     }
@@ -90,7 +87,6 @@ struct ContentView: View {
 
     @ViewBuilder
     private var titleView: some View {
-        let iconSize: CGFloat = isTV ? 64 : 32
 
         HStack {
             Text("Deeplinks Collection")
@@ -100,6 +96,23 @@ struct ContentView: View {
 
             Spacer()
 
+            if isTV {
+                tvUserSection
+            } else {
+                mobileUserSection
+            }
+        }
+        .padding(.horizontal, titlePadding)
+        .padding(.top, 16)
+    }
+
+    @ViewBuilder
+    private var mobileUserSection: some View {
+        let iconSize: CGFloat = 32
+
+        Button(action: {
+            isPresentingLogoutConfirmation = true
+        }, label: {
             HStack(spacing: 0) {
                 Image(uiImage: UIImage(named: "UserIcon")!)
                     .resizable()
@@ -112,24 +125,43 @@ struct ContentView: View {
             }
             .background(Color.itemBackground)
             .cornerRadius(iconSize/2)
-
-            if isTV {
-                logoutButton
-                    .disabled(isLogoutDisabled)
+            .overlay(
+                RoundedRectangle(cornerRadius: iconSize/2)
+                    .stroke(Color.lightGray, lineWidth: 1)
+            )
+        })
+        .confirmationDialog("Logout",
+            isPresented: $isPresentingLogoutConfirmation) {
+            Button("Logout") {
+                viewModel.onLogout()
             }
         }
-        .padding(.horizontal, titlePadding)
-        .padding(.top, 16)
     }
 
     @ViewBuilder
-    private var logoutButton: some View {
+    private var tvUserSection: some View {
+        let iconSize: CGFloat = 64
+
+        HStack(spacing: 0) {
+            Image(uiImage: UIImage(named: "UserIcon")!)
+                .resizable()
+                .frame(width: iconSize, height: iconSize)
+
+            Text(viewModel.user)
+                .font(primary)
+                .foregroundColor(.primaryText)
+                .padding(.horizontal, isTV ? 24 : 12)
+        }
+        .background(Color.itemBackground)
+        .cornerRadius(iconSize/2)
+
         Button(action: {
             viewModel.onLogout()
         }, label: {
             Text("Logout")
         })
         .buttonStyle(ActionButtonStyle())
+        .disabled(isLogoutDisabled)
     }
 
     @ViewBuilder
@@ -138,7 +170,7 @@ struct ContentView: View {
             Text(title)
                 .font(primary)
                 .foregroundColor(.secondaryText)
-                .padding(EdgeInsets(top: isTV ? 24 : 16, leading: titlePadding, bottom: isTV ? 24 : 16, trailing: titlePadding))
+                .padding(EdgeInsets(top: isTV ? 20 : 12, leading: titlePadding, bottom: isTV ? 20 : 12, trailing: titlePadding))
             Spacer()
         }
     }
