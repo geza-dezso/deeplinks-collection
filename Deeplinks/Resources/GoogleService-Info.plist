@@ -3,17 +3,17 @@
 <plist version="1.0">
 <dict>
 	<key>API_KEY</key>
-	<string>AIzaSyBeJUx8Kxe5JLIKHXazCDNnAWeRqwyxVSI</string>
+	<string>AIzaSyDd6sHBItvr0OJRzc7YTDdd6RzdUrRGmLo</string>
 	<key>GCM_SENDER_ID</key>
-	<string>215326050692</string>
+	<string>574848695018</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>tv.accedo.build-ios-deeplinks-collection</string>
 	<key>PROJECT_ID</key>
-	<string>deeplinks-collection-dac8b</string>
+	<string>deeplinks-collection-e558b</string>
 	<key>STORAGE_BUCKET</key>
-	<string>deeplinks-collection-dac8b.appspot.com</string>
+	<string>deeplinks-collection-e558b.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -25,8 +25,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:215326050692:ios:a6d11418bc20275b37b5d1</string>
+	<string>1:574848695018:ios:2eb5f4dfac26b303867593</string>
 	<key>DATABASE_URL</key>
-	<string>https://deeplinks-collection-dac8b-default-rtdb.europe-west1.firebasedatabase.app</string>
+	<string>https://deeplinks-collection-e558b-default-rtdb.europe-west1.firebasedatabase.app</string>
 </dict>
 </plist>
