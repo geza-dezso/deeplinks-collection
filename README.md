@@ -18,7 +18,8 @@ Google Firebase (https://github.com/firebase/firebase-ios-sdk).
 
 ### Testflight
 
-The application is available in TestFlight.
+The application is available in [TestFlight](https://testflight.apple.com/join/rjd5jhol).
+
 
 ## Contributions
 
