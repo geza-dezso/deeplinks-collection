@@ -14,7 +14,7 @@ private struct UserToken: Codable {
 
 struct UserTokenHandler {
 
-    var expirationTimeout: TimeInterval = 2 * 24 * 60 * 60 // 2 days
+    var expirationTimeout: TimeInterval = 14 * 24 * 60 * 60 // 14 days
 
     private let userDefaults: UserDefaults = .standard
     private let localStorageUserKey: String = "localStorageUserKey"
