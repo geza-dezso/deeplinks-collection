@@ -14,8 +14,6 @@ private struct UserToken: Codable {
 
 struct UserTokenHandler {
 
-    var expirationTimeout: TimeInterval = 2 * 24 * 60 * 60 // 2 days
-
     private let userDefaults: UserDefaults = .standard
     private let localStorageUserKey: String = "localStorageUserKey"
 
@@ -27,8 +25,7 @@ struct UserTokenHandler {
 
     func load() -> String? {
         if let data = userDefaults.data(forKey: localStorageUserKey),
-           let token = try? JSONDecoder().decode(UserToken.self, from: data),
-            token.timestamp + expirationTimeout > Date().timeIntervalSince1970 {
+           let token = try? JSONDecoder().decode(UserToken.self, from: data) {
                 return token.user
         } else {
             delete()
