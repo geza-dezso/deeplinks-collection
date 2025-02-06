@@ -76,7 +76,7 @@ class ContentViewModel: ObservableObject {
 
     func alertButtonAction(for error: DeeplinkError) -> (() -> Void) {
         switch error.code {
-        case .invalidCredentials:
+        case .invalidLoginCredentials:
             return {
                 self.onEnterCredentials()
             }
@@ -89,7 +89,7 @@ class ContentViewModel: ObservableObject {
 
     func alertButtonText(for error: DeeplinkError) -> String {
         switch error.code {
-        case .invalidCredentials:
+        case .invalidLoginCredentials:
             return "Ok"
         case .notAvailable:
             return "Retry"

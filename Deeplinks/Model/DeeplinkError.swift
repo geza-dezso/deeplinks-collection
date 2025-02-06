@@ -9,7 +9,8 @@ import Foundation
 
 enum DeeplinkErrorCode: Int, Codable, CaseIterable {
 
-    case invalidCredentials
+    case invalidLoginCredentials
+    case invalidUserToken
     case notAvailable
 } 
 
@@ -22,10 +23,12 @@ extension DeeplinkError {
 
     var message: String {
         switch code {
+            case .invalidLoginCredentials:
+                return "Login failed! Please check your credentials and try again."
+            case .invalidUserToken:
+                return ""
             case .notAvailable:
                 return "Data not available!"
-            case .invalidCredentials:
-                return "Login failed! Please check your credentials and try again."
         }
     }
 }
