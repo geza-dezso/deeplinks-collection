@@ -59,7 +59,6 @@ class ContentViewModel: ObservableObject {
 
     func onLogin() {
         state = .fetching
-        login()
         setupListener()
     }
 
@@ -80,7 +79,9 @@ class ContentViewModel: ObservableObject {
             return {
                 self.onEnterCredentials()
             }
-        case .notAvailable:
+        case .invalidUserToken:
+            return {}
+        case .dataNotAvailable:
             return {
                 self.onAuthenticated()
             }
@@ -91,19 +92,17 @@ class ContentViewModel: ObservableObject {
         switch error.code {
         case .invalidLoginCredentials:
             return "Ok"
-        case .notAvailable:
+        case .invalidUserToken:
+            return ""
+        case .dataNotAvailable:
             return "Retry"
         }
-    }
-
-    private func login() {
-        database.login(user: user, pwd: pwd)
     }
 
     private func setupListener() {
 
         databaseListener?.cancel()
-        databaseListener = database.updatesPublisher(for: user)
+        databaseListener = database.updatesPublisher(user: user, pwd: pwd)
             .receive(on: DispatchQueue.main)
             .sink { [weak self] status in
                 guard let self = self else { return }
@@ -117,12 +116,20 @@ class ContentViewModel: ObservableObject {
                     }
 
                 case .error(let error):
-                    self.state = .error(error)
+                    self.handleError(error)
 
                 default:
                     break
                 }
             }
+    }
+
+    private func handleError(_ error: DeeplinkError) {
+        if case .invalidUserToken = error.code {
+            onEnterCredentials()
+            return
+        }
+        self.state = .error(error)
     }
 
     private func clearUserData() {

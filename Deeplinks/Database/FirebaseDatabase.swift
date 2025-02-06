@@ -25,8 +25,7 @@ enum PwdCheckOptions {
 
 protocol DatabaseProtocol {
 
-    func login(user: String, pwd: String)
-    func updatesPublisher(for user: String) -> AnyPublisher<DatabaseQueryStatus, Never>
+    func updatesPublisher(user: String, pwd: String) -> AnyPublisher<DatabaseQueryStatus, Never>
 }
 
 
@@ -45,18 +44,14 @@ class FirebaseDatabase: DatabaseProtocol {
 
     private var databaseListener: DatabaseHandle?
 
-    public func login(user: String, pwd: String) {
+    public func updatesPublisher(user: String, pwd: String = "") -> AnyPublisher<DatabaseQueryStatus, Never> {
 
         self.user = user
-        pwdCheckOptions = .enabled(pwd: pwd)
-
-        fetchIfNeeded()
-    }
-
-    public func updatesPublisher(for user: String) -> AnyPublisher<DatabaseQueryStatus, Never> {
-
-        self.user = user
-        pwdCheckOptions = .none
+        if !pwd.isEmpty {
+            pwdCheckOptions = .enabled(pwd: pwd)
+        } else {
+            pwdCheckOptions = .none
+        }
 
         fetchIfNeeded()
 
@@ -118,10 +113,14 @@ class FirebaseDatabase: DatabaseProtocol {
                     status = .success(deeplinks.groups)
                 }
             } else {
-                status = .error(DeeplinkError(code: .invalidLoginCredentials))
+                if case .enabled = pwdCheckOptions {
+                    status = .error(DeeplinkError(code: .invalidLoginCredentials))
+                } else {
+                    status = .error(DeeplinkError(code: .invalidUserToken))
+                }
             }
         } else {
-            status = .error(DeeplinkError(code: .notAvailable))
+            status = .error(DeeplinkError(code: .dataNotAvailable))
         }
     }
 }
