@@ -9,8 +9,9 @@ import Foundation
 
 enum DeeplinkErrorCode: Int, Codable, CaseIterable {
 
-    case invalidCredentials
-    case notAvailable
+    case invalidLoginCredentials
+    case invalidUserToken
+    case dataNotAvailable
 } 
 
 struct DeeplinkError: Error, Equatable {
@@ -20,12 +21,14 @@ struct DeeplinkError: Error, Equatable {
 
 extension DeeplinkError {
 
-    var message: String {
+    var message: String? {
         switch code {
-            case .notAvailable:
-                return "Data not available!"
-            case .invalidCredentials:
-                return "Login failed! Please check your credentials and try again."
+        case .invalidLoginCredentials:
+            return "Login failed! Please check your credentials and try again."
+        case .invalidUserToken:
+            return nil
+        case .dataNotAvailable:
+            return "Data not available!"
         }
     }
 }
