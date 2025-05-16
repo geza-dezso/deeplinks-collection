@@ -6,7 +6,9 @@
 //
 
 import SwiftUI
+#if os(iOS)
 import SwipeActions
+#endif
 
 struct DeeplinkItemView: View {
 
@@ -27,6 +29,7 @@ struct DeeplinkItemView: View {
                         Spacer()
                     }
                 }
+                #if os(iOS)
                 .addSwipeAction(menu: .slided) {
                     Leading {
                         Button {
@@ -55,6 +58,7 @@ struct DeeplinkItemView: View {
                         .padding(.leading, padding)
                     }
                 }
+                #endif
             }
             .buttonStyle(DeeplinkItemStyle(padding: padding))
         }
