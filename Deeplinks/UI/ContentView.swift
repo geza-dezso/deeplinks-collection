@@ -47,12 +47,11 @@ struct ContentView: View {
                                             }
                                         }
                                     }
-                                    .padding(.horizontal, 16)
                                 }
-                                .padding(.top, 8)
-                                .padding(.bottom, scrollViewGradientHeight - 8)
                             }
-                            .listStyle(GroupedListStyle())
+                            .padding(.top, 8)
+                            .padding(.horizontal, 16)
+                            .padding(.bottom, scrollViewGradientHeight - 8)
                             .mask {
                                 TopBottomGradientView(gradientHeight: scrollViewGradientHeight)
                             }

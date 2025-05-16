@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwipeActions
 
 struct DeeplinkItemView: View {
 
@@ -24,6 +25,34 @@ struct DeeplinkItemView: View {
                     HStack {
                         subtitle(link)
                         Spacer()
+                    }
+                }
+                .addSwipeAction(menu: .slided) {
+                    Leading {
+                        Button {
+                            // edit action
+                            print("Edit")
+                        } label: {
+                            Image(systemName: "square.and.pencil")
+                                .foregroundColor(.white)
+                                .frame(width: 60, alignment: .center)
+                                .frame(maxHeight: .infinity)
+                                .background(Color.itemBackground)
+                        }
+                        .padding(.trailing, padding)
+                    }
+                    Trailing {
+                        Button {
+                            // delete action
+                            print("Delete")
+                        } label: {
+                            Image(systemName: "trash")
+                                .foregroundColor(.white)
+                                .frame(width: 60, alignment: .center)
+                                .frame(maxHeight: .infinity)
+                                .background(Color.itemBackground)
+                        }
+                        .padding(.leading, padding)
                     }
                 }
             }

@@ -47,6 +47,7 @@
 		0FCBB3A52BA893D500D80DB7 /* ContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FCBB3A42BA893D500D80DB7 /* ContentViewModel.swift */; };
 		0FD1259F2BC578220056F3AE /* Font+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FD1259E2BC578220056F3AE /* Font+Helpers.swift */; };
 		0FD125A02BC578220056F3AE /* Font+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FD1259E2BC578220056F3AE /* Font+Helpers.swift */; };
+		0FDB192C2DD5E6CB00224D1F /* SwipeActions in Frameworks */ = {isa = PBXBuildFile; productRef = 0FDB192B2DD5E6CB00224D1F /* SwipeActions */; };
 		0FDC2EE92BD2DCE6001529B9 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 0FDC2EE82BD2DCE6001529B9 /* PrivacyInfo.xcprivacy */; };
 		0FDC2EEA2BD2DCE6001529B9 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 0FDC2EE82BD2DCE6001529B9 /* PrivacyInfo.xcprivacy */; };
 		0FEBC5CA2BC040A600EBECC8 /* UIDevice+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FEBC5C62BC040A600EBECC8 /* UIDevice+Helpers.swift */; };
@@ -105,6 +106,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0FCBB3972BA8907100D80DB7 /* FirebaseDatabase in Frameworks */,
+				0FDB192C2DD5E6CB00224D1F /* SwipeActions in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -115,6 +117,7 @@
 			isa = PBXGroup;
 			children = (
 				0FCBB37C2BA88C7300D80DB7 /* Deeplinks */,
+				0FDB192A2DD5E6CB00224D1F /* Frameworks */,
 				0FCBB37B2BA88C7300D80DB7 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -197,6 +200,13 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		0FDB192A2DD5E6CB00224D1F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		0FEBC5C42BC035D600EBECC8 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
@@ -257,6 +267,7 @@
 			name = "Deeplinks Collection iOS";
 			packageProductDependencies = (
 				0FCBB3962BA8907100D80DB7 /* FirebaseDatabase */,
+				0FDB192B2DD5E6CB00224D1F /* SwipeActions */,
 			);
 			productName = "build-ios-deeplinks-collection";
 			productReference = 0FCBB37A2BA88C7300D80DB7 /* Deeplinks Collection iOS.app */;
@@ -288,6 +299,7 @@
 			mainGroup = 0FCBB3712BA88C7300D80DB7;
 			packageReferences = (
 				0FCBB3952BA8907100D80DB7 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				0FDB19292DD5E57800224D1F /* XCRemoteSwiftPackageReference "SwipeActions" */,
 			);
 			productRefGroup = 0FCBB37B2BA88C7300D80DB7 /* Products */;
 			projectDirPath = "";
@@ -692,6 +704,14 @@
 				minimumVersion = 10.22.1;
 			};
 		};
+		0FDB19292DD5E57800224D1F /* XCRemoteSwiftPackageReference "SwipeActions" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/c-villain/SwipeActions";
+			requirement = {
+				kind = exactVersion;
+				version = 0.4.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -704,6 +724,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 0FCBB3952BA8907100D80DB7 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseDatabase;
+		};
+		0FDB192B2DD5E6CB00224D1F /* SwipeActions */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0FDB19292DD5E57800224D1F /* XCRemoteSwiftPackageReference "SwipeActions" */;
+			productName = SwipeActions;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
