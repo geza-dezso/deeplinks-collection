@@ -29,6 +29,8 @@ struct DeeplinkItemView: View {
                         Spacer()
                     }
                 }
+                .padding(padding)
+
                 #if os(iOS)
                 .addSwipeAction(menu: .slided) {
                     Leading {
@@ -40,7 +42,7 @@ struct DeeplinkItemView: View {
                                 .foregroundColor(.white)
                                 .frame(width: 60, alignment: .center)
                                 .frame(maxHeight: .infinity)
-                                .background(Color.itemBackground)
+                                .background(Color.itemButtonBackground)
                         }
                         .padding(.trailing, padding)
                     }
@@ -53,14 +55,14 @@ struct DeeplinkItemView: View {
                                 .foregroundColor(.white)
                                 .frame(width: 60, alignment: .center)
                                 .frame(maxHeight: .infinity)
-                                .background(Color.itemBackground)
+                                .background(Color.itemButtonBackground)
                         }
                         .padding(.leading, padding)
                     }
                 }
                 #endif
             }
-            .buttonStyle(DeeplinkItemStyle(padding: padding))
+            .buttonStyle(DeeplinkItemStyle())
         }
         .listRowBackground(Color.clear)
     }

@@ -47,10 +47,11 @@ struct ContentView: View {
                                             }
                                         }
                                     }
+                                    .padding(.horizontal, isTV ? 16 : 0)
                                 }
                             }
                             .padding(.top, 8)
-                            .padding(.horizontal, 16)
+                            .padding(.horizontal, isTV ? 0 : 16)
                             .padding(.bottom, scrollViewGradientHeight - 8)
                             .mask {
                                 TopBottomGradientView(gradientHeight: scrollViewGradientHeight)

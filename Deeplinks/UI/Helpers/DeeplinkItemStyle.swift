@@ -9,7 +9,7 @@ import SwiftUI
 
 struct DeeplinkItemStyle: ButtonStyle {
 
-    let padding: CGFloat
+    var padding: CGFloat = 0
 
     func makeBody(configuration: Configuration) -> some View {
         return DeeplinkItem(configuration: configuration, padding: padding)
