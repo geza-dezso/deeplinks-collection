@@ -16,6 +16,8 @@ struct DeeplinkItemView: View {
     let link: String
     let padding: CGFloat
 
+    @Binding var state: SwipeState
+
     var body: some View {
         HStack {
             Link(destination: URL(string: link)!) {
@@ -32,7 +34,7 @@ struct DeeplinkItemView: View {
                 .padding(padding)
 
                 #if os(iOS)
-                .addSwipeAction(menu: .slided) {
+                .addSwipeAction(menu: .slided, state: $state) {
                     Leading {
                         Button {
                             // edit action

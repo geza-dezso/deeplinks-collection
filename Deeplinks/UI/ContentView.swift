@@ -6,6 +6,9 @@
 //
 
 import SwiftUI
+#if os(iOS)
+import SwipeActions
+#endif
 
 struct ContentView: View {
     @Environment(\.openURL) private var openURL
@@ -15,6 +18,8 @@ struct ContentView: View {
 
     private let titlePadding: CGFloat = isTV ? 16 : isIPad ? 12 : 8
     private let scrollViewGradientHeight: CGFloat = isTV ? 48 : isIPad ? 32 : 24
+
+    @State var state: SwipeState = .untouched
 
     var body: some View {
 
@@ -42,7 +47,7 @@ struct ContentView: View {
                                         Section(header: sectionHeaderView(group.title)) {
                                             if let deeplinks = group.deeplinks {
                                                 ForEach(deeplinks, id: \.self) { deeplink in
-                                                    DeeplinkItemView(title: deeplink.title, link: deeplink.url, padding: titlePadding)
+                                                    DeeplinkItemView(title: deeplink.title, link: deeplink.url, padding: titlePadding, state: $state)
                                                 }
                                             }
                                         }
