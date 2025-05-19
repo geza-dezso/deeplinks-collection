@@ -11,12 +11,12 @@ import SwipeActions
 #endif
 
 struct DeeplinkItemView: View {
+    @ObservedObject var viewModel: ContentViewModel
+    @Binding var swipeState: SwipeState
 
     let title: String
     let link: String
     let padding: CGFloat
-
-    @Binding var state: SwipeState
 
     var body: some View {
         HStack {
@@ -34,11 +34,10 @@ struct DeeplinkItemView: View {
                 .padding(padding)
 
                 #if os(iOS)
-                .addSwipeAction(menu: .slided, state: $state) {
+                .addSwipeAction(menu: .slided, state: $swipeState) {
                     Leading {
                         Button {
-                            // edit action
-                            print("Edit")
+                            viewModel.overlayState = .error(DeeplinkError(.comingSoon))
                         } label: {
                             Image(systemName: "square.and.pencil")
                                 .foregroundColor(.white)
@@ -50,8 +49,7 @@ struct DeeplinkItemView: View {
                     }
                     Trailing {
                         Button {
-                            // delete action
-                            print("Delete")
+                            viewModel.overlayState = .error(DeeplinkError(.comingSoon))
                         } label: {
                             Image(systemName: "trash")
                                 .foregroundColor(.white)

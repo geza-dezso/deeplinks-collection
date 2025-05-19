@@ -117,7 +117,6 @@
 			isa = PBXGroup;
 			children = (
 				0FCBB37C2BA88C7300D80DB7 /* Deeplinks */,
-				0FDB192A2DD5E6CB00224D1F /* Frameworks */,
 				0FCBB37B2BA88C7300D80DB7 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -198,13 +197,6 @@
 				0FCBB3A12BA892E800D80DB7 /* DeeplinkError.swift */,
 			);
 			path = Model;
-			sourceTree = "<group>";
-		};
-		0FDB192A2DD5E6CB00224D1F /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		0FEBC5C42BC035D600EBECC8 /* Helpers */ = {
@@ -700,8 +692,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 10.22.1;
+				kind = exactVersion;
+				version = 10.27.0;
 			};
 		};
 		0FDB19292DD5E57800224D1F /* XCRemoteSwiftPackageReference "SwipeActions" */ = {

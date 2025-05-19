@@ -12,11 +12,16 @@ enum DeeplinkErrorCode: Int, Codable, CaseIterable {
     case invalidLoginCredentials
     case invalidUserToken
     case dataNotAvailable
+    case comingSoon
 } 
 
 struct DeeplinkError: Error, Equatable {
 
-    let code: DeeplinkErrorCode
+    var code: DeeplinkErrorCode
+
+    init(_ code: DeeplinkErrorCode) {
+        self.code = code
+    }
 }
 
 extension DeeplinkError {
@@ -29,6 +34,21 @@ extension DeeplinkError {
             return nil
         case .dataNotAvailable:
             return "Data not available!"
+        case .comingSoon:
+            return "Coming soon!"
+        }
+    }
+
+    var buttonText: String {
+        switch code {
+        case .invalidLoginCredentials:
+            return "Ok"
+        case .invalidUserToken:
+            return ""
+        case .dataNotAvailable:
+            return "Retry"
+        case .comingSoon:
+            return "Ok"
         }
     }
 }

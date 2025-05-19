@@ -107,20 +107,20 @@ class FirebaseDatabase: DatabaseProtocol {
                         pwdCheckOptions = .none
                         status = .success(deeplinks.groups)
                     } else {
-                        status = .error(DeeplinkError(code: .invalidLoginCredentials))
+                        status = .error(DeeplinkError(.invalidLoginCredentials))
                     }
                 } else {
                     status = .success(deeplinks.groups)
                 }
             } else {
                 if case .enabled = pwdCheckOptions {
-                    status = .error(DeeplinkError(code: .invalidLoginCredentials))
+                    status = .error(DeeplinkError(.invalidLoginCredentials))
                 } else {
-                    status = .error(DeeplinkError(code: .invalidUserToken))
+                    status = .error(DeeplinkError(.invalidUserToken))
                 }
             }
         } else {
-            status = .error(DeeplinkError(code: .dataNotAvailable))
+            status = .error(DeeplinkError(.dataNotAvailable))
         }
     }
 }
