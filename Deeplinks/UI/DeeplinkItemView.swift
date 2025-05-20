@@ -11,8 +11,10 @@ import SwipeActions
 #endif
 
 struct DeeplinkItemView: View {
+    #if os(iOS)
     @ObservedObject var viewModel: ContentViewModel
     @Binding var swipeState: SwipeState
+    #endif
 
     let title: String
     let link: String
@@ -34,33 +36,16 @@ struct DeeplinkItemView: View {
                 .padding(padding)
 
                 #if os(iOS)
-                .addSwipeAction(menu: .slided, state: $swipeState) {
-                    Leading {
-                        Button {
-                            viewModel.overlayState = .error(DeeplinkError(.comingSoon))
-                        } label: {
-                            Image(systemName: "square.and.pencil")
-                                .foregroundColor(.white)
-                                .frame(width: 60, alignment: .center)
-                                .frame(maxHeight: .infinity)
-                                .background(Color.itemButtonBackground)
-                        }
-                        .padding(.trailing, padding)
-                    }
-                    Trailing {
-                        Button {
-                            viewModel.overlayState = .error(DeeplinkError(.comingSoon))
-                        } label: {
-                            Image(systemName: "trash")
-                                .foregroundColor(.white)
-                                .frame(width: 60, alignment: .center)
-                                .frame(maxHeight: .infinity)
-                                .background(Color.itemButtonBackground)
-                        }
-                        .padding(.leading, padding)
-                    }
-                }
+                .itemSwipeActions(
+                    state: $swipeState,
+                    horizontalPadding: padding,
+                    editActionHandler: {
+                        viewModel.overlayState = .error(DeeplinkError(.comingSoon))
+                    }, deleteActionHandler: {
+                        viewModel.overlayState = .error(DeeplinkError(.comingSoon))
+                    })
                 #endif
+
             }
             .buttonStyle(DeeplinkItemStyle())
         }
