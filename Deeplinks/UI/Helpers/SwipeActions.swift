@@ -1,5 +1,5 @@
 //
-//  SwipeAction+Modifier.swift
+//  SwipeActions.swift
 //  Deeplinks
 //
 //  Created by Geza Dezso on 2025. 05. 20..
