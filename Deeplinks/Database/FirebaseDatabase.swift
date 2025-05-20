@@ -1,6 +1,6 @@
 //
 //  FirebaseDatabase.swift
-//  Deeplinks Collection
+//  Deeplinks
 //
 //  Created by Geza Dezso on 14/03/2024.
 //

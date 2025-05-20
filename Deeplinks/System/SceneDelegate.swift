@@ -1,6 +1,6 @@
 //
 //  SceneDelegate.swift
-//  Deeplinks Collection
+//  Deeplinks
 //
 //  Created by Geza Dezso on 18/03/2024.
 //
