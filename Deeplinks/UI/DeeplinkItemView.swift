@@ -11,56 +11,40 @@ import SwipeActions
 #endif
 
 struct DeeplinkItemView: View {
+    #if os(iOS)
     @ObservedObject var viewModel: ContentViewModel
     @Binding var swipeState: SwipeState
+    #endif
 
-    let title: String
-    let link: String
+    let deeplink: Deeplink
     let padding: CGFloat
 
     var body: some View {
         HStack {
-            Link(destination: URL(string: link)!) {
+            Link(destination: URL(string: deeplink.url)!) {
                 VStack(spacing: 4) {
                     HStack {
-                        title(title)
+                        title(deeplink.title)
                         Spacer()
                     }
                     HStack {
-                        subtitle(link)
+                        subtitle(deeplink.url)
                         Spacer()
                     }
                 }
                 .padding(padding)
 
                 #if os(iOS)
-                .addSwipeAction(menu: .slided, state: $swipeState) {
-                    Leading {
-                        Button {
-                            viewModel.overlayState = .error(DeeplinkError(.comingSoon))
-                        } label: {
-                            Image(systemName: "square.and.pencil")
-                                .foregroundColor(.white)
-                                .frame(width: 60, alignment: .center)
-                                .frame(maxHeight: .infinity)
-                                .background(Color.itemButtonBackground)
-                        }
-                        .padding(.trailing, padding)
-                    }
-                    Trailing {
-                        Button {
-                            viewModel.overlayState = .error(DeeplinkError(.comingSoon))
-                        } label: {
-                            Image(systemName: "trash")
-                                .foregroundColor(.white)
-                                .frame(width: 60, alignment: .center)
-                                .frame(maxHeight: .infinity)
-                                .background(Color.itemButtonBackground)
-                        }
-                        .padding(.leading, padding)
-                    }
-                }
+                .itemSwipeActions(
+                    state: $swipeState,
+                    horizontalPadding: padding,
+                    editAction: {
+                        viewModel.overlayState = .error(DeeplinkError(.comingSoon))
+                    }, deleteAction: {
+                        viewModel.overlayState = .error(DeeplinkError(.comingSoon))
+                    })
                 #endif
+
             }
             .buttonStyle(DeeplinkItemStyle())
         }

@@ -1,6 +1,6 @@
 //
 //  HostingViewController.swift
-//  Deeplinks Collection
+//  Deeplinks
 //
 //  Created by Geza Dezso on 18/03/2024.
 //
@@ -20,4 +20,3 @@ class HostingViewController<Content>: UIHostingController<Content> where Content
     }
     #endif
 }
-

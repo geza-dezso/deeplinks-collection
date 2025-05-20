@@ -20,6 +20,7 @@
 		0F2578992BBC2C7A000491D3 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 0F25788C2BBC2C7A000491D3 /* FirebaseDatabase */; };
 		0F25789B2BBC2C7A000491D3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0FCBB3862BA88C7400D80DB7 /* Assets.xcassets */; };
 		0F2578A42BBC3AD0000491D3 /* Info-tvos.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0F2578A32BBC3AD0000491D3 /* Info-tvos.plist */; };
+		0F54A2A32DDC5761007987BC /* SwipeActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F54A2A12DDC575A007987BC /* SwipeActions.swift */; };
 		0F581DC62BC803460038DDD9 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F581DC52BC803460038DDD9 /* LoginView.swift */; };
 		0F581DC72BC803460038DDD9 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F581DC52BC803460038DDD9 /* LoginView.swift */; };
 		0F581DC92BC81CAD0038DDD9 /* LoginTextFieldStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F581DC82BC81CAD0038DDD9 /* LoginTextFieldStyle.swift */; };
@@ -63,6 +64,7 @@
 		0F0527E32C10441F0095B5B2 /* TopBottomGradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopBottomGradientView.swift; sourceTree = "<group>"; };
 		0F2578A12BBC2C7A000491D3 /* Deeplinks Collection tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Deeplinks Collection tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0F2578A32BBC3AD0000491D3 /* Info-tvos.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Info-tvos.plist"; sourceTree = "<group>"; };
+		0F54A2A12DDC575A007987BC /* SwipeActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeActions.swift; sourceTree = "<group>"; };
 		0F581DC52BC803460038DDD9 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		0F581DC82BC81CAD0038DDD9 /* LoginTextFieldStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginTextFieldStyle.swift; sourceTree = "<group>"; };
 		0F581DCE2BC82EC10038DDD9 /* ActionButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionButtonStyle.swift; sourceTree = "<group>"; };
@@ -202,6 +204,7 @@
 		0FEBC5C42BC035D600EBECC8 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				0F54A2A12DDC575A007987BC /* SwipeActions.swift */,
 				0F581DD72BCF01140038DDD9 /* Color+Helpers.swift */,
 				0FEBC5C62BC040A600EBECC8 /* UIDevice+Helpers.swift */,
 				0FD1259E2BC578220056F3AE /* Font+Helpers.swift */,
@@ -231,6 +234,7 @@
 				0F25788E2BBC2C7A000491D3 /* Sources */,
 				0F2578982BBC2C7A000491D3 /* Frameworks */,
 				0F25789A2BBC2C7A000491D3 /* Resources */,
+				0F6062EC2DDC824900B5C502 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -251,6 +255,7 @@
 				0FCBB3762BA88C7300D80DB7 /* Sources */,
 				0FCBB3772BA88C7300D80DB7 /* Frameworks */,
 				0FCBB3782BA88C7300D80DB7 /* Resources */,
+				0F6062EB2DDC7F7D00B5C502 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -329,6 +334,47 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		0F6062EB2DDC7F7D00B5C502 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [[ \"$(uname -m)\" == arm64 ]]; then\n    export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\n\nif which swiftlint > /dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		0F6062EC2DDC824900B5C502 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [[ \"$(uname -m)\" == arm64 ]]; then\n    export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\n\nif which swiftlint > /dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		0F25788E2BBC2C7A000491D3 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -377,6 +423,7 @@
 				0F581DD22BC846520038DDD9 /* WelcomeView.swift in Sources */,
 				0FCBB3802BA88C7300D80DB7 /* SceneDelegate.swift in Sources */,
 				0FCBB3A22BA892E800D80DB7 /* DeeplinkContent.swift in Sources */,
+				0F54A2A32DDC5761007987BC /* SwipeActions.swift in Sources */,
 				0FEBC5CA2BC040A600EBECC8 /* UIDevice+Helpers.swift in Sources */,
 				0F0527E42C10441F0095B5B2 /* TopBottomGradientView.swift in Sources */,
 			);
@@ -405,6 +452,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = W244RLEDMB;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Deeplinks/Info-tvos.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = Deeplinks;
@@ -441,6 +489,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = W244RLEDMB;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Deeplinks/Info-tvos.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = Deeplinks;
@@ -595,6 +644,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = W244RLEDMB;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Deeplinks/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Deeplinks;
@@ -625,6 +675,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = W244RLEDMB;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Deeplinks/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Deeplinks;

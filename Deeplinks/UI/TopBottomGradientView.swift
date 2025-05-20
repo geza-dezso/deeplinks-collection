@@ -9,7 +9,7 @@ import SwiftUI
 
 struct TopBottomGradientView: View {
     let gradientHeight: CGFloat
-    
+
     var body: some View {
 
         VStack(spacing: 0) {

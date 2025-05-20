@@ -1,6 +1,6 @@
 //
 //  DeeplinkError.swift
-//  Deeplinks Collection
+//  Deeplinks
 //
 //  Created by Geza Dezso on 14/03/2024.
 //
@@ -13,7 +13,7 @@ enum DeeplinkErrorCode: Int, Codable, CaseIterable {
     case invalidUserToken
     case dataNotAvailable
     case comingSoon
-} 
+}
 
 struct DeeplinkError: Error, Equatable {
 

@@ -1,6 +1,6 @@
 //
 //  ContentView.swift
-//  Deeplinks Collection
+//  Deeplinks
 //
 //  Created by Geza Dezso on 18/03/2024.
 //
@@ -19,7 +19,9 @@ struct ContentView: View {
     private let titlePadding: CGFloat = isTV ? 16 : isIPad ? 12 : 8
     private let scrollViewGradientHeight: CGFloat = isTV ? 48 : isIPad ? 32 : 24
 
+    #if os(iOS)
     @State var swipeState: SwipeState = .untouched
+    #endif
 
     var body: some View {
 
@@ -44,13 +46,7 @@ struct ContentView: View {
                             ScrollView(.vertical, showsIndicators: false) {
                                 VStack(spacing: isTV ? 8 : isIPad ? 4 : 2) {
                                     ForEach(groups, id: \.self) { group in
-                                        Section(header: sectionHeaderView(group.title)) {
-                                            if let deeplinks = group.deeplinks {
-                                                ForEach(deeplinks, id: \.self) { deeplink in
-                                                    DeeplinkItemView(viewModel: viewModel, swipeState: $swipeState, title: deeplink.title, link: deeplink.url, padding: titlePadding)
-                                                }
-                                            }
-                                        }
+                                        groupContent(for: group)
                                     }
                                     .padding(.horizontal, isTV ? 16 : 0)
                                 }
@@ -82,7 +78,9 @@ struct ContentView: View {
                 Button(error.buttonText, role: .cancel) {
                     viewModel.overlayState = nil
                     viewModel.alertButtonAction(for: error)()
+                    #if os(iOS)
                     swipeState = .swiped(UUID())
+                    #endif
                 }
             }
         } message: {
@@ -101,11 +99,7 @@ struct ContentView: View {
 
             Spacer()
 
-            if isTV {
-                tvUserSection
-            } else {
-                mobileUserSection
-            }
+            userSection
         }
         .padding(.horizontal, titlePadding)
         .padding(.top, 16)
@@ -144,7 +138,91 @@ struct ContentView: View {
     }
 
     @ViewBuilder
-    private var tvUserSection: some View {
+    private func sectionHeaderView(_ title: String) -> some View {
+        HStack {
+            Text(title)
+                .font(primary)
+                .foregroundColor(.secondaryText)
+                .padding(EdgeInsets(
+                    top: isTV ? 20 : 12, leading: titlePadding, bottom: isTV ? 20 : 12, trailing: titlePadding
+                ))
+            Spacer()
+        }
+    }
+
+    private func enableLogout() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            isLogoutDisabled = false
+        }
+    }
+
+    private var error: DeeplinkError? {
+        if case let .error(error) = viewModel.overlayState {
+            return error
+        }
+        return nil
+    }
+}
+
+#if os(iOS)
+
+extension ContentView {
+
+    @ViewBuilder
+    private var userSection: some View {
+        let iconSize: CGFloat = 32
+
+        Button(action: {
+            isPresentingLogoutConfirmation = true
+        }, label: {
+            HStack(spacing: 0) {
+                Image(uiImage: UIImage(named: "UserIcon")!)
+                    .resizable()
+                    .frame(width: iconSize, height: iconSize)
+
+                Text(viewModel.user)
+                    .font(primary)
+                    .foregroundColor(.primaryText)
+                    .padding(.horizontal, isTV ? 24 : 12)
+            }
+            .background(Color.itemBackground)
+            .cornerRadius(iconSize/2)
+            .overlay(
+                RoundedRectangle(cornerRadius: iconSize/2)
+                    .stroke(Color.lightGray, lineWidth: 1)
+            )
+        })
+        .confirmationDialog("Logout",
+            isPresented: $isPresentingLogoutConfirmation) {
+            Button("Logout") {
+                viewModel.onLogout()
+            }
+        }
+    }
+
+    @ViewBuilder
+    private func groupContent(for group: DeeplinkGroup) -> some View {
+        Section(header: sectionHeaderView(group.title)) {
+            if let deeplinks = group.deeplinks {
+                ForEach(deeplinks, id: \.self) { deeplink in
+                    DeeplinkItemView(
+                        viewModel: viewModel,
+                        swipeState: $swipeState,
+                        deeplink: deeplink,
+                        padding: titlePadding
+                    )
+                }
+            }
+        }
+    }
+}
+
+#else
+
+extension ContentView {
+
+    @ViewBuilder
+    private var userSection: some View {
         let iconSize: CGFloat = 64
 
         HStack(spacing: 0) {
@@ -170,26 +248,15 @@ struct ContentView: View {
     }
 
     @ViewBuilder
-    private func sectionHeaderView(_ title: String) -> some View {
-        HStack {
-            Text(title)
-                .font(primary)
-                .foregroundColor(.secondaryText)
-                .padding(EdgeInsets(top: isTV ? 20 : 12, leading: titlePadding, bottom: isTV ? 20 : 12, trailing: titlePadding))
-            Spacer()
+    private func groupContent(for group: DeeplinkGroup) -> some View {
+        Section(header: sectionHeaderView(group.title)) {
+            if let deeplinks = group.deeplinks {
+                ForEach(deeplinks, id: \.self) { deeplink in
+                    DeeplinkItemView(deeplink: deeplink, padding: titlePadding)
+                }
+            }
         }
-    }
-
-    private func enableLogout() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            isLogoutDisabled = false
-        }
-    }
-
-    private var error: DeeplinkError? {
-        if case let .error(error) = viewModel.overlayState {
-            return error
-        }
-        return nil
     }
 }
+
+#endif
