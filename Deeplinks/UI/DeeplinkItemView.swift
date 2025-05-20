@@ -6,8 +6,13 @@
 //
 
 import SwiftUI
+#if os(iOS)
+import SwipeActions
+#endif
 
 struct DeeplinkItemView: View {
+    @ObservedObject var viewModel: ContentViewModel
+    @Binding var swipeState: SwipeState
 
     let title: String
     let link: String
@@ -26,8 +31,38 @@ struct DeeplinkItemView: View {
                         Spacer()
                     }
                 }
+                .padding(padding)
+
+                #if os(iOS)
+                .addSwipeAction(menu: .slided, state: $swipeState) {
+                    Leading {
+                        Button {
+                            viewModel.overlayState = .error(DeeplinkError(.comingSoon))
+                        } label: {
+                            Image(systemName: "square.and.pencil")
+                                .foregroundColor(.white)
+                                .frame(width: 60, alignment: .center)
+                                .frame(maxHeight: .infinity)
+                                .background(Color.itemButtonBackground)
+                        }
+                        .padding(.trailing, padding)
+                    }
+                    Trailing {
+                        Button {
+                            viewModel.overlayState = .error(DeeplinkError(.comingSoon))
+                        } label: {
+                            Image(systemName: "trash")
+                                .foregroundColor(.white)
+                                .frame(width: 60, alignment: .center)
+                                .frame(maxHeight: .infinity)
+                                .background(Color.itemButtonBackground)
+                        }
+                        .padding(.leading, padding)
+                    }
+                }
+                #endif
             }
-            .buttonStyle(DeeplinkItemStyle(padding: padding))
+            .buttonStyle(DeeplinkItemStyle())
         }
         .listRowBackground(Color.clear)
     }

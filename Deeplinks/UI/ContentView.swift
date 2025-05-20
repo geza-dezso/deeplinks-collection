@@ -6,6 +6,9 @@
 //
 
 import SwiftUI
+#if os(iOS)
+import SwipeActions
+#endif
 
 struct ContentView: View {
     @Environment(\.openURL) private var openURL
@@ -15,6 +18,8 @@ struct ContentView: View {
 
     private let titlePadding: CGFloat = isTV ? 16 : isIPad ? 12 : 8
     private let scrollViewGradientHeight: CGFloat = isTV ? 48 : isIPad ? 32 : 24
+
+    @State var swipeState: SwipeState = .untouched
 
     var body: some View {
 
@@ -42,17 +47,17 @@ struct ContentView: View {
                                         Section(header: sectionHeaderView(group.title)) {
                                             if let deeplinks = group.deeplinks {
                                                 ForEach(deeplinks, id: \.self) { deeplink in
-                                                    DeeplinkItemView(title: deeplink.title, link: deeplink.url, padding: titlePadding)
+                                                    DeeplinkItemView(viewModel: viewModel, swipeState: $swipeState, title: deeplink.title, link: deeplink.url, padding: titlePadding)
                                                 }
                                             }
                                         }
                                     }
-                                    .padding(.horizontal, 16)
+                                    .padding(.horizontal, isTV ? 16 : 0)
                                 }
-                                .padding(.top, 8)
-                                .padding(.bottom, scrollViewGradientHeight - 8)
                             }
-                            .listStyle(GroupedListStyle())
+                            .padding(.top, 8)
+                            .padding(.horizontal, isTV ? 0 : 16)
+                            .padding(.bottom, scrollViewGradientHeight - 8)
                             .mask {
                                 TopBottomGradientView(gradientHeight: scrollViewGradientHeight)
                             }
@@ -74,13 +79,13 @@ struct ContentView: View {
         }
         .alert("Error", isPresented: $viewModel.shouldPresentErrorAlert) {
             if let error = error {
-                Button(viewModel.alertButtonText(for: error), role: .cancel) {
-                    viewModel.shouldPresentErrorAlert = false
+                Button(error.buttonText, role: .cancel) {
+                    viewModel.overlayState = nil
                     viewModel.alertButtonAction(for: error)()
+                    swipeState = .swiped(UUID())
                 }
             }
-        }
-        message: {
+        } message: {
             Text(error?.message ?? "")
         }
     }
@@ -182,7 +187,7 @@ struct ContentView: View {
     }
 
     private var error: DeeplinkError? {
-        if case let .error(error) = viewModel.state {
+        if case let .error(error) = viewModel.overlayState {
             return error
         }
         return nil

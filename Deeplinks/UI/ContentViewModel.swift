@@ -14,6 +14,9 @@ enum ContentViewModelState: Equatable {
     case login
     case fetching
     case ready
+}
+
+enum ContentViewModelOverlayState: Equatable {
     case error(DeeplinkError)
 }
 
@@ -22,12 +25,15 @@ class ContentViewModel: ObservableObject {
     @Published var deeplinkGroups: [DeeplinkGroup]?
     @Published var user: String = ""
     @Published var pwd: String = ""
-    @Published var state: ContentViewModelState = .initial {
+    @Published var state: ContentViewModelState = .initial
+    @Published var overlayState: ContentViewModelOverlayState? {
         didSet {
-            if case .error(_) = state {
-                shouldPresentErrorAlert = true
-            } else {
-                shouldPresentErrorAlert = false
+            if overlayState != oldValue {
+                if case .error(_) = overlayState {
+                    shouldPresentErrorAlert = true
+                } else {
+                    shouldPresentErrorAlert = false
+                }
             }
         }
     }
@@ -85,17 +91,8 @@ class ContentViewModel: ObservableObject {
             return {
                 self.onAuthenticated()
             }
-        }
-    }
-
-    func alertButtonText(for error: DeeplinkError) -> String {
-        switch error.code {
-        case .invalidLoginCredentials:
-            return "Ok"
-        case .invalidUserToken:
-            return ""
-        case .dataNotAvailable:
-            return "Retry"
+        case .comingSoon:
+            return {}
         }
     }
 
@@ -129,7 +126,7 @@ class ContentViewModel: ObservableObject {
             onEnterCredentials()
             return
         }
-        self.state = .error(error)
+        self.overlayState = .error(error)
     }
 
     private func clearUserData() {
