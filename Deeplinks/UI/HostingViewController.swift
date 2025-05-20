@@ -20,4 +20,3 @@ class HostingViewController<Content>: UIHostingController<Content> where Content
     }
     #endif
 }
-

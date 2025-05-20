@@ -11,6 +11,7 @@ struct LoginTextFieldStyle: TextFieldStyle {
 
     #if os(iOS)
 
+    // swiftlint:disable:next identifier_name
     func _body(configuration: TextField<Self._Label>) -> some View {
         configuration
             .font(primary)
@@ -30,6 +31,7 @@ struct LoginTextFieldStyle: TextFieldStyle {
 
     #else
 
+    // swiftlint:disable:next identifier_name
     func _body(configuration: TextField<Self._Label>) -> some View {
         // fallback to default style, customization for tvOS not working as expected
         configuration

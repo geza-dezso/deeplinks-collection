@@ -13,7 +13,7 @@ enum DeeplinkErrorCode: Int, Codable, CaseIterable {
     case invalidUserToken
     case dataNotAvailable
     case comingSoon
-} 
+}
 
 struct DeeplinkError: Error, Equatable {
 

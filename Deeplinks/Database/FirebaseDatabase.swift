@@ -9,14 +9,12 @@ import FirebaseCore
 import FirebaseDatabase
 import Combine
 
-
 enum DatabaseQueryStatus: Equatable {
     case none
     case fetching
     case success([DeeplinkGroup]?)
     case error(DeeplinkError)
 }
-
 
 enum PwdCheckOptions {
     case none
@@ -27,7 +25,6 @@ protocol DatabaseProtocol {
 
     func updatesPublisher(user: String, pwd: String) -> AnyPublisher<DatabaseQueryStatus, Never>
 }
-
 
 class FirebaseDatabase: DatabaseProtocol {
 

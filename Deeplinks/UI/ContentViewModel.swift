@@ -5,7 +5,6 @@
 //  Created by Geza Dezso on 18/03/2024.
 //
 
-import Foundation
 import Combine
 import SwiftUI
 
@@ -29,7 +28,7 @@ class ContentViewModel: ObservableObject {
     @Published var overlayState: ContentViewModelOverlayState? {
         didSet {
             if overlayState != oldValue {
-                if case .error(_) = overlayState {
+                if case .error = overlayState {
                     shouldPresentErrorAlert = true
                 } else {
                     shouldPresentErrorAlert = false

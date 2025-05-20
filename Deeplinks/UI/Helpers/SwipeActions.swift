@@ -12,25 +12,32 @@ public extension View {
     func itemSwipeActions(
         state: Binding<SwipeState> = .constant(.untouched),
         horizontalPadding: CGFloat,
-        editActionHandler: @escaping () -> Void,
-        deleteActionHandler: @escaping () -> Void
+        editAction: @escaping () -> Void,
+        deleteAction: @escaping () -> Void
     ) -> some View {
-        self.modifier(ItemSwipeActionsModifier(state: state, horizontalPadding: horizontalPadding, editActionHandler: editActionHandler, deleteActionHandler: deleteActionHandler))
+        self.modifier(
+            ItemSwipeActionsModifier(
+                state: state,
+                horizontalPadding: horizontalPadding,
+                editAction: editAction,
+                deleteAction: deleteAction
+            )
+        )
     }
 }
 
 struct ItemSwipeActionsModifier: ViewModifier {
     var state: Binding<SwipeState> = .constant(.untouched)
     let horizontalPadding: CGFloat
-    let editActionHandler: () -> Void
-    let deleteActionHandler: () -> Void
+    let editAction: () -> Void
+    let deleteAction: () -> Void
 
     func body(content: Content) -> some View {
         content
             .addSwipeAction(menu: .slided, state: state) {
                 Leading {
                     Button {
-                        editActionHandler()
+                        editAction()
                     } label: {
                         Image(systemName: "square.and.pencil")
                             .foregroundColor(.white)
@@ -42,7 +49,7 @@ struct ItemSwipeActionsModifier: ViewModifier {
                 }
                 Trailing {
                     Button {
-                        deleteActionHandler()
+                        deleteAction()
                     } label: {
                         Image(systemName: "trash")
                             .foregroundColor(.white)

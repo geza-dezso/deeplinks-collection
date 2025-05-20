@@ -16,20 +16,19 @@ struct DeeplinkItemView: View {
     @Binding var swipeState: SwipeState
     #endif
 
-    let title: String
-    let link: String
+    let deeplink: Deeplink
     let padding: CGFloat
 
     var body: some View {
         HStack {
-            Link(destination: URL(string: link)!) {
+            Link(destination: URL(string: deeplink.url)!) {
                 VStack(spacing: 4) {
                     HStack {
-                        title(title)
+                        title(deeplink.title)
                         Spacer()
                     }
                     HStack {
-                        subtitle(link)
+                        subtitle(deeplink.url)
                         Spacer()
                     }
                 }
@@ -39,9 +38,9 @@ struct DeeplinkItemView: View {
                 .itemSwipeActions(
                     state: $swipeState,
                     horizontalPadding: padding,
-                    editActionHandler: {
+                    editAction: {
                         viewModel.overlayState = .error(DeeplinkError(.comingSoon))
-                    }, deleteActionHandler: {
+                    }, deleteAction: {
                         viewModel.overlayState = .error(DeeplinkError(.comingSoon))
                     })
                 #endif

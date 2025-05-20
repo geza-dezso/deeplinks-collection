@@ -143,7 +143,9 @@ struct ContentView: View {
             Text(title)
                 .font(primary)
                 .foregroundColor(.secondaryText)
-                .padding(EdgeInsets(top: isTV ? 20 : 12, leading: titlePadding, bottom: isTV ? 20 : 12, trailing: titlePadding))
+                .padding(EdgeInsets(
+                    top: isTV ? 20 : 12, leading: titlePadding, bottom: isTV ? 20 : 12, trailing: titlePadding
+                ))
             Spacer()
         }
     }
@@ -203,7 +205,12 @@ extension ContentView {
         Section(header: sectionHeaderView(group.title)) {
             if let deeplinks = group.deeplinks {
                 ForEach(deeplinks, id: \.self) { deeplink in
-                    DeeplinkItemView(viewModel: viewModel, swipeState: $swipeState, title: deeplink.title, link: deeplink.url, padding: titlePadding)
+                    DeeplinkItemView(
+                        viewModel: viewModel,
+                        swipeState: $swipeState,
+                        deeplink: deeplink,
+                        padding: titlePadding
+                    )
                 }
             }
         }
@@ -245,7 +252,7 @@ extension ContentView {
         Section(header: sectionHeaderView(group.title)) {
             if let deeplinks = group.deeplinks {
                 ForEach(deeplinks, id: \.self) { deeplink in
-                    DeeplinkItemView(title: deeplink.title, link: deeplink.url, padding: titlePadding)
+                    DeeplinkItemView(deeplink: deeplink, padding: titlePadding)
                 }
             }
         }

@@ -234,6 +234,7 @@
 				0F25788E2BBC2C7A000491D3 /* Sources */,
 				0F2578982BBC2C7A000491D3 /* Frameworks */,
 				0F25789A2BBC2C7A000491D3 /* Resources */,
+				0F6062EC2DDC824900B5C502 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -254,6 +255,7 @@
 				0FCBB3762BA88C7300D80DB7 /* Sources */,
 				0FCBB3772BA88C7300D80DB7 /* Frameworks */,
 				0FCBB3782BA88C7300D80DB7 /* Resources */,
+				0F6062EB2DDC7F7D00B5C502 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -332,6 +334,47 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		0F6062EB2DDC7F7D00B5C502 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [[ \"$(uname -m)\" == arm64 ]]; then\n    export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\n\nif which swiftlint > /dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		0F6062EC2DDC824900B5C502 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [[ \"$(uname -m)\" == arm64 ]]; then\n    export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\n\nif which swiftlint > /dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		0F25788E2BBC2C7A000491D3 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -409,6 +452,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = W244RLEDMB;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Deeplinks/Info-tvos.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = Deeplinks;
@@ -445,6 +489,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = W244RLEDMB;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Deeplinks/Info-tvos.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = Deeplinks;
@@ -599,6 +644,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = W244RLEDMB;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Deeplinks/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Deeplinks;
@@ -629,6 +675,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = W244RLEDMB;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Deeplinks/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Deeplinks;
