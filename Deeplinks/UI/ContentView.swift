@@ -21,6 +21,7 @@ struct ContentView: View {
 
     #if os(iOS)
     @State var swipeState: SwipeState = .untouched
+    @State var editingItem: Deeplink = Deeplink(title: "", url: "")
     #endif
 
     var body: some View {
@@ -67,6 +68,24 @@ struct ContentView: View {
                         enableLogout()
                     }
                 }
+                #if os(iOS)
+                .fullScreenCover(isPresented: $viewModel.shouldPresentEditOverlay) {
+                    ZStack {
+                        DeeplinkOverlay(
+                            deeplinkName: editingItem.title,
+                            deeplinkUrl: editingItem.url,
+                            onDismiss: {
+                                viewModel.overlayState = nil
+                                swipeState = .swiped(UUID())
+                            }
+                        )
+                        .overlayBackground(.black.opacity(0.5))
+                    }
+                }
+                .transaction { transaction in
+                    transaction.disablesAnimations = true
+                }
+                #endif
             }
         }
         .ignoresSafeArea(.keyboard)
@@ -208,6 +227,7 @@ extension ContentView {
                     DeeplinkItemView(
                         viewModel: viewModel,
                         swipeState: $swipeState,
+                        editingItem: $editingItem,
                         deeplink: deeplink,
                         padding: titlePadding
                     )
