@@ -43,7 +43,7 @@ struct ItemSwipeActionsModifier: ViewModifier {
                             .foregroundColor(.white)
                             .frame(width: 60, alignment: .center)
                             .frame(maxHeight: .infinity)
-                            .background(Color.itemButtonBackground)
+                            .background(Color.buttonBackground)
                     }
                     .padding(.trailing, horizontalPadding)
                 }
@@ -55,7 +55,7 @@ struct ItemSwipeActionsModifier: ViewModifier {
                             .foregroundColor(.white)
                             .frame(width: 60, alignment: .center)
                             .frame(maxHeight: .infinity)
-                            .background(Color.itemButtonBackground)
+                            .background(Color.buttonBackground)
                     }
                     .padding(.leading, horizontalPadding)
                 }

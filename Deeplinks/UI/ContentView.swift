@@ -21,6 +21,7 @@ struct ContentView: View {
 
     #if os(iOS)
     @State var swipeState: SwipeState = .untouched
+    @State var editingItem: Deeplink = Deeplink(title: "", url: "")
     #endif
 
     var body: some View {
@@ -67,6 +68,14 @@ struct ContentView: View {
                         enableLogout()
                     }
                 }
+                #if os(iOS)
+                .fullScreenCover(isPresented: $viewModel.shouldPresentEditOverlay) {
+                    editOverlay
+                }
+                .transaction { transaction in
+                    transaction.disablesAnimations = true
+                }
+                #endif
             }
         }
         .ignoresSafeArea(.keyboard)
@@ -78,13 +87,14 @@ struct ContentView: View {
                 Button(error.buttonText, role: .cancel) {
                     viewModel.overlayState = nil
                     viewModel.alertButtonAction(for: error)()
-                    #if os(iOS)
-                    swipeState = .swiped(UUID())
-                    #endif
+                    restoreSwipeState()
                 }
             }
         } message: {
             Text(error?.message ?? "")
+        }
+        .onReceive(NotificationCenter.default.publisher(for: UIScene.didEnterBackgroundNotification)) { _ in
+            restoreSwipeState()
         }
     }
 
@@ -103,38 +113,6 @@ struct ContentView: View {
         }
         .padding(.horizontal, titlePadding)
         .padding(.top, 16)
-    }
-
-    @ViewBuilder
-    private var mobileUserSection: some View {
-        let iconSize: CGFloat = 32
-
-        Button(action: {
-            isPresentingLogoutConfirmation = true
-        }, label: {
-            HStack(spacing: 0) {
-                Image(uiImage: UIImage(named: "UserIcon")!)
-                    .resizable()
-                    .frame(width: iconSize, height: iconSize)
-
-                Text(viewModel.user)
-                    .font(primary)
-                    .foregroundColor(.primaryText)
-                    .padding(.horizontal, isTV ? 24 : 12)
-            }
-            .background(Color.itemBackground)
-            .cornerRadius(iconSize/2)
-            .overlay(
-                RoundedRectangle(cornerRadius: iconSize/2)
-                    .stroke(Color.lightGray, lineWidth: 1)
-            )
-        })
-        .confirmationDialog("Logout",
-            isPresented: $isPresentingLogoutConfirmation) {
-            Button("Logout") {
-                viewModel.onLogout()
-            }
-        }
     }
 
     @ViewBuilder
@@ -208,12 +186,32 @@ extension ContentView {
                     DeeplinkItemView(
                         viewModel: viewModel,
                         swipeState: $swipeState,
+                        editingItem: $editingItem,
                         deeplink: deeplink,
                         padding: titlePadding
                     )
                 }
             }
         }
+    }
+
+    @ViewBuilder
+    private var editOverlay: some View {
+        ZStack {
+            DeeplinkEditOverlay(
+                deeplinkTitle: editingItem.title,
+                deeplinkUrl: editingItem.url,
+                onDismiss: {
+                    viewModel.overlayState = nil
+                    restoreSwipeState()
+                }
+            )
+            .overlayBackground(.black.opacity(0.5))
+        }
+    }
+
+    private func restoreSwipeState() {
+        swipeState = .swiped(UUID())
     }
 }
 
@@ -257,6 +255,8 @@ extension ContentView {
             }
         }
     }
+
+    private func restoreSwipeState() {}
 }
 
 #endif

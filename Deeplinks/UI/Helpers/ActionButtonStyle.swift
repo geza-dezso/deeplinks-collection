@@ -23,9 +23,10 @@ struct ActionButtonStyle: ButtonStyle {
         var body: some View {
             configuration.label
                 .font(primary)
-                .padding(8)
+                .padding(.vertical, 8)
+                .padding(.horizontal, 24)
                 .foregroundColor(isEnabled ? .primaryText : .darkGray)
-                .background(isEnabled ? Color.itemBackground : .clear)
+                .background(isEnabled ? Color.buttonBackground : .clear)
                 .cornerRadius(4)
                 .overlay(
                     RoundedRectangle(cornerRadius: 4)

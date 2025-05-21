@@ -17,6 +17,7 @@ enum ContentViewModelState: Equatable {
 
 enum ContentViewModelOverlayState: Equatable {
     case error(DeeplinkError)
+    case edit
 }
 
 class ContentViewModel: ObservableObject {
@@ -28,15 +29,21 @@ class ContentViewModel: ObservableObject {
     @Published var overlayState: ContentViewModelOverlayState? {
         didSet {
             if overlayState != oldValue {
-                if case .error = overlayState {
+                shouldPresentErrorAlert = false
+                shouldPresentEditOverlay = false
+                switch overlayState {
+                case .error:
                     shouldPresentErrorAlert = true
-                } else {
-                    shouldPresentErrorAlert = false
+                case .edit:
+                    shouldPresentEditOverlay = true
+                default:
+                    break
                 }
             }
         }
     }
     @Published var shouldPresentErrorAlert: Bool = false
+    @Published var shouldPresentEditOverlay: Bool = false
 
     private var database: DatabaseProtocol
     private var bag: Set<AnyCancellable> = []

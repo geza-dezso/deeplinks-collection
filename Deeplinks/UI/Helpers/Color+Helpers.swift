@@ -16,7 +16,7 @@ extension Color {
     static let lightGray = Color(red: 0.66, green: 0.66, blue: 0.66)
 
     static let mainBackground = Color(red: 0.0, green: 0.15, blue: 0.20)
-    static let itemButtonBackground = Color(red: 0.0, green: 0.1, blue: 0.13)
+    static let buttonBackground = Color(red: 0.0, green: 0.1, blue: 0.13)
     static let itemBackground = Color.white.opacity(0.1)
     static let focusedItemBackground = Color.white.opacity(0.2)
 }
