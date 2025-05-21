@@ -70,17 +70,7 @@ struct ContentView: View {
                 }
                 #if os(iOS)
                 .fullScreenCover(isPresented: $viewModel.shouldPresentEditOverlay) {
-                    ZStack {
-                        DeeplinkOverlay(
-                            deeplinkTitle: editingItem.title,
-                            deeplinkUrl: editingItem.url,
-                            onDismiss: {
-                                viewModel.overlayState = nil
-                                swipeState = .swiped(UUID())
-                            }
-                        )
-                        .overlayBackground(.black.opacity(0.5))
-                    }
+                    editOverlay
                 }
                 .transaction { transaction in
                     transaction.disablesAnimations = true
@@ -97,13 +87,14 @@ struct ContentView: View {
                 Button(error.buttonText, role: .cancel) {
                     viewModel.overlayState = nil
                     viewModel.alertButtonAction(for: error)()
-                    #if os(iOS)
-                    swipeState = .swiped(UUID())
-                    #endif
+                    restoreSwipeState()
                 }
             }
         } message: {
             Text(error?.message ?? "")
+        }
+        .onReceive(NotificationCenter.default.publisher(for: UIScene.didEnterBackgroundNotification)) { _ in
+            restoreSwipeState()
         }
     }
 
@@ -203,6 +194,25 @@ extension ContentView {
             }
         }
     }
+
+    @ViewBuilder
+    private var editOverlay: some View {
+        ZStack {
+            DeeplinkEditOverlay(
+                deeplinkTitle: editingItem.title,
+                deeplinkUrl: editingItem.url,
+                onDismiss: {
+                    viewModel.overlayState = nil
+                    restoreSwipeState()
+                }
+            )
+            .overlayBackground(.black.opacity(0.5))
+        }
+    }
+
+    private func restoreSwipeState() {
+        swipeState = .swiped(UUID())
+    }
 }
 
 #else
@@ -245,6 +255,8 @@ extension ContentView {
             }
         }
     }
+
+    private func restoreSwipeState() {}
 }
 
 #endif

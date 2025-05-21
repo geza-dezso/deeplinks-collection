@@ -33,7 +33,7 @@
 		0F581DD92BCF01140038DDD9 /* Color+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F581DD72BCF01140038DDD9 /* Color+Helpers.swift */; };
 		0F581DE42BD030CD0038DDD9 /* UserTokenHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F581DE12BD030CD0038DDD9 /* UserTokenHandler.swift */; };
 		0F581DE52BD030CD0038DDD9 /* UserTokenHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F581DE12BD030CD0038DDD9 /* UserTokenHandler.swift */; };
-		0F6062F12DDCBC7000B5C502 /* DeeplinkOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F6062F02DDCBC5800B5C502 /* DeeplinkOverlay.swift */; };
+		0F6062F12DDCBC7000B5C502 /* DeeplinkEditOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F6062F02DDCBC5800B5C502 /* DeeplinkEditOverlay.swift */; };
 		0F6062F42DDCC09100B5C502 /* OverlayBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F6062F32DDCC08800B5C502 /* OverlayBackground.swift */; };
 		0F6062F52DDCC09100B5C502 /* OverlayBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F6062F32DDCC08800B5C502 /* OverlayBackground.swift */; };
 		0F6062F72DDCF18E00B5C502 /* DeeplinkFieldStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F6062F62DDCF13E00B5C502 /* DeeplinkFieldStyle.swift */; };
@@ -75,7 +75,7 @@
 		0F581DD12BC846520038DDD9 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
 		0F581DD72BCF01140038DDD9 /* Color+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Color+Helpers.swift"; sourceTree = "<group>"; };
 		0F581DE12BD030CD0038DDD9 /* UserTokenHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserTokenHandler.swift; sourceTree = "<group>"; };
-		0F6062F02DDCBC5800B5C502 /* DeeplinkOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeeplinkOverlay.swift; sourceTree = "<group>"; };
+		0F6062F02DDCBC5800B5C502 /* DeeplinkEditOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeeplinkEditOverlay.swift; sourceTree = "<group>"; };
 		0F6062F32DDCC08800B5C502 /* OverlayBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayBackground.swift; sourceTree = "<group>"; };
 		0F6062F62DDCF13E00B5C502 /* DeeplinkFieldStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeeplinkFieldStyle.swift; sourceTree = "<group>"; };
 		0FA17E8A2C6283B100282F1E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -165,7 +165,7 @@
 				0F581DD12BC846520038DDD9 /* WelcomeView.swift */,
 				0F581DC52BC803460038DDD9 /* LoginView.swift */,
 				0FEBC5CE2BC3FD3C00EBECC8 /* DeeplinkItemView.swift */,
-				0F6062F02DDCBC5800B5C502 /* DeeplinkOverlay.swift */,
+				0F6062F02DDCBC5800B5C502 /* DeeplinkEditOverlay.swift */,
 				0F0527E32C10441F0095B5B2 /* TopBottomGradientView.swift */,
 			);
 			path = UI;
@@ -418,7 +418,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0FCBB3A52BA893D500D80DB7 /* ContentViewModel.swift in Sources */,
-				0F6062F12DDCBC7000B5C502 /* DeeplinkOverlay.swift in Sources */,
+				0F6062F12DDCBC7000B5C502 /* DeeplinkEditOverlay.swift in Sources */,
 				0FEBC5CF2BC3FD3C00EBECC8 /* DeeplinkItemView.swift in Sources */,
 				0FCBB39E2BA892A700D80DB7 /* FirebaseDatabase.swift in Sources */,
 				0F581DC62BC803460038DDD9 /* LoginView.swift in Sources */,

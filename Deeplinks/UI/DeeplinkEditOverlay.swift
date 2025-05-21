@@ -1,5 +1,5 @@
 //
-//  DeeplinkOverlay.swift
+//  DeeplinkEditOverlay.swift
 //  Deeplinks
 //
 //  Created by Geza Dezso on 2025. 05. 20..
@@ -11,7 +11,7 @@ private enum Field: Int, Hashable {
     case title, url
 }
 
-struct DeeplinkOverlay: View {
+struct DeeplinkEditOverlay: View {
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     @State public var deeplinkTitle: String = ""
     @State public var deeplinkUrl: String = ""
