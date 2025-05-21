@@ -26,7 +26,7 @@ struct ActionButtonStyle: ButtonStyle {
                 .padding(.vertical, 8)
                 .padding(.horizontal, 24)
                 .foregroundColor(isEnabled ? .primaryText : .darkGray)
-                .background(isEnabled ? Color.itemBackground : .clear)
+                .background(isEnabled ? Color.buttonBackground : .clear)
                 .cornerRadius(4)
                 .overlay(
                     RoundedRectangle(cornerRadius: 4)

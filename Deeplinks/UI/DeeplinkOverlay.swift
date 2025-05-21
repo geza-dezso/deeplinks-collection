@@ -7,61 +7,86 @@
 
 import SwiftUI
 
+private enum Field: Int, Hashable {
+    case title, url
+}
+
 struct DeeplinkOverlay: View {
-    @State public var deeplinkName: String = ""
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
+    @State public var deeplinkTitle: String = ""
     @State public var deeplinkUrl: String = ""
     @State private var isShowing = false
+    @FocusState private var focusedField: Field?
 
     public var onDismiss: (() -> Void)
 
+    private let spacing: CGFloat = isIPad ? 24 : 16
+
     var body: some View {
-        ZStack {
-            if isShowing {
+        GeometryReader { _ in
+            VStack {
+                Spacer()
+
                 VStack {
-                    VStack {
-                        Text("Edit Deeplink")
-                            .foregroundColor(.white)
-                        Spacer()
-                            .frame(height: 24)
-                        nameTextField
-                        linkTextField
+                    if isShowing {
+                        VStack {
+                            VStack {
+                                Text("Edit Deeplink")
+                                    .font(primary)
+                                    .foregroundColor(.white)
+                                Spacer()
+                                    .frame(height: spacing)
+                                titleTextField
+                                urlTextField
+                            }
+
+                            Spacer()
+                                .frame(height: spacing)
+
+                            buttonsSection
+                        }
+                        .padding(spacing)
+                        .background(Color.mainBackground)
+                        .transition(.scale.animation(.easeInOut))
                     }
-
-                    Spacer()
-                        .frame(height: 24)
-
-                    buttonsSection
                 }
-                .padding(24)
-                .background(Color.mainBackground)
-                .transition(.scale.animation(.easeInOut))
+                .cornerRadius(8)
+                .padding(.horizontal, isIPad ? 16 : 8)
+                .offset(y: isIPad ? (horizontalSizeClass == .compact ? -128 : -192) : -64)
+
+                Spacer()
+            }
+            .onAppear {
+                isShowing = true
+                focusedField = .title
             }
         }
-        .onAppear { isShowing = true }
-        .onDisappear { isShowing = false }
+        .ignoresSafeArea(.keyboard)
     }
 
-    private var nameTextField: some View {
+    private var titleTextField: some View {
         TextField(
             "",
-            text: $deeplinkName,
+            text: $deeplinkTitle,
             prompt: Text("Name").foregroundColor(.white)
         )
         .textFieldStyle(DeeplinkFieldStyle())
+        .focused($focusedField, equals: .title)
         .onSubmit {
-            //
+            focusedField = .url
         }
     }
 
-    private var linkTextField: some View {
+    private var urlTextField: some View {
         TextField(
             "",
             text: $deeplinkUrl,
             prompt: Text("Url").foregroundColor(.white)
         )
         .textFieldStyle(DeeplinkFieldStyle())
+        .focused($focusedField, equals: .url)
         .onSubmit {
-            //
+            focusedField = nil
         }
     }
 
@@ -88,6 +113,7 @@ struct DeeplinkOverlay: View {
     }
 
     private func closeOverlay() {
+        focusedField = nil
         if #available(iOS 17.0, *) {
             withAnimation {
                 isShowing = false

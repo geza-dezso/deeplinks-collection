@@ -72,7 +72,7 @@ struct ContentView: View {
                 .fullScreenCover(isPresented: $viewModel.shouldPresentEditOverlay) {
                     ZStack {
                         DeeplinkOverlay(
-                            deeplinkName: editingItem.title,
+                            deeplinkTitle: editingItem.title,
                             deeplinkUrl: editingItem.url,
                             onDismiss: {
                                 viewModel.overlayState = nil
@@ -122,38 +122,6 @@ struct ContentView: View {
         }
         .padding(.horizontal, titlePadding)
         .padding(.top, 16)
-    }
-
-    @ViewBuilder
-    private var mobileUserSection: some View {
-        let iconSize: CGFloat = 32
-
-        Button(action: {
-            isPresentingLogoutConfirmation = true
-        }, label: {
-            HStack(spacing: 0) {
-                Image(uiImage: UIImage(named: "UserIcon")!)
-                    .resizable()
-                    .frame(width: iconSize, height: iconSize)
-
-                Text(viewModel.user)
-                    .font(primary)
-                    .foregroundColor(.primaryText)
-                    .padding(.horizontal, isTV ? 24 : 12)
-            }
-            .background(Color.itemBackground)
-            .cornerRadius(iconSize/2)
-            .overlay(
-                RoundedRectangle(cornerRadius: iconSize/2)
-                    .stroke(Color.lightGray, lineWidth: 1)
-            )
-        })
-        .confirmationDialog("Logout",
-            isPresented: $isPresentingLogoutConfirmation) {
-            Button("Logout") {
-                viewModel.onLogout()
-            }
-        }
     }
 
     @ViewBuilder
