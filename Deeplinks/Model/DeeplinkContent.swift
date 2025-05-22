@@ -16,6 +16,10 @@ struct Deeplink: Codable, Hashable {
         case title
         case url
     }
+
+    var isEmpty: Bool {
+        title.isEmpty || url.isEmpty
+    }
 }
 
 struct DeeplinkGroup: Codable, Hashable {

@@ -92,7 +92,7 @@ struct ContentView: View {
             Text(error?.message ?? "")
         }
         .onReceive(NotificationCenter.default.publisher(for: UIScene.didEnterBackgroundNotification)) { _ in
-            if viewModel.overlayState != .edit {
+            if viewModel.overlayState == nil {
                 resetEditing()
             }
         }
@@ -167,7 +167,7 @@ extension ContentView {
 
     @ViewBuilder
     private func groupContent(for group: DeeplinkGroup) -> some View {
-        Section(header: sectionHeaderView(group.title)) {
+        Section(header: sectionHeaderView(group)) {
             if let deeplinks = group.deeplinks {
                 ForEach(deeplinks, id: \.self) { deeplink in
                     DeeplinkItemView(
@@ -182,9 +182,9 @@ extension ContentView {
     }
 
     @ViewBuilder
-    private func sectionHeaderView(_ title: String) -> some View {
+    private func sectionHeaderView(_ group: DeeplinkGroup) -> some View {
         HStack {
-            Text(title)
+            Text(group.title)
                 .font(primary)
                 .foregroundColor(.secondaryText)
                 .padding(EdgeInsets(
@@ -194,7 +194,7 @@ extension ContentView {
             Spacer()
 
             Button {
-                viewModel.overlayState = .edit
+                viewModel.overlayState = .create(for: group.id)
             } label: {
                 Image(systemName: "plus")
                     .foregroundColor(.white)
@@ -210,7 +210,7 @@ extension ContentView {
             DeeplinkEditOverlay(
                 deeplink: $viewModel.editingItem,
                 onSave: {
-                    viewModel.update(with: viewModel.editingItem)
+                    viewModel.update()
                 },
                 onDismiss: {
                     viewModel.overlayState = nil

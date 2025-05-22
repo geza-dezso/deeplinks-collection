@@ -100,6 +100,7 @@ struct DeeplinkEditOverlay: View {
                 Text("Save")
             })
             .buttonStyle(ActionButtonStyle())
+            .disabled(deeplink.isEmpty)
 
             Spacer()
                 .frame(width: 32)

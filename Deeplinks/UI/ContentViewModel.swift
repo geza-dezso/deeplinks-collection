@@ -18,6 +18,8 @@ enum ContentViewModelState: Equatable {
 enum ContentViewModelOverlayState: Equatable {
     case error(DeeplinkError)
     case edit
+    case create(for: UUID)
+    case group
 }
 
 class ContentViewModel: ObservableObject {
@@ -34,7 +36,7 @@ class ContentViewModel: ObservableObject {
                 switch overlayState {
                 case .error:
                     shouldPresentErrorAlert = true
-                case .edit:
+                case .edit, .create:
                     shouldPresentEditOverlay = true
                 default:
                     break
@@ -104,6 +106,19 @@ class ContentViewModel: ObservableObject {
         }
     }
 
+    func update() {
+        switch overlayState {
+        case .edit:
+            update(with: editingItem)
+        case .create(let groupId):
+            add(editingItem, to: groupId)
+        case .group:
+            break
+        default:
+            break
+        }
+    }
+
     private func setupListener() {
 
         databaseListener?.cancel()
@@ -140,7 +155,7 @@ class ContentViewModel: ObservableObject {
         pwd = ""
     }
 
-    public func update(with deeplink: Deeplink) {
+    private func update(with deeplink: Deeplink) {
         guard var deeplinkGroups else { return }
 
         for (groupIndex, var group) in deeplinkGroups.enumerated() {
@@ -149,6 +164,17 @@ class ContentViewModel: ObservableObject {
                 deeplinkGroups[groupIndex] = group
                 self.deeplinkGroups = deeplinkGroups
             }
+        }
+    }
+
+    private func add(_ deeplink: Deeplink, to groupId: UUID) {
+        guard var deeplinkGroups else { return }
+
+        if let index = deeplinkGroups.firstIndex(where: { groupId == $0.id }) {
+            var group = deeplinkGroups[index]
+            group.deeplinks?.append(deeplink)
+            deeplinkGroups[index] = group
+            self.deeplinkGroups = deeplinkGroups
         }
     }
 }
