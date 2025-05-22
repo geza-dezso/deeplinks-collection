@@ -281,7 +281,7 @@ extension ContentView {
         }
     }
 
-    private func restoreSwipeState() {}
+    private func resetEditing() {}
 }
 
 #endif
