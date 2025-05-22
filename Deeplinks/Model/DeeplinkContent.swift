@@ -8,13 +8,25 @@
 import Foundation
 
 struct Deeplink: Codable, Hashable {
-    let title: String
-    let url: String
+    let id = UUID()
+    var title: String
+    var url: String
+
+    private enum CodingKeys: CodingKey {
+        case title
+        case url
+    }
 }
 
 struct DeeplinkGroup: Codable, Hashable {
-    let title: String
-    let deeplinks: [Deeplink]?
+    let id = UUID()
+    var title: String
+    var deeplinks: [Deeplink]?
+
+    private enum CodingKeys: CodingKey {
+        case title
+        case deeplinks
+    }
 }
 
 struct DeeplinkContent: Codable {

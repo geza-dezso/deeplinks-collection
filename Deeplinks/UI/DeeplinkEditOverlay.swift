@@ -13,14 +13,15 @@ private enum Field: Int, Hashable {
 
 struct DeeplinkEditOverlay: View {
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
-    @State public var deeplinkTitle: String = ""
-    @State public var deeplinkUrl: String = ""
+    @Binding public var deeplink: Deeplink
     @State private var isShowing = false
     @FocusState private var focusedField: Field?
 
+    public var onSave: (() -> Void)
     public var onDismiss: (() -> Void)
 
     private let spacing: CGFloat = isIPad ? 24 : 16
+    private let animationDuration = 0.25
 
     var body: some View {
         GeometryReader { _ in
@@ -47,7 +48,7 @@ struct DeeplinkEditOverlay: View {
                         }
                         .padding(spacing)
                         .background(Color.mainBackground)
-                        .transition(.scale.animation(.easeInOut))
+                        .transition(.scale.animation(.easeInOut(duration: animationDuration)))
                     }
                 }
                 .cornerRadius(8)
@@ -67,8 +68,8 @@ struct DeeplinkEditOverlay: View {
     private var titleTextField: some View {
         TextField(
             "",
-            text: $deeplinkTitle,
-            prompt: Text("Name").foregroundColor(.white)
+            text: $deeplink.title,
+            prompt: Text("Name").foregroundColor(.placeholderText)
         )
         .textFieldStyle(DeeplinkFieldStyle())
         .focused($focusedField, equals: .title)
@@ -80,8 +81,8 @@ struct DeeplinkEditOverlay: View {
     private var urlTextField: some View {
         TextField(
             "",
-            text: $deeplinkUrl,
-            prompt: Text("Url").foregroundColor(.white)
+            text: $deeplink.url,
+            prompt: Text("Url").foregroundColor(.placeholderText)
         )
         .textFieldStyle(DeeplinkFieldStyle())
         .focused($focusedField, equals: .url)
@@ -93,7 +94,7 @@ struct DeeplinkEditOverlay: View {
     private var buttonsSection: some View {
         HStack {
             Button(action: {
-                // save action
+                onSave()
                 closeOverlay()
             }, label: {
                 Text("Save")
@@ -115,16 +116,16 @@ struct DeeplinkEditOverlay: View {
     private func closeOverlay() {
         focusedField = nil
         if #available(iOS 17.0, *) {
-            withAnimation {
+            withAnimation(.easeInOut(duration: animationDuration)) {
                 isShowing = false
             } completion: {
                 onDismiss()
             }
         } else {
-            withAnimation {
+            withAnimation(.easeInOut(duration: animationDuration)) {
                 isShowing = false
             }
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + animationDuration) {
                 onDismiss()
             }
         }

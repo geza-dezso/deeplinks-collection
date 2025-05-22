@@ -45,6 +45,8 @@ class ContentViewModel: ObservableObject {
     @Published var shouldPresentErrorAlert: Bool = false
     @Published var shouldPresentEditOverlay: Bool = false
 
+    @Published var editingItem = Deeplink(title: "", url: "")
+
     private var database: DatabaseProtocol
     private var bag: Set<AnyCancellable> = []
     private var databaseListener: AnyCancellable?
@@ -114,9 +116,7 @@ class ContentViewModel: ObservableObject {
                 case .success(let deeplinkGroups):
                     self.deeplinkGroups = deeplinkGroups ?? []
                     self.userTokenHandler.store(user)
-                    withAnimation {
-                        self.state = .ready
-                    }
+                    self.state = .ready
 
                 case .error(let error):
                     self.handleError(error)
@@ -138,5 +138,17 @@ class ContentViewModel: ObservableObject {
     private func clearUserData() {
         user = ""
         pwd = ""
+    }
+
+    public func update(with deeplink: Deeplink) {
+        guard var deeplinkGroups else { return }
+
+        for (groupIndex, var group) in deeplinkGroups.enumerated() {
+            if let index = group.deeplinks?.firstIndex(where: { deeplink.id == $0.id }) {
+                group.deeplinks?[index] = deeplink
+                deeplinkGroups[groupIndex] = group
+                self.deeplinkGroups = deeplinkGroups
+            }
+        }
     }
 }

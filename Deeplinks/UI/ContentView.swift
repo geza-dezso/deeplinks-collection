@@ -21,7 +21,6 @@ struct ContentView: View {
 
     #if os(iOS)
     @State var swipeState: SwipeState = .untouched
-    @State var editingItem: Deeplink = Deeplink(title: "", url: "")
     #endif
 
     var body: some View {
@@ -87,14 +86,15 @@ struct ContentView: View {
                 Button(error.buttonText, role: .cancel) {
                     viewModel.overlayState = nil
                     viewModel.alertButtonAction(for: error)()
-                    restoreSwipeState()
                 }
             }
         } message: {
             Text(error?.message ?? "")
         }
         .onReceive(NotificationCenter.default.publisher(for: UIScene.didEnterBackgroundNotification)) { _ in
-            restoreSwipeState()
+            if viewModel.overlayState != .edit {
+                resetEditing()
+            }
         }
     }
 
@@ -113,19 +113,6 @@ struct ContentView: View {
         }
         .padding(.horizontal, titlePadding)
         .padding(.top, 16)
-    }
-
-    @ViewBuilder
-    private func sectionHeaderView(_ title: String) -> some View {
-        HStack {
-            Text(title)
-                .font(primary)
-                .foregroundColor(.secondaryText)
-                .padding(EdgeInsets(
-                    top: isTV ? 20 : 12, leading: titlePadding, bottom: isTV ? 20 : 12, trailing: titlePadding
-                ))
-            Spacer()
-        }
     }
 
     private func enableLogout() {
@@ -186,7 +173,6 @@ extension ContentView {
                     DeeplinkItemView(
                         viewModel: viewModel,
                         swipeState: $swipeState,
-                        editingItem: $editingItem,
                         deeplink: deeplink,
                         padding: titlePadding
                     )
@@ -196,22 +182,48 @@ extension ContentView {
     }
 
     @ViewBuilder
+    private func sectionHeaderView(_ title: String) -> some View {
+        HStack {
+            Text(title)
+                .font(primary)
+                .foregroundColor(.secondaryText)
+                .padding(EdgeInsets(
+                    top: 12, leading: titlePadding, bottom: 12, trailing: titlePadding
+                ))
+
+            Spacer()
+
+            Button {
+                viewModel.overlayState = .edit
+            } label: {
+                Image(systemName: "plus")
+                    .foregroundColor(.white)
+                    .frame(maxHeight: .infinity)
+                    .padding(.horizontal, titlePadding)
+            }
+        }
+    }
+
+    @ViewBuilder
     private var editOverlay: some View {
         ZStack {
             DeeplinkEditOverlay(
-                deeplinkTitle: editingItem.title,
-                deeplinkUrl: editingItem.url,
+                deeplink: $viewModel.editingItem,
+                onSave: {
+                    viewModel.update(with: viewModel.editingItem)
+                },
                 onDismiss: {
                     viewModel.overlayState = nil
-                    restoreSwipeState()
+                    resetEditing()
                 }
             )
             .overlayBackground(.black.opacity(0.5))
         }
     }
 
-    private func restoreSwipeState() {
+    private func resetEditing() {
         swipeState = .swiped(UUID())
+        viewModel.editingItem = Deeplink(title: "", url: "")
     }
 }
 
@@ -253,6 +265,19 @@ extension ContentView {
                     DeeplinkItemView(deeplink: deeplink, padding: titlePadding)
                 }
             }
+        }
+    }
+
+    @ViewBuilder
+    private func sectionHeaderView(_ title: String) -> some View {
+        HStack {
+            Text(title)
+                .font(primary)
+                .foregroundColor(.secondaryText)
+                .padding(EdgeInsets(
+                    top: 20, leading: titlePadding, bottom: 20, trailing: titlePadding
+                ))
+            Spacer()
         }
     }
 
