@@ -19,7 +19,7 @@ enum ContentViewModelOverlayState: Equatable {
     case error(DeeplinkError)
     case edit
     case create(for: UUID)
-    case group
+    case section
 }
 
 class ContentViewModel: ObservableObject {
@@ -31,16 +31,8 @@ class ContentViewModel: ObservableObject {
     @Published var overlayState: ContentViewModelOverlayState? {
         didSet {
             if overlayState != oldValue {
-                shouldPresentErrorAlert = false
-                shouldPresentEditOverlay = false
-                switch overlayState {
-                case .error:
-                    shouldPresentErrorAlert = true
-                case .edit, .create:
-                    shouldPresentEditOverlay = true
-                default:
-                    break
-                }
+                shouldPresentErrorAlert = hasError
+                shouldPresentEditOverlay = hasOverlay
             }
         }
     }
@@ -57,6 +49,20 @@ class ContentViewModel: ObservableObject {
     init(database: DatabaseProtocol) {
         self.database = database
         self.userTokenHandler = UserTokenHandler()
+    }
+
+    var hasError: Bool {
+        guard case .error = overlayState else { return false }
+        return true
+    }
+
+    var hasOverlay: Bool {
+        switch overlayState {
+        case .edit, .create, .section:
+            return true
+        default:
+            return false
+        }
     }
 
     func onAppear() {
@@ -112,7 +118,7 @@ class ContentViewModel: ObservableObject {
             update(with: editingItem)
         case .create(let groupId):
             add(editingItem, to: groupId)
-        case .group:
+        case .section:
             break
         default:
             break
