@@ -17,8 +17,8 @@ enum ContentViewModelState: Equatable {
 
 enum ContentViewModelOverlayState: Equatable {
     case error(DeeplinkError)
-    case edit
-    case create(for: UUID)
+    case edit(for: DeeplinkGroup)
+    case create(for: DeeplinkGroup)
     case section
 }
 
@@ -114,10 +114,10 @@ class ContentViewModel: ObservableObject {
 
     func update() {
         switch overlayState {
-        case .edit:
-            update(with: editingItem)
-        case .create(let groupId):
-            add(editingItem, to: groupId)
+        case .edit(let group):
+            update(editingItem, in: group)
+        case .create(let group):
+            update(editingItem, in: group)
         case .section:
             break
         default:
@@ -161,26 +161,20 @@ class ContentViewModel: ObservableObject {
         pwd = ""
     }
 
-    private func update(with deeplink: Deeplink) {
+    private func update(_ deeplink: Deeplink, in group: DeeplinkGroup) {
         guard var deeplinkGroups else { return }
 
-        for (groupIndex, var group) in deeplinkGroups.enumerated() {
-            if let index = group.deeplinks?.firstIndex(where: { deeplink.id == $0.id }) {
+        if let groupIndex = deeplinkGroups.firstIndex(where: { group == $0 }) {
+            var group = deeplinkGroups[groupIndex]
+            if let index = group.deeplinks?.firstIndex(where: { deeplink == $0 }) {
                 group.deeplinks?[index] = deeplink
-                deeplinkGroups[groupIndex] = group
-                self.deeplinkGroups = deeplinkGroups
+            } else {
+                group.deeplinks?.append(deeplink)
             }
+            deeplinkGroups[groupIndex] = group
+            self.database.update(group: deeplinkGroups)
+            return
         }
-    }
-
-    private func add(_ deeplink: Deeplink, to groupId: UUID) {
-        guard var deeplinkGroups else { return }
-
-        if let index = deeplinkGroups.firstIndex(where: { groupId == $0.id }) {
-            var group = deeplinkGroups[index]
-            group.deeplinks?.append(deeplink)
-            deeplinkGroups[index] = group
-            self.deeplinkGroups = deeplinkGroups
-        }
+        // TODO: HANDLE case when editing group entry not found, database changed in the mean time
     }
 }

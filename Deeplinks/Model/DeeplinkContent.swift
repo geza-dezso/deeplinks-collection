@@ -20,6 +20,10 @@ struct Deeplink: Codable, Hashable {
     var isEmpty: Bool {
         title.isEmpty || url.isEmpty
     }
+
+    static func == (lhs: Self, rhs: Self) -> Bool {
+        return lhs.id == rhs.id
+    }
 }
 
 struct DeeplinkGroup: Codable, Hashable {
@@ -31,10 +35,20 @@ struct DeeplinkGroup: Codable, Hashable {
         case title
         case deeplinks
     }
+
+    static func == (lhs: Self, rhs: Self) -> Bool {
+        return lhs.id == rhs.id
+    }
 }
 
 struct DeeplinkContent: Codable {
     let user: String
     let pwd: String
-    let groups: [DeeplinkGroup]?
+    var groups: [DeeplinkGroup]?
+
+    private enum CodingKeys: CodingKey {
+        case user
+        case pwd
+        case groups
+    }
 }

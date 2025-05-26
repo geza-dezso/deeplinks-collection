@@ -17,6 +17,7 @@ struct DeeplinkItemView: View {
     #endif
 
     let deeplink: Deeplink
+    let group: DeeplinkGroup
     let padding: CGFloat
 
     var body: some View {
@@ -39,7 +40,7 @@ struct DeeplinkItemView: View {
                     state: $swipeState,
                     editAction: {
                         viewModel.editingItem = deeplink
-                        viewModel.overlayState = .edit
+                        viewModel.overlayState = .edit(for: group)
                     }, deleteAction: {
                         viewModel.overlayState = .error(DeeplinkError(.comingSoon))
                     })

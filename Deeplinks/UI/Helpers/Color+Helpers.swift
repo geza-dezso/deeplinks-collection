@@ -12,7 +12,7 @@ extension Color {
     static let lightGray = Color(red: 0.66, green: 0.66, blue: 0.66)
 
     static let primaryText = Color.white
-    static let secondaryText = Color.gray
+    static let secondaryText = Color.lightGray
     static let placeholderText = Color.darkGray
 
     static let mainBackground = Color(red: 0.0, green: 0.15, blue: 0.20)

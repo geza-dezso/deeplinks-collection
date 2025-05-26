@@ -13,15 +13,25 @@ private enum Field: Int, Hashable {
 
 struct DeeplinkEditOverlay: View {
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
-    @Binding public var deeplink: Deeplink
+    @ObservedObject var viewModel: ContentViewModel
     @State private var isShowing = false
     @FocusState private var focusedField: Field?
 
-    public var onSave: (() -> Void)
     public var onDismiss: (() -> Void)
 
     private let spacing: CGFloat = isIPad ? 24 : 16
     private let animationDuration = 0.25
+
+    private var title: String {
+        switch viewModel.overlayState {
+        case .edit:
+            return "Edit Deeplink"
+        case .create:
+            return "Create Deeplink"
+        default:
+            return ""
+        }
+    }
 
     var body: some View {
         GeometryReader { _ in
@@ -32,7 +42,7 @@ struct DeeplinkEditOverlay: View {
                     if isShowing {
                         VStack {
                             VStack {
-                                Text("Edit Deeplink")
+                                Text(title)
                                     .font(primary)
                                     .foregroundColor(.white)
                                 Spacer()
@@ -68,7 +78,7 @@ struct DeeplinkEditOverlay: View {
     private var titleTextField: some View {
         TextField(
             "",
-            text: $deeplink.title,
+            text: $viewModel.editingItem.title,
             prompt: Text("Name").foregroundColor(.placeholderText)
         )
         .textFieldStyle(DeeplinkFieldStyle())
@@ -81,7 +91,7 @@ struct DeeplinkEditOverlay: View {
     private var urlTextField: some View {
         TextField(
             "",
-            text: $deeplink.url,
+            text: $viewModel.editingItem.url,
             prompt: Text("Url").foregroundColor(.placeholderText)
         )
         .textFieldStyle(DeeplinkFieldStyle())
@@ -94,13 +104,13 @@ struct DeeplinkEditOverlay: View {
     private var buttonsSection: some View {
         HStack {
             Button(action: {
-                onSave()
+                viewModel.update()
                 closeOverlay()
             }, label: {
                 Text("Save")
             })
             .buttonStyle(ActionButtonStyle())
-            .disabled(deeplink.isEmpty)
+            .disabled(viewModel.editingItem.isEmpty)
 
             Spacer()
                 .frame(width: 32)
@@ -120,6 +130,7 @@ struct DeeplinkEditOverlay: View {
             withAnimation(.easeInOut(duration: animationDuration)) {
                 isShowing = false
             } completion: {
+                viewModel.overlayState = nil
                 onDismiss()
             }
         } else {
@@ -127,6 +138,7 @@ struct DeeplinkEditOverlay: View {
                 isShowing = false
             }
             DispatchQueue.main.asyncAfter(deadline: .now() + animationDuration) {
+                viewModel.overlayState = nil
                 onDismiss()
             }
         }

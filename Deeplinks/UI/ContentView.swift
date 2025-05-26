@@ -174,6 +174,7 @@ extension ContentView {
                         viewModel: viewModel,
                         swipeState: $swipeState,
                         deeplink: deeplink,
+                        group: group,
                         padding: titlePadding
                     )
                 }
@@ -194,7 +195,8 @@ extension ContentView {
             Spacer()
 
             Button {
-                viewModel.overlayState = .create(for: group.id)
+                resetEditing()
+                viewModel.overlayState = .create(for: group)
             } label: {
                 Image(systemName: "plus")
                     .foregroundColor(.white)
@@ -208,12 +210,8 @@ extension ContentView {
     private var editOverlay: some View {
         ZStack {
             DeeplinkEditOverlay(
-                deeplink: $viewModel.editingItem,
-                onSave: {
-                    viewModel.update()
-                },
+                viewModel: viewModel,
                 onDismiss: {
-                    viewModel.overlayState = nil
                     resetEditing()
                 }
             )
