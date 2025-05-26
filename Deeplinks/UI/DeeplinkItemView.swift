@@ -14,10 +14,10 @@ struct DeeplinkItemView: View {
     #if os(iOS)
     @ObservedObject var viewModel: ContentViewModel
     @Binding var swipeState: SwipeState
-    @Binding var editingItem: Deeplink
     #endif
 
     let deeplink: Deeplink
+    let group: DeeplinkGroup
     let padding: CGFloat
 
     var body: some View {
@@ -38,10 +38,9 @@ struct DeeplinkItemView: View {
                 #if os(iOS)
                 .itemSwipeActions(
                     state: $swipeState,
-                    horizontalPadding: padding,
                     editAction: {
-                        editingItem = deeplink
-                        viewModel.overlayState = .edit
+                        viewModel.editingItem = deeplink
+                        viewModel.overlayState = .edit(for: group)
                     }, deleteAction: {
                         viewModel.overlayState = .error(DeeplinkError(.comingSoon))
                     })

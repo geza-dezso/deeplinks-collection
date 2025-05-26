@@ -5,9 +5,9 @@
 //  Created by Geza Dezso on 14/03/2024.
 //
 
+import Combine
 import FirebaseCore
 import FirebaseDatabase
-import Combine
 
 enum DatabaseQueryStatus: Equatable {
     case none
@@ -24,6 +24,7 @@ enum PwdCheckOptions {
 protocol DatabaseProtocol {
 
     func updatesPublisher(user: String, pwd: String) -> AnyPublisher<DatabaseQueryStatus, Never>
+    func update(group: [DeeplinkGroup])
 }
 
 class FirebaseDatabase: DatabaseProtocol {
@@ -119,5 +120,13 @@ class FirebaseDatabase: DatabaseProtocol {
         } else {
             status = .error(DeeplinkError(.dataNotAvailable))
         }
+    }
+
+    public func update(group: [DeeplinkGroup]) {
+        if var collection = collection, let index = collection.firstIndex(where: { $0.user == user }) {
+            collection[index].groups = group
+            Database.database().reference().child("content").setValue(collection.map({ $0.asDictionary }))
+        }
+        // TODO: HANDLE error cases
     }
 }

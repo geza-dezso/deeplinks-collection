@@ -37,6 +37,8 @@
 		0F6062F42DDCC09100B5C502 /* OverlayBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F6062F32DDCC08800B5C502 /* OverlayBackground.swift */; };
 		0F6062F52DDCC09100B5C502 /* OverlayBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F6062F32DDCC08800B5C502 /* OverlayBackground.swift */; };
 		0F6062F72DDCF18E00B5C502 /* DeeplinkFieldStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F6062F62DDCF13E00B5C502 /* DeeplinkFieldStyle.swift */; };
+		0F94D5D92DE4718900C91B51 /* Encodable+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F94D5D82DE4717400C91B51 /* Encodable+Extensions.swift */; };
+		0F94D5DA2DE4718900C91B51 /* Encodable+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F94D5D82DE4717400C91B51 /* Encodable+Extensions.swift */; };
 		0FA17E8B2C6283B100282F1E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0FA17E8A2C6283B100282F1E /* GoogleService-Info.plist */; };
 		0FA17E8C2C6283B100282F1E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0FA17E8A2C6283B100282F1E /* GoogleService-Info.plist */; };
 		0FCBB37E2BA88C7300D80DB7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FCBB37D2BA88C7300D80DB7 /* AppDelegate.swift */; };
@@ -78,6 +80,7 @@
 		0F6062F02DDCBC5800B5C502 /* DeeplinkEditOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeeplinkEditOverlay.swift; sourceTree = "<group>"; };
 		0F6062F32DDCC08800B5C502 /* OverlayBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayBackground.swift; sourceTree = "<group>"; };
 		0F6062F62DDCF13E00B5C502 /* DeeplinkFieldStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeeplinkFieldStyle.swift; sourceTree = "<group>"; };
+		0F94D5D82DE4717400C91B51 /* Encodable+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Encodable+Extensions.swift"; sourceTree = "<group>"; };
 		0FA17E8A2C6283B100282F1E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		0FCBB37A2BA88C7300D80DB7 /* Deeplinks Collection iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Deeplinks Collection iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0FCBB37D2BA88C7300D80DB7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -202,6 +205,7 @@
 		0FCBB39F2BA892D000D80DB7 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				0F94D5D82DE4717400C91B51 /* Encodable+Extensions.swift */,
 				0F581DE12BD030CD0038DDD9 /* UserTokenHandler.swift */,
 				0FCBB3A02BA892E800D80DB7 /* DeeplinkContent.swift */,
 				0FCBB3A12BA892E800D80DB7 /* DeeplinkError.swift */,
@@ -397,6 +401,7 @@
 				0F581DC72BC803460038DDD9 /* LoginView.swift in Sources */,
 				0FD125A02BC578220056F3AE /* Font+Helpers.swift in Sources */,
 				0F2578912BBC2C7A000491D3 /* HostingViewController.swift in Sources */,
+				0F94D5DA2DE4718900C91B51 /* Encodable+Extensions.swift in Sources */,
 				0F581DD92BCF01140038DDD9 /* Color+Helpers.swift in Sources */,
 				0F581DD02BC82EC10038DDD9 /* ActionButtonStyle.swift in Sources */,
 				0F581DCA2BC81CAD0038DDD9 /* LoginTextFieldStyle.swift in Sources */,
@@ -430,6 +435,7 @@
 				0F6062F42DDCC09100B5C502 /* OverlayBackground.swift in Sources */,
 				0FCBB37E2BA88C7300D80DB7 /* AppDelegate.swift in Sources */,
 				0F581DE42BD030CD0038DDD9 /* UserTokenHandler.swift in Sources */,
+				0F94D5D92DE4718900C91B51 /* Encodable+Extensions.swift in Sources */,
 				0FCBB3A32BA892E800D80DB7 /* DeeplinkError.swift in Sources */,
 				0FEBC5D52BC41E1B00EBECC8 /* DeeplinkItemStyle.swift in Sources */,
 				0FCBB3922BA88E2700D80DB7 /* ContentView.swift in Sources */,

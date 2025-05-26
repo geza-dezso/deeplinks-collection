@@ -21,7 +21,6 @@ struct ContentView: View {
 
     #if os(iOS)
     @State var swipeState: SwipeState = .untouched
-    @State var editingItem: Deeplink = Deeplink(title: "", url: "")
     #endif
 
     var body: some View {
@@ -87,14 +86,15 @@ struct ContentView: View {
                 Button(error.buttonText, role: .cancel) {
                     viewModel.overlayState = nil
                     viewModel.alertButtonAction(for: error)()
-                    restoreSwipeState()
                 }
             }
         } message: {
             Text(error?.message ?? "")
         }
         .onReceive(NotificationCenter.default.publisher(for: UIScene.didEnterBackgroundNotification)) { _ in
-            restoreSwipeState()
+            if viewModel.overlayState == nil {
+                resetEditing()
+            }
         }
     }
 
@@ -113,19 +113,6 @@ struct ContentView: View {
         }
         .padding(.horizontal, titlePadding)
         .padding(.top, 16)
-    }
-
-    @ViewBuilder
-    private func sectionHeaderView(_ title: String) -> some View {
-        HStack {
-            Text(title)
-                .font(primary)
-                .foregroundColor(.secondaryText)
-                .padding(EdgeInsets(
-                    top: isTV ? 20 : 12, leading: titlePadding, bottom: isTV ? 20 : 12, trailing: titlePadding
-                ))
-            Spacer()
-        }
     }
 
     private func enableLogout() {
@@ -180,14 +167,14 @@ extension ContentView {
 
     @ViewBuilder
     private func groupContent(for group: DeeplinkGroup) -> some View {
-        Section(header: sectionHeaderView(group.title)) {
+        Section(header: sectionHeaderView(group)) {
             if let deeplinks = group.deeplinks {
                 ForEach(deeplinks, id: \.self) { deeplink in
                     DeeplinkItemView(
                         viewModel: viewModel,
                         swipeState: $swipeState,
-                        editingItem: $editingItem,
                         deeplink: deeplink,
+                        group: group,
                         padding: titlePadding
                     )
                 }
@@ -196,22 +183,45 @@ extension ContentView {
     }
 
     @ViewBuilder
+    private func sectionHeaderView(_ group: DeeplinkGroup) -> some View {
+        HStack {
+            Text(group.title)
+                .font(primary)
+                .foregroundColor(.secondaryText)
+                .padding(EdgeInsets(
+                    top: 12, leading: titlePadding, bottom: 12, trailing: titlePadding
+                ))
+
+            Spacer()
+
+            Button {
+                resetEditing()
+                viewModel.overlayState = .create(for: group)
+            } label: {
+                Image(systemName: "plus")
+                    .foregroundColor(.white)
+                    .frame(maxHeight: .infinity)
+                    .padding(.horizontal, titlePadding)
+            }
+        }
+    }
+
+    @ViewBuilder
     private var editOverlay: some View {
         ZStack {
             DeeplinkEditOverlay(
-                deeplinkTitle: editingItem.title,
-                deeplinkUrl: editingItem.url,
+                viewModel: viewModel,
                 onDismiss: {
-                    viewModel.overlayState = nil
-                    restoreSwipeState()
+                    resetEditing()
                 }
             )
             .overlayBackground(.black.opacity(0.5))
         }
     }
 
-    private func restoreSwipeState() {
+    private func resetEditing() {
         swipeState = .swiped(UUID())
+        viewModel.editingItem = Deeplink(title: "", url: "")
     }
 }
 
@@ -256,7 +266,20 @@ extension ContentView {
         }
     }
 
-    private func restoreSwipeState() {}
+    @ViewBuilder
+    private func sectionHeaderView(_ title: String) -> some View {
+        HStack {
+            Text(title)
+                .font(primary)
+                .foregroundColor(.secondaryText)
+                .padding(EdgeInsets(
+                    top: 20, leading: titlePadding, bottom: 20, trailing: titlePadding
+                ))
+            Spacer()
+        }
+    }
+
+    private func resetEditing() {}
 }
 
 #endif

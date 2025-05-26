@@ -13,14 +13,25 @@ private enum Field: Int, Hashable {
 
 struct DeeplinkEditOverlay: View {
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
-    @State public var deeplinkTitle: String = ""
-    @State public var deeplinkUrl: String = ""
+    @ObservedObject var viewModel: ContentViewModel
     @State private var isShowing = false
     @FocusState private var focusedField: Field?
 
     public var onDismiss: (() -> Void)
 
     private let spacing: CGFloat = isIPad ? 24 : 16
+    private let animationDuration = 0.25
+
+    private var title: String {
+        switch viewModel.overlayState {
+        case .edit:
+            return "Edit Deeplink"
+        case .create:
+            return "Create Deeplink"
+        default:
+            return ""
+        }
+    }
 
     var body: some View {
         GeometryReader { _ in
@@ -31,7 +42,7 @@ struct DeeplinkEditOverlay: View {
                     if isShowing {
                         VStack {
                             VStack {
-                                Text("Edit Deeplink")
+                                Text(title)
                                     .font(primary)
                                     .foregroundColor(.white)
                                 Spacer()
@@ -47,7 +58,7 @@ struct DeeplinkEditOverlay: View {
                         }
                         .padding(spacing)
                         .background(Color.mainBackground)
-                        .transition(.scale.animation(.easeInOut))
+                        .transition(.scale.animation(.easeInOut(duration: animationDuration)))
                     }
                 }
                 .cornerRadius(8)
@@ -67,8 +78,8 @@ struct DeeplinkEditOverlay: View {
     private var titleTextField: some View {
         TextField(
             "",
-            text: $deeplinkTitle,
-            prompt: Text("Name").foregroundColor(.white)
+            text: $viewModel.editingItem.title,
+            prompt: Text("Name").foregroundColor(.placeholderText)
         )
         .textFieldStyle(DeeplinkFieldStyle())
         .focused($focusedField, equals: .title)
@@ -80,8 +91,8 @@ struct DeeplinkEditOverlay: View {
     private var urlTextField: some View {
         TextField(
             "",
-            text: $deeplinkUrl,
-            prompt: Text("Url").foregroundColor(.white)
+            text: $viewModel.editingItem.url,
+            prompt: Text("Url").foregroundColor(.placeholderText)
         )
         .textFieldStyle(DeeplinkFieldStyle())
         .focused($focusedField, equals: .url)
@@ -93,12 +104,13 @@ struct DeeplinkEditOverlay: View {
     private var buttonsSection: some View {
         HStack {
             Button(action: {
-                // save action
+                viewModel.update()
                 closeOverlay()
             }, label: {
                 Text("Save")
             })
             .buttonStyle(ActionButtonStyle())
+            .disabled(viewModel.editingItem.isEmpty)
 
             Spacer()
                 .frame(width: 32)
@@ -115,16 +127,18 @@ struct DeeplinkEditOverlay: View {
     private func closeOverlay() {
         focusedField = nil
         if #available(iOS 17.0, *) {
-            withAnimation {
+            withAnimation(.easeInOut(duration: animationDuration)) {
                 isShowing = false
             } completion: {
+                viewModel.overlayState = nil
                 onDismiss()
             }
         } else {
-            withAnimation {
+            withAnimation(.easeInOut(duration: animationDuration)) {
                 isShowing = false
             }
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + animationDuration) {
+                viewModel.overlayState = nil
                 onDismiss()
             }
         }

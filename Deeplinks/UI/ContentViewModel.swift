@@ -17,7 +17,9 @@ enum ContentViewModelState: Equatable {
 
 enum ContentViewModelOverlayState: Equatable {
     case error(DeeplinkError)
-    case edit
+    case edit(for: DeeplinkGroup)
+    case create(for: DeeplinkGroup)
+    case section
 }
 
 class ContentViewModel: ObservableObject {
@@ -29,21 +31,15 @@ class ContentViewModel: ObservableObject {
     @Published var overlayState: ContentViewModelOverlayState? {
         didSet {
             if overlayState != oldValue {
-                shouldPresentErrorAlert = false
-                shouldPresentEditOverlay = false
-                switch overlayState {
-                case .error:
-                    shouldPresentErrorAlert = true
-                case .edit:
-                    shouldPresentEditOverlay = true
-                default:
-                    break
-                }
+                shouldPresentErrorAlert = hasError
+                shouldPresentEditOverlay = hasOverlay
             }
         }
     }
     @Published var shouldPresentErrorAlert: Bool = false
     @Published var shouldPresentEditOverlay: Bool = false
+
+    @Published var editingItem = Deeplink(title: "", url: "")
 
     private var database: DatabaseProtocol
     private var bag: Set<AnyCancellable> = []
@@ -53,6 +49,20 @@ class ContentViewModel: ObservableObject {
     init(database: DatabaseProtocol) {
         self.database = database
         self.userTokenHandler = UserTokenHandler()
+    }
+
+    var hasError: Bool {
+        guard case .error = overlayState else { return false }
+        return true
+    }
+
+    var hasOverlay: Bool {
+        switch overlayState {
+        case .edit, .create, .section:
+            return true
+        default:
+            return false
+        }
     }
 
     func onAppear() {
@@ -102,6 +112,19 @@ class ContentViewModel: ObservableObject {
         }
     }
 
+    func update() {
+        switch overlayState {
+        case .edit(let group):
+            update(editingItem, in: group)
+        case .create(let group):
+            update(editingItem, in: group)
+        case .section:
+            break
+        default:
+            break
+        }
+    }
+
     private func setupListener() {
 
         databaseListener?.cancel()
@@ -114,9 +137,7 @@ class ContentViewModel: ObservableObject {
                 case .success(let deeplinkGroups):
                     self.deeplinkGroups = deeplinkGroups ?? []
                     self.userTokenHandler.store(user)
-                    withAnimation {
-                        self.state = .ready
-                    }
+                    self.state = .ready
 
                 case .error(let error):
                     self.handleError(error)
@@ -138,5 +159,22 @@ class ContentViewModel: ObservableObject {
     private func clearUserData() {
         user = ""
         pwd = ""
+    }
+
+    private func update(_ deeplink: Deeplink, in group: DeeplinkGroup) {
+        guard var deeplinkGroups else { return }
+
+        if let groupIndex = deeplinkGroups.firstIndex(where: { group == $0 }) {
+            var group = deeplinkGroups[groupIndex]
+            if let index = group.deeplinks?.firstIndex(where: { deeplink == $0 }) {
+                group.deeplinks?[index] = deeplink
+            } else {
+                group.deeplinks?.append(deeplink)
+            }
+            deeplinkGroups[groupIndex] = group
+            self.database.update(group: deeplinkGroups)
+            return
+        }
+        // TODO: HANDLE case when editing group entry not found, database changed in the mean time
     }
 }

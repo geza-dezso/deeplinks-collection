@@ -11,14 +11,12 @@ import SwipeActions
 public extension View {
     func itemSwipeActions(
         state: Binding<SwipeState> = .constant(.untouched),
-        horizontalPadding: CGFloat,
         editAction: @escaping () -> Void,
         deleteAction: @escaping () -> Void
     ) -> some View {
         self.modifier(
             ItemSwipeActionsModifier(
                 state: state,
-                horizontalPadding: horizontalPadding,
                 editAction: editAction,
                 deleteAction: deleteAction
             )
@@ -28,7 +26,6 @@ public extension View {
 
 struct ItemSwipeActionsModifier: ViewModifier {
     var state: Binding<SwipeState> = .constant(.untouched)
-    let horizontalPadding: CGFloat
     let editAction: () -> Void
     let deleteAction: () -> Void
 
@@ -45,7 +42,6 @@ struct ItemSwipeActionsModifier: ViewModifier {
                             .frame(maxHeight: .infinity)
                             .background(Color.buttonBackground)
                     }
-                    .padding(.trailing, horizontalPadding)
                 }
                 Trailing {
                     Button {
@@ -57,7 +53,6 @@ struct ItemSwipeActionsModifier: ViewModifier {
                             .frame(maxHeight: .infinity)
                             .background(Color.buttonBackground)
                     }
-                    .padding(.leading, horizontalPadding)
                 }
             }
     }

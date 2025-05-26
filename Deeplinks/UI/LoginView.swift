@@ -44,7 +44,7 @@ struct LoginView: View {
         TextField(
             "",
             text: $viewModel.user,
-            prompt: Text("Username").foregroundColor(.darkGray)
+            prompt: Text("Username").foregroundColor(.placeholderText)
         )
         .textFieldStyle(LoginTextFieldStyle())
         .focused($focusedField, equals: .username)
@@ -57,7 +57,7 @@ struct LoginView: View {
         SecureField(
             "",
             text: $viewModel.pwd,
-            prompt: Text("Password").foregroundColor(.darkGray)
+            prompt: Text("Password").foregroundColor(.placeholderText)
         )
         .textFieldStyle(LoginTextFieldStyle())
         .focused($focusedField, equals: .password)
