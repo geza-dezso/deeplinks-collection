@@ -15,7 +15,7 @@ struct ContentView: View {
     @ObservedObject var viewModel: ContentViewModel
     @State private var isLogoutDisabled: Bool = true
     @State private var isPresentingLogoutConfirmation: Bool = false
-
+    @State private var lastCreatedItemId: String?
     private let titlePadding: CGFloat = isTV ? 16 : isIPad ? 12 : 8
     private let scrollViewGradientHeight: CGFloat = isTV ? 48 : isIPad ? 32 : 24
 
@@ -42,20 +42,30 @@ struct ContentView: View {
                             .padding(.horizontal, 16)
 
                         if let groups = viewModel.deeplinkGroups {
+                            ScrollViewReader { reader in
+                                ScrollView(.vertical, showsIndicators: false) {
+                                    VStack(spacing: isTV ? 8 : isIPad ? 4 : 2) {
+                                        ForEach(groups, id: \.self) { group in
+                                            groupContent(for: group)
+                                        }
+                                        .padding(.horizontal, isTV ? 16 : 0)
 
-                            ScrollView(.vertical, showsIndicators: false) {
-                                VStack(spacing: isTV ? 8 : isIPad ? 4 : 2) {
-                                    ForEach(groups, id: \.self) { group in
-                                        groupContent(for: group)
+                                        #if os(iOS)
+                                        newSectionButton
+                                        #endif
                                     }
-                                    .padding(.horizontal, isTV ? 16 : 0)
+                                    .padding(.top, 8)
+                                    .padding(.bottom, scrollViewGradientHeight - 8)
                                 }
-                            }
-                            .padding(.top, 8)
-                            .padding(.horizontal, isTV ? 0 : 16)
-                            .padding(.bottom, scrollViewGradientHeight - 8)
-                            .mask {
-                                TopBottomGradientView(gradientHeight: scrollViewGradientHeight)
+                                .padding(.horizontal, isTV ? 0 : 16)
+                                .mask {
+                                    TopBottomGradientView(gradientHeight: scrollViewGradientHeight)
+                                }
+                                .onChange(of: lastCreatedItemId) { _ in
+                                    withAnimation {
+                                        reader.scrollTo(lastCreatedItemId, anchor: .bottom)
+                                    }
+                                }
                             }
                         }
 
@@ -135,7 +145,7 @@ extension ContentView {
 
     @ViewBuilder
     private var userSection: some View {
-        let iconSize: CGFloat = 32
+        let iconSize: CGFloat = isIPad ? 40 : 32
 
         Button(action: {
             isPresentingLogoutConfirmation = true
@@ -148,9 +158,9 @@ extension ContentView {
                 Text(viewModel.user)
                     .font(primary)
                     .foregroundColor(.primaryText)
-                    .padding(.horizontal, isTV ? 24 : 12)
+                    .padding(.horizontal, isTV ? 24 : 16)
             }
-            .background(Color.itemBackground)
+            .background(Color.buttonBackground)
             .cornerRadius(iconSize/2)
             .overlay(
                 RoundedRectangle(cornerRadius: iconSize/2)
@@ -177,9 +187,11 @@ extension ContentView {
                         group: group,
                         padding: titlePadding
                     )
+                    .id(viewModel.itemIdFor(group: group, deeplink: deeplink))
                 }
             }
         }
+        .id(viewModel.itemIdFor(group: group))
     }
 
     @ViewBuilder
@@ -207,11 +219,30 @@ extension ContentView {
     }
 
     @ViewBuilder
+    private var newSectionButton: some View {
+        HStack {
+            Button(action: {
+                viewModel.overlayState = .section
+            }, label: {
+                Text("New section")
+            })
+            .buttonStyle(ActionButtonStyle())
+            .padding(EdgeInsets(top: 16, leading: 2, bottom: 2, trailing: 0))
+
+            Spacer()
+        }
+    }
+
+    @ViewBuilder
     private var editOverlay: some View {
         ZStack {
             DeeplinkEditOverlay(
                 viewModel: viewModel,
                 onDismiss: {
+                    if case .create = viewModel.overlayState {
+                        lastCreatedItemId = viewModel.editingItemId
+                    }
+                    viewModel.overlayState = nil
                     resetEditing()
                 }
             )
@@ -260,7 +291,7 @@ extension ContentView {
         Section(header: sectionHeaderView(group.title)) {
             if let deeplinks = group.deeplinks {
                 ForEach(deeplinks, id: \.self) { deeplink in
-                    DeeplinkItemView(deeplink: deeplink, padding: titlePadding)
+                    DeeplinkItemView(deeplink: deeplink, group: group, padding: titlePadding)
                 }
             }
         }

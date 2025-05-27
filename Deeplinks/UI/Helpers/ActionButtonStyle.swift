@@ -25,12 +25,17 @@ struct ActionButtonStyle: ButtonStyle {
                 .font(primary)
                 .padding(.vertical, 8)
                 .padding(.horizontal, 24)
-                .foregroundColor(isEnabled ? .primaryText : .darkGray)
-                .background(isEnabled ? Color.buttonBackground : .clear)
+                .foregroundColor(isEnabled ? (configuration.isPressed ? .darkGray : .primaryText) : .darkGray)
+                .background(
+                    isEnabled ? (configuration.isPressed ? .clear : Color.buttonBackground) : .clear
+                )
                 .cornerRadius(4)
                 .overlay(
                     RoundedRectangle(cornerRadius: 4)
-                        .stroke(isEnabled ? .gray : .darkGray, lineWidth: 1)
+                        .stroke(
+                            isEnabled ? (configuration.isPressed ? Color.darkGray : Color.lightGray) : .darkGray,
+                            lineWidth: 1
+                        )
                 )
         }
 

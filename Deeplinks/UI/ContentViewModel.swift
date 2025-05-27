@@ -125,6 +125,24 @@ class ContentViewModel: ObservableObject {
         }
     }
 
+    func itemIdFor(group: DeeplinkGroup, deeplink: Deeplink? = nil) -> String {
+        guard let deeplink else { return group.title }
+        return group.title + deeplink.title + deeplink.url
+    }
+
+    var editingItemId: String? {
+        switch overlayState {
+        case .edit(let group):
+            itemIdFor(group: group, deeplink: editingItem)
+        case .create(let group):
+            itemIdFor(group: group, deeplink: editingItem)
+        case .section:
+            nil
+        default:
+            nil
+        }
+    }
+
     private func setupListener() {
 
         databaseListener?.cancel()

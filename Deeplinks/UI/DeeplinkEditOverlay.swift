@@ -130,7 +130,6 @@ struct DeeplinkEditOverlay: View {
             withAnimation(.easeInOut(duration: animationDuration)) {
                 isShowing = false
             } completion: {
-                viewModel.overlayState = nil
                 onDismiss()
             }
         } else {
@@ -138,7 +137,6 @@ struct DeeplinkEditOverlay: View {
                 isShowing = false
             }
             DispatchQueue.main.asyncAfter(deadline: .now() + animationDuration) {
-                viewModel.overlayState = nil
                 onDismiss()
             }
         }
