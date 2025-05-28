@@ -17,7 +17,7 @@ enum ContentViewModelState: Equatable {
 
 enum ContentViewModelOverlayState: Equatable {
     case error(DeeplinkError)
-    case edit(for: DeeplinkGroup)
+    case edit(_ deeplink: Deeplink, for: DeeplinkGroup)
     case create(for: DeeplinkGroup)
     case section
 }
@@ -39,7 +39,7 @@ class ContentViewModel: ObservableObject {
     @Published var shouldPresentErrorAlert: Bool = false
     @Published var shouldPresentEditOverlay: Bool = false
 
-    @Published var editingItem = Deeplink(title: "", url: "")
+    @Published var lastCreatedItemId: String?
 
     private var database: DatabaseProtocol
     private var bag: Set<AnyCancellable> = []
@@ -112,35 +112,51 @@ class ContentViewModel: ObservableObject {
         }
     }
 
-    func update() {
-        switch overlayState {
-        case .edit(let group):
-            update(editingItem, in: group)
-        case .create(let group):
-            update(editingItem, in: group)
-        case .section:
-            break
-        default:
-            break
+    func update(_ deeplink: Deeplink, in group: DeeplinkGroup) {
+        guard var deeplinkGroups else { return }
+
+        if let groupIndex = deeplinkGroups.firstIndex(where: { group == $0 }) {
+            var group = deeplinkGroups[groupIndex]
+            if let index = group.deeplinks?.firstIndex(where: { deeplink == $0 }) {
+                group.deeplinks?[index] = deeplink
+                deeplinkGroups[groupIndex] = group
+                database.update(group: deeplinkGroups)
+            } else {
+                // deeplink entry not found, might have been deleted, append to group
+                append(deeplink, to: group)
+            }
+        } else {
+            // TODO: HANDLE group entry not found, might have been deleted
         }
+    }
+
+    func append(_ deeplink: Deeplink, to group: DeeplinkGroup) {
+        guard var deeplinkGroups else { return }
+
+        if let groupIndex = deeplinkGroups.firstIndex(where: { group == $0 }) {
+            var group = deeplinkGroups[groupIndex]
+            var deeplinks = group.deeplinks ?? []
+            deeplinks.append(deeplink)
+            group.deeplinks = deeplinks
+            deeplinkGroups[groupIndex] = group
+            database.update(group: deeplinkGroups)
+            lastCreatedItemId = itemIdFor(group: group, deeplink: deeplink)
+        } else {
+            // TODO: HANDLE group entry not found, might have been deleted
+        }
+    }
+
+    func append(group: DeeplinkGroup) {
+        guard var deeplinkGroups else { return }
+
+        deeplinkGroups.append(group)
+        database.update(group: deeplinkGroups)
+        lastCreatedItemId = itemIdFor(group: group)
     }
 
     func itemIdFor(group: DeeplinkGroup, deeplink: Deeplink? = nil) -> String {
         guard let deeplink else { return group.title }
         return group.title + deeplink.title + deeplink.url
-    }
-
-    var editingItemId: String? {
-        switch overlayState {
-        case .edit(let group):
-            itemIdFor(group: group, deeplink: editingItem)
-        case .create(let group):
-            itemIdFor(group: group, deeplink: editingItem)
-        case .section:
-            nil
-        default:
-            nil
-        }
     }
 
     private func setupListener() {
@@ -177,22 +193,5 @@ class ContentViewModel: ObservableObject {
     private func clearUserData() {
         user = ""
         pwd = ""
-    }
-
-    private func update(_ deeplink: Deeplink, in group: DeeplinkGroup) {
-        guard var deeplinkGroups else { return }
-
-        if let groupIndex = deeplinkGroups.firstIndex(where: { group == $0 }) {
-            var group = deeplinkGroups[groupIndex]
-            if let index = group.deeplinks?.firstIndex(where: { deeplink == $0 }) {
-                group.deeplinks?[index] = deeplink
-            } else {
-                group.deeplinks?.append(deeplink)
-            }
-            deeplinkGroups[groupIndex] = group
-            self.database.update(group: deeplinkGroups)
-            return
-        }
-        // TODO: HANDLE case when editing group entry not found, database changed in the mean time
     }
 }

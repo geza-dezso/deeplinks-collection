@@ -17,6 +17,10 @@ struct DeeplinkEditOverlay: View {
     @State private var isShowing = false
     @FocusState private var focusedField: Field?
 
+    @State var sectionTitle: String = ""
+    @State var deeplinkTitle: String = ""
+    @State var deeplinkUrl: String = ""
+
     public var onDismiss: (() -> Void)
 
     private let spacing: CGFloat = isIPad ? 24 : 16
@@ -28,8 +32,25 @@ struct DeeplinkEditOverlay: View {
             return "Edit Deeplink"
         case .create:
             return "Create Deeplink"
+        case .section:
+            return "Create Section"
         default:
             return ""
+        }
+    }
+
+    init(viewModel: ContentViewModel, onDismiss: @escaping (() -> Void)) {
+        self.viewModel = viewModel
+        self.onDismiss = onDismiss
+
+        switch viewModel.overlayState {
+
+        case .edit(let deeplink, _):
+            deeplinkTitle = deeplink.title
+            deeplinkUrl = deeplink.url
+
+        default:
+            break
         }
     }
 
@@ -47,8 +68,13 @@ struct DeeplinkEditOverlay: View {
                                     .foregroundColor(.white)
                                 Spacer()
                                     .frame(height: spacing)
-                                titleTextField
-                                urlTextField
+
+                                if case .section = viewModel.overlayState {
+                                    sectionTitleTextField
+                                } else {
+                                    linkTitleTextField
+                                    linkUrlTextField
+                                }
                             }
 
                             Spacer()
@@ -75,11 +101,11 @@ struct DeeplinkEditOverlay: View {
         .ignoresSafeArea(.keyboard)
     }
 
-    private var titleTextField: some View {
+    private var linkTitleTextField: some View {
         TextField(
             "",
-            text: $viewModel.editingItem.title,
-            prompt: Text("Name").foregroundColor(.placeholderText)
+            text: $deeplinkTitle,
+            prompt: Text("Title").foregroundColor(.placeholderText)
         )
         .textFieldStyle(DeeplinkFieldStyle())
         .focused($focusedField, equals: .title)
@@ -88,10 +114,10 @@ struct DeeplinkEditOverlay: View {
         }
     }
 
-    private var urlTextField: some View {
+    private var linkUrlTextField: some View {
         TextField(
             "",
-            text: $viewModel.editingItem.url,
+            text: $deeplinkUrl,
             prompt: Text("Url").foregroundColor(.placeholderText)
         )
         .textFieldStyle(DeeplinkFieldStyle())
@@ -101,16 +127,29 @@ struct DeeplinkEditOverlay: View {
         }
     }
 
+    private var sectionTitleTextField: some View {
+        TextField(
+            "",
+            text: $sectionTitle,
+            prompt: Text("Title").foregroundColor(.placeholderText)
+        )
+        .textFieldStyle(DeeplinkFieldStyle())
+        .focused($focusedField, equals: .title)
+        .onSubmit {
+            focusedField = nil
+        }
+    }
+
     private var buttonsSection: some View {
         HStack {
             Button(action: {
-                viewModel.update()
+                update()
                 closeOverlay()
             }, label: {
                 Text("Save")
             })
             .buttonStyle(ActionButtonStyle())
-            .disabled(viewModel.editingItem.isEmpty)
+            .disabled((deeplinkTitle.isEmpty || deeplinkUrl.isEmpty) && sectionTitle.isEmpty)
 
             Spacer()
                 .frame(width: 32)
@@ -139,6 +178,26 @@ struct DeeplinkEditOverlay: View {
             DispatchQueue.main.asyncAfter(deadline: .now() + animationDuration) {
                 onDismiss()
             }
+        }
+    }
+
+    private func update() {
+        switch viewModel.overlayState {
+
+        case .edit(var deeplink, let group):
+            deeplink.title = deeplinkTitle
+            deeplink.url = deeplinkUrl
+            viewModel.update(deeplink, in: group)
+
+        case .create(let group):
+            let deeplink = Deeplink(title: deeplinkTitle, url: deeplinkUrl)
+            viewModel.append(deeplink, to: group)
+
+        case .section:
+            viewModel.append(group: DeeplinkGroup(title: deeplinkTitle))
+
+        default:
+            break
         }
     }
 }

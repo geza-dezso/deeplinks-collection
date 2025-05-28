@@ -39,8 +39,7 @@ struct DeeplinkItemView: View {
                 .itemSwipeActions(
                     state: $swipeState,
                     editAction: {
-                        viewModel.editingItem = deeplink
-                        viewModel.overlayState = .edit(for: group)
+                        viewModel.overlayState = .edit(deeplink, for: group)
                     }, deleteAction: {
                         viewModel.overlayState = .error(DeeplinkError(.comingSoon))
                     })

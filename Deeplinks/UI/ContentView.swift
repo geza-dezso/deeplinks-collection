@@ -15,7 +15,7 @@ struct ContentView: View {
     @ObservedObject var viewModel: ContentViewModel
     @State private var isLogoutDisabled: Bool = true
     @State private var isPresentingLogoutConfirmation: Bool = false
-    @State private var lastCreatedItemId: String?
+    @State private var triggerItemCreated: Bool = false
     private let titlePadding: CGFloat = isTV ? 16 : isIPad ? 12 : 8
     private let scrollViewGradientHeight: CGFloat = isTV ? 48 : isIPad ? 32 : 24
 
@@ -61,9 +61,9 @@ struct ContentView: View {
                                 .mask {
                                     TopBottomGradientView(gradientHeight: scrollViewGradientHeight)
                                 }
-                                .onChange(of: lastCreatedItemId) { _ in
+                                .onChange(of: triggerItemCreated) { _ in
                                     withAnimation {
-                                        reader.scrollTo(lastCreatedItemId, anchor: .bottom)
+                                        reader.scrollTo(viewModel.lastCreatedItemId, anchor: .bottom)
                                     }
                                 }
                             }
@@ -239,8 +239,11 @@ extension ContentView {
             DeeplinkEditOverlay(
                 viewModel: viewModel,
                 onDismiss: {
-                    if case .create = viewModel.overlayState {
-                        lastCreatedItemId = viewModel.editingItemId
+                    switch viewModel.overlayState {
+                    case .create, .section:
+                        triggerItemCreated.toggle()
+                    default:
+                        break
                     }
                     viewModel.overlayState = nil
                     resetEditing()
@@ -252,7 +255,6 @@ extension ContentView {
 
     private func resetEditing() {
         swipeState = .swiped(UUID())
-        viewModel.editingItem = Deeplink(title: "", url: "")
     }
 }
 
