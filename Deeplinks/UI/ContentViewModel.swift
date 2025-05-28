@@ -156,7 +156,7 @@ class ContentViewModel: ObservableObject {
 
     func itemIdFor(group: DeeplinkGroup, deeplink: Deeplink? = nil) -> String {
         guard let deeplink else { return group.title }
-        return group.title + deeplink.title + deeplink.url
+        return "\(group.title)_\(deeplink.title)_\(deeplink.url)"
     }
 
     private func setupListener() {
