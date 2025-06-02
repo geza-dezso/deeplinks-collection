@@ -103,7 +103,7 @@ struct ContentView: View {
         }
         .onReceive(NotificationCenter.default.publisher(for: UIScene.didEnterBackgroundNotification)) { _ in
             if viewModel.overlayState == nil {
-                resetEditing()
+                resetSwipeState()
             }
         }
     }
@@ -207,7 +207,7 @@ extension ContentView {
             Spacer()
 
             Button {
-                resetEditing()
+                resetSwipeState()
                 viewModel.overlayState = .create(for: group)
             } label: {
                 Image(systemName: "plus")
@@ -238,6 +238,9 @@ extension ContentView {
         ZStack {
             DeeplinkEditOverlay(
                 viewModel: viewModel,
+                willDismiss: {
+                    resetSwipeState()
+                },
                 onDismiss: {
                     switch viewModel.overlayState {
                     case .create, .section:
@@ -246,14 +249,13 @@ extension ContentView {
                         break
                     }
                     viewModel.overlayState = nil
-                    resetEditing()
                 }
             )
             .overlayBackground(.black.opacity(0.5))
         }
     }
 
-    private func resetEditing() {
+    private func resetSwipeState() {
         swipeState = .swiped(UUID())
     }
 }
@@ -312,7 +314,7 @@ extension ContentView {
         }
     }
 
-    private func resetEditing() {}
+    private func resetSwipeState() {}
 }
 
 #endif

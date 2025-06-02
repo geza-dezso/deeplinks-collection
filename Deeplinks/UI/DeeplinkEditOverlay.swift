@@ -21,7 +21,8 @@ struct DeeplinkEditOverlay: View {
     @State var deeplinkTitle: String = ""
     @State var deeplinkUrl: String = ""
 
-    public var onDismiss: (() -> Void)
+    public var willDismiss: (() -> Void)?
+    public var onDismiss: (() -> Void)?
 
     private let spacing: CGFloat = isIPad ? 24 : 16
     private let animationDuration = 0.25
@@ -39,8 +40,9 @@ struct DeeplinkEditOverlay: View {
         }
     }
 
-    init(viewModel: ContentViewModel, onDismiss: @escaping (() -> Void)) {
+    init(viewModel: ContentViewModel, willDismiss: (() -> Void)? = nil, onDismiss: (() -> Void)? = nil) {
         self.viewModel = viewModel
+        self.willDismiss = willDismiss
         self.onDismiss = onDismiss
 
         switch viewModel.overlayState {
@@ -165,18 +167,19 @@ struct DeeplinkEditOverlay: View {
 
     private func closeOverlay() {
         focusedField = nil
+        willDismiss?()
         if #available(iOS 17.0, *) {
             withAnimation(.easeInOut(duration: animationDuration)) {
                 isShowing = false
             } completion: {
-                onDismiss()
+                onDismiss?()
             }
         } else {
             withAnimation(.easeInOut(duration: animationDuration)) {
                 isShowing = false
             }
             DispatchQueue.main.asyncAfter(deadline: .now() + animationDuration) {
-                onDismiss()
+                onDismiss?()
             }
         }
     }
