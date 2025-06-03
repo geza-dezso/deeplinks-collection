@@ -42,7 +42,7 @@ class ContentViewModel: ObservableObject {
     @Published var lastCreatedItemId: String?
     @Published var highlightedItemId: String?
 
-    @Published var isSaving = false
+    @Published var isUpdating = false
 
     private var database: DatabaseProtocol
     private var bag: Set<AnyCancellable> = []
@@ -123,7 +123,7 @@ class ContentViewModel: ObservableObject {
             if let index = group.deeplinks?.firstIndex(where: { deeplink == $0 }) {
                 group.deeplinks?[index] = deeplink
                 deeplinkGroups[groupIndex] = group
-                isSaving = true
+                isUpdating = true
                 database.update(group: deeplinkGroups) {}
             } else {
                 // deeplink entry not found, might have been deleted, append to group
@@ -143,7 +143,7 @@ class ContentViewModel: ObservableObject {
             deeplinks.append(deeplink)
             group.deeplinks = deeplinks
             deeplinkGroups[groupIndex] = group
-            isSaving = true
+            isUpdating = true
             database.update(group: deeplinkGroups) { [weak self] in
                 guard let self = self else { return }
                 DispatchQueue.main.async {
@@ -159,7 +159,7 @@ class ContentViewModel: ObservableObject {
         guard var deeplinkGroups else { return }
 
         deeplinkGroups.append(group)
-        isSaving = true
+        isUpdating = true
         database.update(group: deeplinkGroups) { [weak self] in
             guard let self = self else { return }
             DispatchQueue.main.async {
@@ -181,9 +181,7 @@ class ContentViewModel: ObservableObject {
             .sink { [weak self] status in
                 guard let self = self else { return }
 
-                withAnimation {
-                    self.isSaving = false
-                }
+                self.isUpdating = false
 
                 switch status {
                 case .success(let deeplinkGroups):

@@ -73,7 +73,7 @@ struct DeeplinkEditOverlay: View {
                     Spacer()
 
                     VStack {
-                        if isShowing || viewModel.isSaving {
+                        if isShowing {
                             ZStack {
                                 VStack {
                                     VStack {
@@ -98,14 +98,6 @@ struct DeeplinkEditOverlay: View {
                                 }
                                 .padding(spacing)
                                 .background(Color.mainBackground)
-
-                                if viewModel.isSaving {
-                                    ZStack {
-                                        Color.black.opacity(0.5)
-                                        ProgressView()
-                                    }
-
-                                }
                             }
                             .transition(.scale.animation(.easeInOut(duration: animationDuration)))
                         }
@@ -122,6 +114,14 @@ struct DeeplinkEditOverlay: View {
                 }
             }
             .ignoresSafeArea(.keyboard)
+
+            if viewModel.isUpdating {
+                Color.black.opacity(0.3)
+                    .ignoresSafeArea(.all)
+                ProgressView()
+                    .tint(.white)
+                    .offset(y: isIPad ? (horizontalSizeClass == .compact ? -128 : -192) : -64)
+            }
         }
     }
 
