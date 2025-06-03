@@ -15,7 +15,6 @@ struct ContentView: View {
     @ObservedObject var viewModel: ContentViewModel
     @State private var isLogoutDisabled: Bool = true
     @State private var isPresentingLogoutConfirmation: Bool = false
-    @State private var triggerItemCreated: Bool = false
     private let titlePadding: CGFloat = isTV ? 16 : isIPad ? 12 : 8
     private let scrollViewGradientHeight: CGFloat = isTV ? 48 : isIPad ? 32 : 24
 
@@ -61,9 +60,26 @@ struct ContentView: View {
                                 .mask {
                                     TopBottomGradientView(gradientHeight: scrollViewGradientHeight)
                                 }
-                                .onChange(of: triggerItemCreated) { _ in
-                                    withAnimation {
-                                        reader.scrollTo(viewModel.lastCreatedItemId, anchor: .bottom)
+                                .onChange(of: viewModel.lastCreatedItemId) { _ in
+                                    if #available(iOS 17.0, *) {
+                                        withAnimation {
+                                            reader.scrollTo(viewModel.lastCreatedItemId, anchor: .bottom)
+                                        } completion: {
+                                            viewModel.highlightedItemId = viewModel.lastCreatedItemId
+                                            withAnimation( .linear(duration: 1.0)) {
+                                                viewModel.highlightedItemId = nil
+                                            }
+                                        }
+                                    } else {
+                                        withAnimation {
+                                            reader.scrollTo(viewModel.lastCreatedItemId, anchor: .bottom)
+                                        }
+                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                                            viewModel.highlightedItemId = viewModel.lastCreatedItemId
+                                            withAnimation( .linear(duration: 1.0)) {
+                                                viewModel.highlightedItemId = nil
+                                            }
+                                        }
                                     }
                                 }
                             }
@@ -78,11 +94,8 @@ struct ContentView: View {
                     }
                 }
                 #if os(iOS)
-                .fullScreenCover(isPresented: $viewModel.shouldPresentEditOverlay) {
+                if viewModel.shouldPresentEditOverlay {
                     editOverlay
-                }
-                .transaction { transaction in
-                    transaction.disablesAnimations = true
                 }
                 #endif
             }
@@ -242,16 +255,9 @@ extension ContentView {
                     resetSwipeState()
                 },
                 onDismiss: {
-                    switch viewModel.overlayState {
-                    case .create, .section:
-                        triggerItemCreated.toggle()
-                    default:
-                        break
-                    }
                     viewModel.overlayState = nil
                 }
             )
-            .overlayBackground(.black.opacity(0.5))
         }
     }
 

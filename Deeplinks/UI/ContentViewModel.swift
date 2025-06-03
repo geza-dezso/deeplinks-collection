@@ -40,6 +40,9 @@ class ContentViewModel: ObservableObject {
     @Published var shouldPresentEditOverlay: Bool = false
 
     @Published var lastCreatedItemId: String?
+    @Published var highlightedItemId: String?
+
+    @Published var isSaving = false
 
     private var database: DatabaseProtocol
     private var bag: Set<AnyCancellable> = []
@@ -120,7 +123,8 @@ class ContentViewModel: ObservableObject {
             if let index = group.deeplinks?.firstIndex(where: { deeplink == $0 }) {
                 group.deeplinks?[index] = deeplink
                 deeplinkGroups[groupIndex] = group
-                database.update(group: deeplinkGroups)
+                isSaving = true
+                database.update(group: deeplinkGroups) {}
             } else {
                 // deeplink entry not found, might have been deleted, append to group
                 append(deeplink, to: group)
@@ -139,8 +143,13 @@ class ContentViewModel: ObservableObject {
             deeplinks.append(deeplink)
             group.deeplinks = deeplinks
             deeplinkGroups[groupIndex] = group
-            database.update(group: deeplinkGroups)
-            lastCreatedItemId = itemIdFor(group: group, deeplink: deeplink)
+            isSaving = true
+            database.update(group: deeplinkGroups) { [weak self] in
+                guard let self = self else { return }
+                DispatchQueue.main.async {
+                    self.lastCreatedItemId = self.itemIdFor(group: group, deeplink: deeplink)
+                }
+            }
         } else {
             // TODO: HANDLE group entry not found, might have been deleted
         }
@@ -150,8 +159,13 @@ class ContentViewModel: ObservableObject {
         guard var deeplinkGroups else { return }
 
         deeplinkGroups.append(group)
-        database.update(group: deeplinkGroups)
-        lastCreatedItemId = itemIdFor(group: group)
+        isSaving = true
+        database.update(group: deeplinkGroups) { [weak self] in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                self.lastCreatedItemId = self.itemIdFor(group: group)
+            }
+        }
     }
 
     func itemIdFor(group: DeeplinkGroup, deeplink: Deeplink? = nil) -> String {
@@ -166,6 +180,10 @@ class ContentViewModel: ObservableObject {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] status in
                 guard let self = self else { return }
+
+                withAnimation {
+                    self.isSaving = false
+                }
 
                 switch status {
                 case .success(let deeplinkGroups):

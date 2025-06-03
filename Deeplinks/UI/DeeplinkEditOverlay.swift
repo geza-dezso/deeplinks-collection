@@ -18,14 +18,16 @@ struct DeeplinkEditOverlay: View {
     @FocusState private var focusedField: Field?
 
     @State var sectionTitle: String = ""
-    @State var deeplinkTitle: String = ""
-    @State var deeplinkUrl: String = ""
+    @State var deeplinkTitle: String
+    @State var deeplinkUrl: String
 
     public var willDismiss: (() -> Void)?
     public var onDismiss: (() -> Void)?
 
     private let spacing: CGFloat = isIPad ? 24 : 16
-    private let animationDuration = 0.25
+    private let animationDuration = 0.3
+
+    private var editedDeeplink: Deeplink?
 
     private var title: String {
         switch viewModel.overlayState {
@@ -48,59 +50,79 @@ struct DeeplinkEditOverlay: View {
         switch viewModel.overlayState {
 
         case .edit(let deeplink, _):
+            editedDeeplink = deeplink
             deeplinkTitle = deeplink.title
             deeplinkUrl = deeplink.url
 
         default:
-            break
+            deeplinkTitle = ""
+            deeplinkUrl = ""
         }
     }
 
     var body: some View {
-        GeometryReader { _ in
-            VStack {
-                Spacer()
+        ZStack {
 
+            if isShowing {
+                Color.black.opacity(0.5)
+                    .ignoresSafeArea(.all)
+            }
+
+            GeometryReader { _ in
                 VStack {
-                    if isShowing {
-                        VStack {
-                            VStack {
-                                Text(title)
-                                    .font(primary)
-                                    .foregroundColor(.white)
-                                Spacer()
-                                    .frame(height: spacing)
+                    Spacer()
 
-                                if case .section = viewModel.overlayState {
-                                    sectionTitleTextField
-                                } else {
-                                    linkTitleTextField
-                                    linkUrlTextField
+                    VStack {
+                        if isShowing || viewModel.isSaving {
+                            ZStack {
+                                VStack {
+                                    VStack {
+                                        Text(title)
+                                            .font(primary)
+                                            .foregroundColor(.white)
+                                        Spacer()
+                                            .frame(height: spacing)
+
+                                        if case .section = viewModel.overlayState {
+                                            sectionTitleTextField
+                                        } else {
+                                            linkTitleTextField
+                                            linkUrlTextField
+                                        }
+                                    }
+
+                                    Spacer()
+                                        .frame(height: spacing)
+
+                                    buttonsSection
+                                }
+                                .padding(spacing)
+                                .background(Color.mainBackground)
+
+                                if viewModel.isSaving {
+                                    ZStack {
+                                        Color.black.opacity(0.5)
+                                        ProgressView()
+                                    }
+
                                 }
                             }
-
-                            Spacer()
-                                .frame(height: spacing)
-
-                            buttonsSection
+                            .transition(.scale.animation(.easeInOut(duration: animationDuration)))
                         }
-                        .padding(spacing)
-                        .background(Color.mainBackground)
-                        .transition(.scale.animation(.easeInOut(duration: animationDuration)))
                     }
-                }
-                .cornerRadius(8)
-                .padding(.horizontal, isIPad ? 16 : 8)
-                .offset(y: isIPad ? (horizontalSizeClass == .compact ? -128 : -192) : -64)
+                    .cornerRadius(8)
+                    .padding(.horizontal, isIPad ? 16 : 8)
+                    .offset(y: isIPad ? (horizontalSizeClass == .compact ? -128 : -192) : -64)
 
-                Spacer()
+                    Spacer()
+                }
+                .onAppear {
+                    isShowing = true
+                    focusedField = .title
+                }
             }
-            .onAppear {
-                isShowing = true
-                focusedField = .title
-            }
+            .ignoresSafeArea(.keyboard)
         }
-        .ignoresSafeArea(.keyboard)
     }
 
     private var linkTitleTextField: some View {
@@ -145,7 +167,11 @@ struct DeeplinkEditOverlay: View {
     private var buttonsSection: some View {
         HStack {
             Button(action: {
-                update()
+                if let editedDeeplink, editedDeeplink.title == deeplinkTitle, editedDeeplink.url == deeplinkUrl {
+
+                } else {
+                    update()
+                }
                 closeOverlay()
             }, label: {
                 Text("Save")
@@ -197,7 +223,7 @@ struct DeeplinkEditOverlay: View {
             viewModel.append(deeplink, to: group)
 
         case .section:
-            viewModel.append(group: DeeplinkGroup(title: deeplinkTitle))
+            viewModel.append(group: DeeplinkGroup(title: sectionTitle))
 
         default:
             break

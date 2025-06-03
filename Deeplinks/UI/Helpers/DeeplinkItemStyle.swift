@@ -10,22 +10,24 @@ import SwiftUI
 struct DeeplinkItemStyle: ButtonStyle {
 
     var padding: CGFloat = 0
+    let isHighlighted: Bool
 
     func makeBody(configuration: Configuration) -> some View {
-        return DeeplinkItem(configuration: configuration, padding: padding)
+        return DeeplinkItem(configuration: configuration, padding: padding, isHighlighted: isHighlighted)
     }
 
     struct DeeplinkItem: View {
 
         let configuration: ButtonStyle.Configuration
         let padding: CGFloat
+        let isHighlighted: Bool
 
         #if os(iOS)
 
         var body: some View {
             configuration.label
                 .padding(padding)
-                .background(Color.black)
+                .background(isHighlighted ? Color(red: 0.0, green: 0.30, blue: 0.40) : Color.black)
                 .cornerRadius(4)
         }
 

@@ -46,7 +46,9 @@ struct DeeplinkItemView: View {
                 #endif
 
             }
-            .buttonStyle(DeeplinkItemStyle())
+            .buttonStyle(
+                DeeplinkItemStyle(isHighlighted: isHighlighted)
+            )
         }
         .listRowBackground(Color.clear)
     }
@@ -63,5 +65,9 @@ struct DeeplinkItemView: View {
             .font(secondary)
             .foregroundColor(.secondaryText)
             .multilineTextAlignment(.leading)
+    }
+
+    private var isHighlighted: Bool {
+        viewModel.highlightedItemId == viewModel.itemIdFor(group: group, deeplink: deeplink)
     }
 }
