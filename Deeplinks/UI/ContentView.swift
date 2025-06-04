@@ -15,7 +15,6 @@ struct ContentView: View {
     @ObservedObject var viewModel: ContentViewModel
     @State private var isLogoutDisabled: Bool = true
     @State private var isPresentingLogoutConfirmation: Bool = false
-
     private let titlePadding: CGFloat = isTV ? 16 : isIPad ? 12 : 8
     private let scrollViewGradientHeight: CGFloat = isTV ? 48 : isIPad ? 32 : 24
 
@@ -42,20 +41,47 @@ struct ContentView: View {
                             .padding(.horizontal, 16)
 
                         if let groups = viewModel.deeplinkGroups {
+                            ScrollViewReader { reader in
+                                ScrollView(.vertical, showsIndicators: false) {
+                                    VStack(spacing: isTV ? 8 : isIPad ? 4 : 2) {
+                                        ForEach(groups, id: \.self) { group in
+                                            groupContent(for: group)
+                                        }
+                                        .padding(.horizontal, isTV ? 16 : 0)
 
-                            ScrollView(.vertical, showsIndicators: false) {
-                                VStack(spacing: isTV ? 8 : isIPad ? 4 : 2) {
-                                    ForEach(groups, id: \.self) { group in
-                                        groupContent(for: group)
+                                        #if os(iOS)
+                                        newSectionButton
+                                        #endif
                                     }
-                                    .padding(.horizontal, isTV ? 16 : 0)
+                                    .padding(.top, 8)
+                                    .padding(.bottom, scrollViewGradientHeight - 8)
                                 }
-                            }
-                            .padding(.top, 8)
-                            .padding(.horizontal, isTV ? 0 : 16)
-                            .padding(.bottom, scrollViewGradientHeight - 8)
-                            .mask {
-                                TopBottomGradientView(gradientHeight: scrollViewGradientHeight)
+                                .padding(.horizontal, isTV ? 0 : 16)
+                                .mask {
+                                    TopBottomGradientView(gradientHeight: scrollViewGradientHeight)
+                                }
+                                .onChange(of: viewModel.lastCreatedItemId) { _ in
+                                    if #available(iOS 17.0, tvOS 17.0, *) {
+                                        withAnimation {
+                                            reader.scrollTo(viewModel.lastCreatedItemId, anchor: .bottom)
+                                        } completion: {
+                                            viewModel.highlightedItemId = viewModel.lastCreatedItemId
+                                            withAnimation( .linear(duration: 1.0)) {
+                                                viewModel.highlightedItemId = nil
+                                            }
+                                        }
+                                    } else {
+                                        withAnimation {
+                                            reader.scrollTo(viewModel.lastCreatedItemId, anchor: .bottom)
+                                        }
+                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                                            viewModel.highlightedItemId = viewModel.lastCreatedItemId
+                                            withAnimation( .linear(duration: 1.0)) {
+                                                viewModel.highlightedItemId = nil
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         }
 
@@ -68,11 +94,8 @@ struct ContentView: View {
                     }
                 }
                 #if os(iOS)
-                .fullScreenCover(isPresented: $viewModel.shouldPresentEditOverlay) {
+                if viewModel.shouldPresentEditOverlay {
                     editOverlay
-                }
-                .transaction { transaction in
-                    transaction.disablesAnimations = true
                 }
                 #endif
             }
@@ -93,7 +116,7 @@ struct ContentView: View {
         }
         .onReceive(NotificationCenter.default.publisher(for: UIScene.didEnterBackgroundNotification)) { _ in
             if viewModel.overlayState == nil {
-                resetEditing()
+                resetSwipeState()
             }
         }
     }
@@ -135,7 +158,7 @@ extension ContentView {
 
     @ViewBuilder
     private var userSection: some View {
-        let iconSize: CGFloat = 32
+        let iconSize: CGFloat = isIPad ? 40 : 32
 
         Button(action: {
             isPresentingLogoutConfirmation = true
@@ -148,9 +171,9 @@ extension ContentView {
                 Text(viewModel.user)
                     .font(primary)
                     .foregroundColor(.primaryText)
-                    .padding(.horizontal, isTV ? 24 : 12)
+                    .padding(.horizontal, isTV ? 24 : 16)
             }
-            .background(Color.itemBackground)
+            .background(Color.buttonBackground)
             .cornerRadius(iconSize/2)
             .overlay(
                 RoundedRectangle(cornerRadius: iconSize/2)
@@ -177,9 +200,11 @@ extension ContentView {
                         group: group,
                         padding: titlePadding
                     )
+                    .id(viewModel.itemIdFor(group: group, deeplink: deeplink))
                 }
             }
         }
+        .id(viewModel.itemIdFor(group: group))
     }
 
     @ViewBuilder
@@ -195,7 +220,7 @@ extension ContentView {
             Spacer()
 
             Button {
-                resetEditing()
+                resetSwipeState()
                 viewModel.overlayState = .create(for: group)
             } label: {
                 Image(systemName: "plus")
@@ -207,21 +232,39 @@ extension ContentView {
     }
 
     @ViewBuilder
+    private var newSectionButton: some View {
+        HStack {
+            Button {
+                viewModel.overlayState = .section
+            } label: {
+                Image(systemName: "plus")
+                    .foregroundColor(.white)
+                    .frame(maxHeight: .infinity)
+                    .padding(.horizontal, titlePadding)
+            }
+            .padding(EdgeInsets(top: 16, leading: 2, bottom: 2, trailing: 0))
+
+            Spacer()
+        }
+    }
+
+    @ViewBuilder
     private var editOverlay: some View {
         ZStack {
             DeeplinkEditOverlay(
                 viewModel: viewModel,
+                willDismiss: {
+                    resetSwipeState()
+                },
                 onDismiss: {
-                    resetEditing()
+                    viewModel.overlayState = nil
                 }
             )
-            .overlayBackground(.black.opacity(0.5))
         }
     }
 
-    private func resetEditing() {
+    private func resetSwipeState() {
         swipeState = .swiped(UUID())
-        viewModel.editingItem = Deeplink(title: "", url: "")
     }
 }
 
@@ -260,7 +303,7 @@ extension ContentView {
         Section(header: sectionHeaderView(group.title)) {
             if let deeplinks = group.deeplinks {
                 ForEach(deeplinks, id: \.self) { deeplink in
-                    DeeplinkItemView(deeplink: deeplink, padding: titlePadding)
+                    DeeplinkItemView(deeplink: deeplink, group: group, padding: titlePadding)
                 }
             }
         }
@@ -279,7 +322,7 @@ extension ContentView {
         }
     }
 
-    private func resetEditing() {}
+    private func resetSwipeState() {}
 }
 
 #endif

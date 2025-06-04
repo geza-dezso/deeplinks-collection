@@ -39,15 +39,16 @@ struct DeeplinkItemView: View {
                 .itemSwipeActions(
                     state: $swipeState,
                     editAction: {
-                        viewModel.editingItem = deeplink
-                        viewModel.overlayState = .edit(for: group)
+                        viewModel.overlayState = .edit(deeplink, for: group)
                     }, deleteAction: {
                         viewModel.overlayState = .error(DeeplinkError(.comingSoon))
                     })
                 #endif
 
             }
-            .buttonStyle(DeeplinkItemStyle())
+            .buttonStyle(
+                DeeplinkItemStyle(isHighlighted: isHighlighted)
+            )
         }
         .listRowBackground(Color.clear)
     }
@@ -64,5 +65,13 @@ struct DeeplinkItemView: View {
             .font(secondary)
             .foregroundColor(.secondaryText)
             .multilineTextAlignment(.leading)
+    }
+
+    private var isHighlighted: Bool {
+        #if os(iOS)
+        viewModel.highlightedItemId == viewModel.itemIdFor(group: group, deeplink: deeplink)
+        #else
+        false
+        #endif
     }
 }
