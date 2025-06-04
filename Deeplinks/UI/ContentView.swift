@@ -61,7 +61,7 @@ struct ContentView: View {
                                     TopBottomGradientView(gradientHeight: scrollViewGradientHeight)
                                 }
                                 .onChange(of: viewModel.lastCreatedItemId) { _ in
-                                    if #available(iOS 17.0, *) {
+                                    if #available(iOS 17.0, tvOS 17.0, *) {
                                         withAnimation {
                                             reader.scrollTo(viewModel.lastCreatedItemId, anchor: .bottom)
                                         } completion: {
