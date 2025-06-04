@@ -234,12 +234,14 @@ extension ContentView {
     @ViewBuilder
     private var newSectionButton: some View {
         HStack {
-            Button(action: {
+            Button {
                 viewModel.overlayState = .section
-            }, label: {
-                Text("New section")
-            })
-            .buttonStyle(ActionButtonStyle())
+            } label: {
+                Image(systemName: "plus")
+                    .foregroundColor(.white)
+                    .frame(maxHeight: .infinity)
+                    .padding(.horizontal, titlePadding)
+            }
             .padding(EdgeInsets(top: 16, leading: 2, bottom: 2, trailing: 0))
 
             Spacer()
