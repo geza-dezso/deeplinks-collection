@@ -24,7 +24,7 @@ enum PwdCheckOptions {
 protocol DatabaseProtocol {
 
     func updatesPublisher(user: String, pwd: String) -> AnyPublisher<DatabaseQueryStatus, Never>
-    func update(group: [DeeplinkGroup], completion: (() -> Void)?)
+    func update(content: [DeeplinkGroup]) async throws
 }
 
 class FirebaseDatabase: DatabaseProtocol {
@@ -122,18 +122,16 @@ class FirebaseDatabase: DatabaseProtocol {
         }
     }
 
-    public func update(group: [DeeplinkGroup], completion: (() -> Void)?) {
+    public func update(content: [DeeplinkGroup]) async throws {
         if var collection = collection, let index = collection.firstIndex(where: { $0.user == user }) {
-            collection[index].groups = group
-            Task {
-                do {
-                    try await Database.database().reference().child("content").setValue(collection.map({ $0.asDictionary }))
-                    completion?()
-                } catch {
-                    updateStatus()
-                }
+            collection[index].groups = content
+            do {
+                try await Database.database().reference().child("content").setValue(collection.map({ $0.asDictionary }))
+            } catch {
+                throw DeeplinkError(.updateFailed)
             }
+        } else {
+            throw DeeplinkError(.updateFailed)
         }
-        // TODO: HANDLE error cases
     }
 }
