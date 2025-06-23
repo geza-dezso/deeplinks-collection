@@ -123,15 +123,16 @@ class FirebaseDatabase: DatabaseProtocol {
     }
 
     public func update(content: [DeeplinkGroup]) async throws {
-        if var collection = collection, let index = collection.firstIndex(where: { $0.user == user }) {
-            collection[index].groups = content
-            do {
-                try await Database.database().reference().child("content").setValue(collection.map({ $0.asDictionary }))
-            } catch {
-                throw DeeplinkError(.updateFailed)
-            }
-        } else {
-            throw DeeplinkError(.updateFailed)
+        guard var collection = collection, let index = collection.firstIndex(where: { $0.user == user }) else {
+            updateStatus()
+            return
+        }
+
+        collection[index].groups = content
+        do {
+            try await Database.database().reference().child("content").setValue(collection.map({ $0.asDictionary }))
+        } catch {
+            status = .error(DeeplinkError(.updateFailed))
         }
     }
 }

@@ -167,9 +167,7 @@ struct DeeplinkEditOverlay: View {
     private var buttonsSection: some View {
         HStack {
             Button(action: {
-                if let editedDeeplink, editedDeeplink.title == deeplinkTitle, editedDeeplink.url == deeplinkUrl {
-
-                } else {
+                if hasChanged {
                     update()
                 }
                 closeOverlay()
@@ -228,5 +226,12 @@ struct DeeplinkEditOverlay: View {
         default:
             break
         }
+    }
+
+    private var hasChanged: Bool {
+        if let editedDeeplink, editedDeeplink.title == deeplinkTitle, editedDeeplink.url == deeplinkUrl {
+            return false
+        }
+        return true
     }
 }

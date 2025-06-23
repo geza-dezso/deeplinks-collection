@@ -16,29 +16,23 @@ enum ContentViewModelState: Equatable {
 }
 
 enum ContentViewModelOverlayState: Equatable {
-    case error(DeeplinkError)
     case edit(_ deeplink: Deeplink, for: DeeplinkGroup)
     case create(for: DeeplinkGroup)
     case section
 }
 
-@MainActor
+enum ContentViewModelAlertState: Equatable {
+    case error(DeeplinkError)
+}
+
 class ContentViewModel: ObservableObject {
 
     @Published var deeplinkGroups: [DeeplinkGroup]?
     @Published var user: String = ""
     @Published var pwd: String = ""
     @Published var state: ContentViewModelState = .initial
-    @Published var overlayState: ContentViewModelOverlayState? {
-        didSet {
-            if overlayState != oldValue {
-                shouldPresentErrorAlert = hasError
-                shouldPresentEditOverlay = hasOverlay
-            }
-        }
-    }
-    @Published var shouldPresentErrorAlert: Bool = false
-    @Published var shouldPresentEditOverlay: Bool = false
+    @Published var overlayState: ContentViewModelOverlayState?
+    @Published var alertState: ContentViewModelAlertState?
 
     @Published var lastCreatedItemId: String?
     @Published var highlightedItemId: String?
@@ -53,20 +47,6 @@ class ContentViewModel: ObservableObject {
     init(database: DatabaseProtocol) {
         self.database = database
         self.userTokenHandler = UserTokenHandler()
-    }
-
-    var hasError: Bool {
-        guard case .error = overlayState else { return false }
-        return true
-    }
-
-    var hasOverlay: Bool {
-        switch overlayState {
-        case .edit, .create, .section:
-            return true
-        default:
-            return false
-        }
     }
 
     func onAppear() {
@@ -193,20 +173,16 @@ class ContentViewModel: ObservableObject {
             }
     }
 
-    private func update(content: [DeeplinkGroup], completion: (() -> Void)? = nil) {
-        isUpdating = true
-        Task {
+    private func update(content: [DeeplinkGroup], onSuccess: (() -> Void)? = nil) {
+        Task { @MainActor in
+            isUpdating = true
             do {
                 try await database.update(content: content)
                 isUpdating = false
-                completion?()
-            } catch let error {
+                onSuccess?()
+            } catch {
                 isUpdating = false
-                if let deeplinkError = error as? DeeplinkError {
-                    handleError(deeplinkError)
-                } else {
-                    handleError(DeeplinkError(.updateFailed))
-                }
+                handleError(DeeplinkError(.updateFailed))
             }
         }
     }
@@ -216,7 +192,7 @@ class ContentViewModel: ObservableObject {
             onEnterCredentials()
             return
         }
-        self.overlayState = .error(error)
+        self.alertState = .error(error)
     }
 
     private func clearUserData() {
