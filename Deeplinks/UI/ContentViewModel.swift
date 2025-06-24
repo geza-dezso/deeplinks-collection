@@ -106,8 +106,9 @@ class ContentViewModel: ObservableObject {
             if let index = group.deeplinks?.firstIndex(where: { deeplink == $0 }) {
                 group.deeplinks?[index] = deeplink
                 deeplinkGroups[groupIndex] = group
-
-                update(content: deeplinkGroups)
+                Task {
+                    await update(content: deeplinkGroups)
+                }
             } else {
                 // deeplink entry not found, might have been deleted, append to group
                 append(deeplink, to: group)
@@ -127,8 +128,10 @@ class ContentViewModel: ObservableObject {
             group.deeplinks = deeplinks
             deeplinkGroups[groupIndex] = group
 
-            update(content: deeplinkGroups) { [weak self] in
-                self?.lastCreatedItemId = self?.itemIdFor(group: group, deeplink: deeplink)
+            Task {
+                if await update(content: deeplinkGroups) {
+                    lastCreatedItemId = itemIdFor(group: group, deeplink: deeplink)
+                }
             }
         } else {
             // TODO: HANDLE group entry not found, might have been deleted
@@ -140,8 +143,10 @@ class ContentViewModel: ObservableObject {
 
         deeplinkGroups.append(group)
 
-        update(content: deeplinkGroups) { [weak self] in
-            self?.lastCreatedItemId = self?.itemIdFor(group: group)
+        Task {
+            if await update(content: deeplinkGroups) {
+                lastCreatedItemId = itemIdFor(group: group)
+            }
         }
     }
 
@@ -173,17 +178,17 @@ class ContentViewModel: ObservableObject {
             }
     }
 
-    private func update(content: [DeeplinkGroup], onSuccess: (() -> Void)? = nil) {
-        Task { @MainActor in
-            isUpdating = true
-            do {
-                try await database.update(content: content)
-                isUpdating = false
-                onSuccess?()
-            } catch {
-                isUpdating = false
-                handleError(DeeplinkError(.updateFailed))
-            }
+    @MainActor
+    private func update(content: [DeeplinkGroup]) async -> Bool {
+        isUpdating = true
+        do {
+            try await database.update(content: content)
+            isUpdating = false
+            return true
+        } catch {
+            isUpdating = false
+            handleError(DeeplinkError(.updateFailed))
+            return false
         }
     }
 

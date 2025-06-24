@@ -129,10 +129,6 @@ class FirebaseDatabase: DatabaseProtocol {
         }
 
         collection[index].groups = content
-        do {
-            try await Database.database().reference().child("content").setValue(collection.map({ $0.asDictionary }))
-        } catch {
-            status = .error(DeeplinkError(.updateFailed))
-        }
+        try await Database.database().reference().child("content").setValue(collection.map({ $0.asDictionary }))
     }
 }
