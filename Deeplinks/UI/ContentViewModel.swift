@@ -16,10 +16,13 @@ enum ContentViewModelState: Equatable {
 }
 
 enum ContentViewModelOverlayState: Equatable {
-    case error(DeeplinkError)
     case edit(_ deeplink: Deeplink, for: DeeplinkGroup)
     case create(for: DeeplinkGroup)
     case section
+}
+
+enum ContentViewModelAlertState: Equatable {
+    case error(DeeplinkError)
 }
 
 class ContentViewModel: ObservableObject {
@@ -28,16 +31,8 @@ class ContentViewModel: ObservableObject {
     @Published var user: String = ""
     @Published var pwd: String = ""
     @Published var state: ContentViewModelState = .initial
-    @Published var overlayState: ContentViewModelOverlayState? {
-        didSet {
-            if overlayState != oldValue {
-                shouldPresentErrorAlert = hasError
-                shouldPresentEditOverlay = hasOverlay
-            }
-        }
-    }
-    @Published var shouldPresentErrorAlert: Bool = false
-    @Published var shouldPresentEditOverlay: Bool = false
+    @Published var overlayState: ContentViewModelOverlayState?
+    @Published var alertState: ContentViewModelAlertState?
 
     @Published var lastCreatedItemId: String?
     @Published var highlightedItemId: String?
@@ -52,20 +47,6 @@ class ContentViewModel: ObservableObject {
     init(database: DatabaseProtocol) {
         self.database = database
         self.userTokenHandler = UserTokenHandler()
-    }
-
-    var hasError: Bool {
-        guard case .error = overlayState else { return false }
-        return true
-    }
-
-    var hasOverlay: Bool {
-        switch overlayState {
-        case .edit, .create, .section:
-            return true
-        default:
-            return false
-        }
     }
 
     func onAppear() {
@@ -110,6 +91,8 @@ class ContentViewModel: ObservableObject {
             return {
                 self.onAuthenticated()
             }
+        case .updateFailed:
+            return {}
         case .comingSoon:
             return {}
         }
@@ -123,8 +106,9 @@ class ContentViewModel: ObservableObject {
             if let index = group.deeplinks?.firstIndex(where: { deeplink == $0 }) {
                 group.deeplinks?[index] = deeplink
                 deeplinkGroups[groupIndex] = group
-                isUpdating = true
-                database.update(group: deeplinkGroups) {}
+                Task {
+                    await update(content: deeplinkGroups)
+                }
             } else {
                 // deeplink entry not found, might have been deleted, append to group
                 append(deeplink, to: group)
@@ -143,11 +127,10 @@ class ContentViewModel: ObservableObject {
             deeplinks.append(deeplink)
             group.deeplinks = deeplinks
             deeplinkGroups[groupIndex] = group
-            isUpdating = true
-            database.update(group: deeplinkGroups) { [weak self] in
-                guard let self = self else { return }
-                DispatchQueue.main.async {
-                    self.lastCreatedItemId = self.itemIdFor(group: group, deeplink: deeplink)
+
+            Task {
+                if await update(content: deeplinkGroups) {
+                    lastCreatedItemId = itemIdFor(group: group, deeplink: deeplink)
                 }
             }
         } else {
@@ -159,11 +142,10 @@ class ContentViewModel: ObservableObject {
         guard var deeplinkGroups else { return }
 
         deeplinkGroups.append(group)
-        isUpdating = true
-        database.update(group: deeplinkGroups) { [weak self] in
-            guard let self = self else { return }
-            DispatchQueue.main.async {
-                self.lastCreatedItemId = self.itemIdFor(group: group)
+
+        Task {
+            if await update(content: deeplinkGroups) {
+                lastCreatedItemId = itemIdFor(group: group)
             }
         }
     }
@@ -181,8 +163,6 @@ class ContentViewModel: ObservableObject {
             .sink { [weak self] status in
                 guard let self = self else { return }
 
-                self.isUpdating = false
-
                 switch status {
                 case .success(let deeplinkGroups):
                     self.deeplinkGroups = deeplinkGroups ?? []
@@ -198,12 +178,26 @@ class ContentViewModel: ObservableObject {
             }
     }
 
+    @MainActor
+    private func update(content: [DeeplinkGroup]) async -> Bool {
+        isUpdating = true
+        do {
+            try await database.update(content: content)
+            isUpdating = false
+            return true
+        } catch {
+            isUpdating = false
+            handleError(DeeplinkError(.updateFailed))
+            return false
+        }
+    }
+
     private func handleError(_ error: DeeplinkError) {
         if case .invalidUserToken = error.code {
             onEnterCredentials()
             return
         }
-        self.overlayState = .error(error)
+        self.alertState = .error(error)
     }
 
     private func clearUserData() {

@@ -15,6 +15,8 @@ struct ContentView: View {
     @ObservedObject var viewModel: ContentViewModel
     @State private var isLogoutDisabled: Bool = true
     @State private var isPresentingLogoutConfirmation: Bool = false
+    @State private var shouldPresentAlert: Bool = false
+
     private let titlePadding: CGFloat = isTV ? 16 : isIPad ? 12 : 8
     private let scrollViewGradientHeight: CGFloat = isTV ? 48 : isIPad ? 32 : 24
 
@@ -94,7 +96,7 @@ struct ContentView: View {
                     }
                 }
                 #if os(iOS)
-                if viewModel.shouldPresentEditOverlay {
+                if viewModel.overlayState != nil {
                     editOverlay
                 }
                 #endif
@@ -104,10 +106,15 @@ struct ContentView: View {
         .onAppear {
             viewModel.onAppear()
         }
-        .alert("Error", isPresented: $viewModel.shouldPresentErrorAlert) {
+        .onChange(of: viewModel.alertState) { alertState in
+            if alertState != nil {
+                shouldPresentAlert = true
+            }
+        }
+        .alert("Error", isPresented: $shouldPresentAlert) {
             if let error = error {
                 Button(error.buttonText, role: .cancel) {
-                    viewModel.overlayState = nil
+                    viewModel.alertState = nil
                     viewModel.alertButtonAction(for: error)()
                 }
             }
@@ -145,7 +152,7 @@ struct ContentView: View {
     }
 
     private var error: DeeplinkError? {
-        if case let .error(error) = viewModel.overlayState {
+        if case let .error(error) = viewModel.alertState {
             return error
         }
         return nil

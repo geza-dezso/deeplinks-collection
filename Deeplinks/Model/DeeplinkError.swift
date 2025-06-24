@@ -12,6 +12,7 @@ enum DeeplinkErrorCode: Int, Codable, CaseIterable {
     case invalidLoginCredentials
     case invalidUserToken
     case dataNotAvailable
+    case updateFailed
     case comingSoon
 }
 
@@ -34,6 +35,8 @@ extension DeeplinkError {
             return nil
         case .dataNotAvailable:
             return "Data not available!"
+        case .updateFailed:
+            return "Updating data failed. Please try again later."
         case .comingSoon:
             return "Coming soon!"
         }
@@ -47,6 +50,8 @@ extension DeeplinkError {
             return ""
         case .dataNotAvailable:
             return "Retry"
+        case .updateFailed:
+            return "Ok"
         case .comingSoon:
             return "Ok"
         }
