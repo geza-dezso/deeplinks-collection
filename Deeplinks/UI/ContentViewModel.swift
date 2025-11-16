@@ -21,10 +21,24 @@ enum ContentViewModelOverlayState: Equatable {
     case section
 }
 
+extension ContentViewModelOverlayState {
+    var title: String {
+        switch self {
+        case .edit:
+            return "Edit Deeplink"
+        case .create:
+            return "Create Deeplink"
+        case .section:
+            return "Create Section"
+        }
+    }
+}
+
 enum ContentViewModelAlertState: Equatable {
     case error(DeeplinkError)
 }
 
+@MainActor
 class ContentViewModel: ObservableObject {
 
     @Published var deeplinkGroups: [DeeplinkGroup]?
@@ -39,13 +53,13 @@ class ContentViewModel: ObservableObject {
 
     @Published var isUpdating = false
 
-    private var database: DatabaseProtocol
     private var bag: Set<AnyCancellable> = []
-    private var databaseListener: AnyCancellable?
+    private var contentModel: DeeplinkContentModel
+    private var contentModelListener: AnyCancellable?
     private var userTokenHandler: UserTokenHandler
 
-    init(database: DatabaseProtocol) {
-        self.database = database
+    init(contentModel: DeeplinkContentModel) {
+        self.contentModel = contentModel
         self.userTokenHandler = UserTokenHandler()
     }
 
@@ -65,12 +79,12 @@ class ContentViewModel: ObservableObject {
 
     func onLogin() {
         state = .fetching
-        setupListener()
+        setupListeners()
     }
 
     func onAuthenticated() {
         state = .fetching
-        setupListener()
+        setupListeners()
     }
 
     func onLogout() {
@@ -98,98 +112,57 @@ class ContentViewModel: ObservableObject {
         }
     }
 
-    func update(_ deeplink: Deeplink, in group: DeeplinkGroup) {
-        guard var deeplinkGroups else { return }
-
-        if let groupIndex = deeplinkGroups.firstIndex(where: { group == $0 }) {
-            var group = deeplinkGroups[groupIndex]
-            if let index = group.deeplinks?.firstIndex(where: { deeplink == $0 }) {
-                group.deeplinks?[index] = deeplink
-                deeplinkGroups[groupIndex] = group
-                Task {
-                    await update(content: deeplinkGroups)
-                }
-            } else {
-                // deeplink entry not found, might have been deleted, append to group
-                append(deeplink, to: group)
-            }
-        } else {
-            // TODO: HANDLE group entry not found, might have been deleted
-        }
+    func update(_ deeplink: Deeplink, with newDeeplink: Deeplink, in group: DeeplinkGroup) {
+        contentModel.update(deeplink, with: newDeeplink, in: group)
     }
 
     func append(_ deeplink: Deeplink, to group: DeeplinkGroup) {
-        guard var deeplinkGroups else { return }
-
-        if let groupIndex = deeplinkGroups.firstIndex(where: { group == $0 }) {
-            var group = deeplinkGroups[groupIndex]
-            var deeplinks = group.deeplinks ?? []
-            deeplinks.append(deeplink)
-            group.deeplinks = deeplinks
-            deeplinkGroups[groupIndex] = group
-
-            Task {
-                if await update(content: deeplinkGroups) {
-                    lastCreatedItemId = itemIdFor(group: group, deeplink: deeplink)
-                }
-            }
-        } else {
-            // TODO: HANDLE group entry not found, might have been deleted
-        }
+        contentModel.append(deeplink, to: group)
     }
 
     func append(group: DeeplinkGroup) {
-        guard var deeplinkGroups else { return }
-
-        deeplinkGroups.append(group)
-
-        Task {
-            if await update(content: deeplinkGroups) {
-                lastCreatedItemId = itemIdFor(group: group)
-            }
-        }
+        contentModel.append(group: group)
     }
 
-    func itemIdFor(group: DeeplinkGroup, deeplink: Deeplink? = nil) -> String {
-        guard let deeplink else { return group.title }
-        return "\(group.title)_\(deeplink.title)_\(deeplink.url)"
+    func itemIdFor(groupTitle: String, deeplink: Deeplink? = nil) -> String {
+        guard let deeplink else { return groupTitle }
+        return "\(groupTitle)_\(deeplink.title)_\(deeplink.url)"
     }
 
-    private func setupListener() {
+    private func setupListeners() {
 
-        databaseListener?.cancel()
-        databaseListener = database.updatesPublisher(user: user, pwd: pwd)
+        contentModelListener?.cancel()
+        contentModelListener = contentModel.updatesPublisher(user: user, pwd: pwd)
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] status in
-                guard let self = self else { return }
+            .sink { [weak self] modelState in
+                guard let self else { return }
 
-                switch status {
-                case .success(let deeplinkGroups):
-                    self.deeplinkGroups = deeplinkGroups ?? []
-                    self.userTokenHandler.store(user)
-                    self.state = .ready
+                switch modelState {
+                case .ready(let result):
+                    deeplinkGroups = result ?? []
+                    userTokenHandler.store(user)
+                    state = .ready
 
                 case .error(let error):
-                    self.handleError(error)
+                    handleError(error)
 
                 default:
                     break
                 }
             }
-    }
 
-    @MainActor
-    private func update(content: [DeeplinkGroup]) async -> Bool {
-        isUpdating = true
-        do {
-            try await database.update(content: content)
-            isUpdating = false
-            return true
-        } catch {
-            isUpdating = false
-            handleError(DeeplinkError(.updateFailed))
-            return false
-        }
+        contentModel.lastCreatedItem
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] item in
+                guard let self, let item else { return }
+
+                switch item {
+                case .group(let title):
+                    lastCreatedItemId = itemIdFor(groupTitle: title)
+                case .deeplink(let groupTitle, let deeplink):
+                    lastCreatedItemId = itemIdFor(groupTitle: groupTitle, deeplink: deeplink)
+                }
+            }.store(in: &bag)
     }
 
     private func handleError(_ error: DeeplinkError) {

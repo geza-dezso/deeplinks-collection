@@ -11,6 +11,19 @@ private enum Field: Int, Hashable {
     case title, url
 }
 
+private enum DeeplinkEditError {
+    case duplicate(isSection: Bool)
+
+    var message: String {
+        switch self {
+        case .duplicate(isSection: true):
+            return "A section with this name already exists."
+        case .duplicate(isSection: false):
+            return "A deeplink with this title and URL already exists."
+        }
+    }
+}
+
 struct DeeplinkEditOverlay: View {
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     @ObservedObject var viewModel: ContentViewModel
@@ -20,27 +33,14 @@ struct DeeplinkEditOverlay: View {
     @State var sectionTitle: String = ""
     @State var deeplinkTitle: String
     @State var deeplinkUrl: String
+    @State private var error: DeeplinkEditError?
+    @State private var hasError: Bool = false
 
     public var willDismiss: (() -> Void)?
     public var onDismiss: (() -> Void)?
 
     private let spacing: CGFloat = isIPad ? 24 : 16
     private let animationDuration = 0.3
-
-    private var editedDeeplink: Deeplink?
-
-    private var title: String {
-        switch viewModel.overlayState {
-        case .edit:
-            return "Edit Deeplink"
-        case .create:
-            return "Create Deeplink"
-        case .section:
-            return "Create Section"
-        default:
-            return ""
-        }
-    }
 
     init(viewModel: ContentViewModel, willDismiss: (() -> Void)? = nil, onDismiss: (() -> Void)? = nil) {
         self.viewModel = viewModel
@@ -50,7 +50,6 @@ struct DeeplinkEditOverlay: View {
         switch viewModel.overlayState {
 
         case .edit(let deeplink, _):
-            editedDeeplink = deeplink
             deeplinkTitle = deeplink.title
             deeplinkUrl = deeplink.url
 
@@ -74,31 +73,32 @@ struct DeeplinkEditOverlay: View {
 
                     VStack {
                         if isShowing {
-                            ZStack {
-                                VStack {
+                            VStack(spacing: spacing) {
+                                Text(viewModel.overlayState?.title ?? "")
+                                    .font(primary)
+                                    .foregroundColor(.white)
+
+                                if case .section = viewModel.overlayState {
+                                    sectionTitleTextField
+                                } else {
                                     VStack {
-                                        Text(title)
-                                            .font(primary)
-                                            .foregroundColor(.white)
-                                        Spacer()
-                                            .frame(height: spacing)
-
-                                        if case .section = viewModel.overlayState {
-                                            sectionTitleTextField
-                                        } else {
-                                            linkTitleTextField
-                                            linkUrlTextField
-                                        }
+                                        linkTitleTextField
+                                        linkUrlTextField
                                     }
-
-                                    Spacer()
-                                        .frame(height: spacing)
-
-                                    buttonsSection
                                 }
-                                .padding(spacing)
-                                .background(Color.mainBackground)
+
+                                if let error {
+                                    withAnimation(.smooth(duration: 0.1)) {
+                                        Text(error.message)
+                                            .font(secondary)
+                                            .foregroundColor(.lightGray)
+                                    }
+                                }
+
+                                buttonsSection
                             }
+                            .padding(spacing)
+                            .background(Color.mainBackground)
                             .transition(.scale.animation(.easeInOut(duration: animationDuration)))
                         }
                     }
@@ -133,6 +133,9 @@ struct DeeplinkEditOverlay: View {
         )
         .textFieldStyle(DeeplinkFieldStyle())
         .focused($focusedField, equals: .title)
+        .onChange(of: deeplinkTitle) {
+            setError(nil)
+        }
         .onSubmit {
             focusedField = .url
         }
@@ -146,6 +149,9 @@ struct DeeplinkEditOverlay: View {
         )
         .textFieldStyle(DeeplinkFieldStyle())
         .focused($focusedField, equals: .url)
+        .onChange(of: deeplinkUrl) {
+            setError(nil)
+        }
         .onSubmit {
             focusedField = nil
         }
@@ -159,6 +165,9 @@ struct DeeplinkEditOverlay: View {
         )
         .textFieldStyle(DeeplinkFieldStyle())
         .focused($focusedField, equals: .title)
+        .onChange(of: sectionTitle) {
+            setError(nil)
+        }
         .onSubmit {
             focusedField = nil
         }
@@ -166,16 +175,22 @@ struct DeeplinkEditOverlay: View {
 
     private var buttonsSection: some View {
         HStack {
-            Button(action: {
+            Button {
                 if hasChanged {
-                    update()
+                    if isValid {
+                        update()
+                        closeOverlay()
+                    } else {
+                        setError(.duplicate(isSection: viewModel.overlayState == .section))
+                    }
+                } else {
+                    closeOverlay()
                 }
-                closeOverlay()
-            }, label: {
+            } label: {
                 Text("Save")
-            })
+            }
             .buttonStyle(ActionButtonStyle())
-            .disabled((deeplinkTitle.isEmpty || deeplinkUrl.isEmpty) && sectionTitle.isEmpty)
+            .disabled(((deeplinkTitle.isEmpty || deeplinkUrl.isEmpty) && sectionTitle.isEmpty) || hasError)
 
             Spacer()
                 .frame(width: 32)
@@ -192,29 +207,19 @@ struct DeeplinkEditOverlay: View {
     private func closeOverlay() {
         focusedField = nil
         willDismiss?()
-        if #available(iOS 17.0, *) {
-            withAnimation(.easeInOut(duration: animationDuration)) {
-                isShowing = false
-            } completion: {
-                onDismiss?()
-            }
-        } else {
-            withAnimation(.easeInOut(duration: animationDuration)) {
-                isShowing = false
-            }
-            DispatchQueue.main.asyncAfter(deadline: .now() + animationDuration) {
-                onDismiss?()
-            }
+        withAnimation(.easeInOut(duration: animationDuration)) {
+            isShowing = false
+        } completion: {
+            onDismiss?()
         }
     }
 
     private func update() {
         switch viewModel.overlayState {
 
-        case .edit(var deeplink, let group):
-            deeplink.title = deeplinkTitle
-            deeplink.url = deeplinkUrl
-            viewModel.update(deeplink, in: group)
+        case .edit(let deeplink, let group):
+            let newDeeplink = Deeplink(title: deeplinkTitle, url: deeplinkUrl)
+            viewModel.update(deeplink, with: newDeeplink, in: group)
 
         case .create(let group):
             let deeplink = Deeplink(title: deeplinkTitle, url: deeplinkUrl)
@@ -229,9 +234,37 @@ struct DeeplinkEditOverlay: View {
     }
 
     private var hasChanged: Bool {
-        if let editedDeeplink, editedDeeplink.title == deeplinkTitle, editedDeeplink.url == deeplinkUrl {
-            return false
+        switch viewModel.overlayState {
+        case .edit(let deeplink, _):
+            return deeplink.title != deeplinkTitle || deeplink.title != deeplinkUrl
+        default:
+            return true
         }
-        return true
+    }
+
+    private var isValid: Bool {
+        switch viewModel.overlayState {
+
+        case .edit(let deeplink, let group):
+            // TODO: check for valididty
+            return true
+
+        case .create(let group):
+            // TODO: check for valididty
+            return true
+
+        case .section:
+            return viewModel.checkValidity(for: sectionTitle)
+
+        default:
+            return true
+        }
+    }
+
+    private func setError(_ error: DeeplinkEditError?) {
+        hasError = (error != nil)
+        withAnimation(.smooth(duration: 0.1)) {
+            self.error = error
+        }
     }
 }

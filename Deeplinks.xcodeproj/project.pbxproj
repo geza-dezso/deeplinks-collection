@@ -20,6 +20,9 @@
 		0F2578992BBC2C7A000491D3 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 0F25788C2BBC2C7A000491D3 /* FirebaseDatabase */; };
 		0F25789B2BBC2C7A000491D3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0FCBB3862BA88C7400D80DB7 /* Assets.xcassets */; };
 		0F2578A42BBC3AD0000491D3 /* Info-tvos.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0F2578A32BBC3AD0000491D3 /* Info-tvos.plist */; };
+		0F50876E2EC5C92C0026E281 /* ContentViewModel+Validity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F50876D2EC5C92C0026E281 /* ContentViewModel+Validity.swift */; };
+		0F5087702EC5CDD70026E281 /* DeeplinkContentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F50876F2EC5CDD70026E281 /* DeeplinkContentModel.swift */; };
+		0F5087712EC5CDD70026E281 /* DeeplinkContentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F50876F2EC5CDD70026E281 /* DeeplinkContentModel.swift */; };
 		0F54A2A32DDC5761007987BC /* SwipeActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F54A2A12DDC575A007987BC /* SwipeActions.swift */; };
 		0F581DC62BC803460038DDD9 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F581DC52BC803460038DDD9 /* LoginView.swift */; };
 		0F581DC72BC803460038DDD9 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F581DC52BC803460038DDD9 /* LoginView.swift */; };
@@ -34,8 +37,6 @@
 		0F581DE42BD030CD0038DDD9 /* UserTokenHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F581DE12BD030CD0038DDD9 /* UserTokenHandler.swift */; };
 		0F581DE52BD030CD0038DDD9 /* UserTokenHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F581DE12BD030CD0038DDD9 /* UserTokenHandler.swift */; };
 		0F6062F12DDCBC7000B5C502 /* DeeplinkEditOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F6062F02DDCBC5800B5C502 /* DeeplinkEditOverlay.swift */; };
-		0F6062F42DDCC09100B5C502 /* OverlayBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F6062F32DDCC08800B5C502 /* OverlayBackground.swift */; };
-		0F6062F52DDCC09100B5C502 /* OverlayBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F6062F32DDCC08800B5C502 /* OverlayBackground.swift */; };
 		0F6062F72DDCF18E00B5C502 /* DeeplinkFieldStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F6062F62DDCF13E00B5C502 /* DeeplinkFieldStyle.swift */; };
 		0F94D5D92DE4718900C91B51 /* Encodable+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F94D5D82DE4717400C91B51 /* Encodable+Extensions.swift */; };
 		0F94D5DA2DE4718900C91B51 /* Encodable+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F94D5D82DE4717400C91B51 /* Encodable+Extensions.swift */; };
@@ -70,6 +71,8 @@
 		0F0527E32C10441F0095B5B2 /* TopBottomGradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopBottomGradientView.swift; sourceTree = "<group>"; };
 		0F2578A12BBC2C7A000491D3 /* Deeplinks Collection tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Deeplinks Collection tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0F2578A32BBC3AD0000491D3 /* Info-tvos.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Info-tvos.plist"; sourceTree = "<group>"; };
+		0F50876D2EC5C92C0026E281 /* ContentViewModel+Validity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContentViewModel+Validity.swift"; sourceTree = "<group>"; };
+		0F50876F2EC5CDD70026E281 /* DeeplinkContentModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeeplinkContentModel.swift; sourceTree = "<group>"; };
 		0F54A2A12DDC575A007987BC /* SwipeActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeActions.swift; sourceTree = "<group>"; };
 		0F581DC52BC803460038DDD9 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		0F581DC82BC81CAD0038DDD9 /* LoginTextFieldStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginTextFieldStyle.swift; sourceTree = "<group>"; };
@@ -78,7 +81,6 @@
 		0F581DD72BCF01140038DDD9 /* Color+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Color+Helpers.swift"; sourceTree = "<group>"; };
 		0F581DE12BD030CD0038DDD9 /* UserTokenHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserTokenHandler.swift; sourceTree = "<group>"; };
 		0F6062F02DDCBC5800B5C502 /* DeeplinkEditOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeeplinkEditOverlay.swift; sourceTree = "<group>"; };
-		0F6062F32DDCC08800B5C502 /* OverlayBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayBackground.swift; sourceTree = "<group>"; };
 		0F6062F62DDCF13E00B5C502 /* DeeplinkFieldStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeeplinkFieldStyle.swift; sourceTree = "<group>"; };
 		0F94D5D82DE4717400C91B51 /* Encodable+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Encodable+Extensions.swift"; sourceTree = "<group>"; };
 		0FA17E8A2C6283B100282F1E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -161,15 +163,16 @@
 		0FCBB3932BA88E3A00D80DB7 /* UI */ = {
 			isa = PBXGroup;
 			children = (
-				0FEBC5C42BC035D600EBECC8 /* Helpers */,
-				0FCBB3812BA88C7300D80DB7 /* HostingViewController.swift */,
 				0FCBB3912BA88E2700D80DB7 /* ContentView.swift */,
 				0FCBB3A42BA893D500D80DB7 /* ContentViewModel.swift */,
-				0F581DD12BC846520038DDD9 /* WelcomeView.swift */,
-				0F581DC52BC803460038DDD9 /* LoginView.swift */,
-				0FEBC5CE2BC3FD3C00EBECC8 /* DeeplinkItemView.swift */,
+				0F50876D2EC5C92C0026E281 /* ContentViewModel+Validity.swift */,
 				0F6062F02DDCBC5800B5C502 /* DeeplinkEditOverlay.swift */,
+				0FEBC5CE2BC3FD3C00EBECC8 /* DeeplinkItemView.swift */,
+				0FEBC5C42BC035D600EBECC8 /* Helpers */,
+				0FCBB3812BA88C7300D80DB7 /* HostingViewController.swift */,
+				0F581DC52BC803460038DDD9 /* LoginView.swift */,
 				0F0527E32C10441F0095B5B2 /* TopBottomGradientView.swift */,
+				0F581DD12BC846520038DDD9 /* WelcomeView.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -205,10 +208,11 @@
 		0FCBB39F2BA892D000D80DB7 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				0FCBB3A02BA892E800D80DB7 /* DeeplinkContent.swift */,
+				0F50876F2EC5CDD70026E281 /* DeeplinkContentModel.swift */,
+				0FCBB3A12BA892E800D80DB7 /* DeeplinkError.swift */,
 				0F94D5D82DE4717400C91B51 /* Encodable+Extensions.swift */,
 				0F581DE12BD030CD0038DDD9 /* UserTokenHandler.swift */,
-				0FCBB3A02BA892E800D80DB7 /* DeeplinkContent.swift */,
-				0FCBB3A12BA892E800D80DB7 /* DeeplinkError.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -224,7 +228,6 @@
 				0F581DC82BC81CAD0038DDD9 /* LoginTextFieldStyle.swift */,
 				0F6062F62DDCF13E00B5C502 /* DeeplinkFieldStyle.swift */,
 				0F581DCE2BC82EC10038DDD9 /* ActionButtonStyle.swift */,
-				0F6062F32DDCC08800B5C502 /* OverlayBackground.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -395,7 +398,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				0F25788F2BBC2C7A000491D3 /* ContentViewModel.swift in Sources */,
-				0F6062F52DDCC09100B5C502 /* OverlayBackground.swift in Sources */,
 				0FEBC5D02BC3FD3C00EBECC8 /* DeeplinkItemView.swift in Sources */,
 				0F2578902BBC2C7A000491D3 /* FirebaseDatabase.swift in Sources */,
 				0F581DC72BC803460038DDD9 /* LoginView.swift in Sources */,
@@ -405,6 +407,7 @@
 				0F581DD92BCF01140038DDD9 /* Color+Helpers.swift in Sources */,
 				0F581DD02BC82EC10038DDD9 /* ActionButtonStyle.swift in Sources */,
 				0F581DCA2BC81CAD0038DDD9 /* LoginTextFieldStyle.swift in Sources */,
+				0F5087712EC5CDD70026E281 /* DeeplinkContentModel.swift in Sources */,
 				0F2578922BBC2C7A000491D3 /* AppDelegate.swift in Sources */,
 				0F581DE52BD030CD0038DDD9 /* UserTokenHandler.swift in Sources */,
 				0F2578932BBC2C7A000491D3 /* DeeplinkError.swift in Sources */,
@@ -432,8 +435,8 @@
 				0F581DD82BCF01140038DDD9 /* Color+Helpers.swift in Sources */,
 				0F581DCF2BC82EC10038DDD9 /* ActionButtonStyle.swift in Sources */,
 				0F581DC92BC81CAD0038DDD9 /* LoginTextFieldStyle.swift in Sources */,
-				0F6062F42DDCC09100B5C502 /* OverlayBackground.swift in Sources */,
 				0FCBB37E2BA88C7300D80DB7 /* AppDelegate.swift in Sources */,
+				0F5087702EC5CDD70026E281 /* DeeplinkContentModel.swift in Sources */,
 				0F581DE42BD030CD0038DDD9 /* UserTokenHandler.swift in Sources */,
 				0F94D5D92DE4718900C91B51 /* Encodable+Extensions.swift in Sources */,
 				0FCBB3A32BA892E800D80DB7 /* DeeplinkError.swift in Sources */,
@@ -441,6 +444,7 @@
 				0FCBB3922BA88E2700D80DB7 /* ContentView.swift in Sources */,
 				0F581DD22BC846520038DDD9 /* WelcomeView.swift in Sources */,
 				0FCBB3802BA88C7300D80DB7 /* SceneDelegate.swift in Sources */,
+				0F50876E2EC5C92C0026E281 /* ContentViewModel+Validity.swift in Sources */,
 				0FCBB3A22BA892E800D80DB7 /* DeeplinkContent.swift in Sources */,
 				0F54A2A32DDC5761007987BC /* SwipeActions.swift in Sources */,
 				0FEBC5CA2BC040A600EBECC8 /* UIDevice+Helpers.swift in Sources */,
@@ -496,7 +500,7 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 3;
-				TVOS_DEPLOYMENT_TARGET = 15.0;
+				TVOS_DEPLOYMENT_TARGET = 17.0;
 			};
 			name = Debug;
 		};
@@ -533,7 +537,7 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 3;
-				TVOS_DEPLOYMENT_TARGET = 15.0;
+				TVOS_DEPLOYMENT_TARGET = 17.0;
 			};
 			name = Release;
 		};
@@ -673,7 +677,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -704,7 +708,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

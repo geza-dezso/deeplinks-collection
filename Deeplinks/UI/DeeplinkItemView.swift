@@ -69,7 +69,7 @@ struct DeeplinkItemView: View {
 
     private var isHighlighted: Bool {
         #if os(iOS)
-        viewModel.highlightedItemId == viewModel.itemIdFor(group: group, deeplink: deeplink)
+        viewModel.highlightedItemId == viewModel.itemIdFor(groupTitle: group.title, deeplink: deeplink)
         #else
         false
         #endif
