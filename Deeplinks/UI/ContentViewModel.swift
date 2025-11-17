@@ -124,6 +124,14 @@ class ContentViewModel: ObservableObject {
         contentModel.append(group: group)
     }
 
+    func checkValidity(for groupTitle: String) -> Bool {
+        return contentModel.checkValidity(for: groupTitle)
+    }
+
+    func checkValidity(for newDeeplink: Deeplink, oldValue: Deeplink? = nil, in group: DeeplinkGroup) -> Bool {
+        return contentModel.checkValidity(for: newDeeplink, oldValue: oldValue, in: group)
+    }
+
     func itemIdFor(groupTitle: String, deeplink: Deeplink? = nil) -> String {
         guard let deeplink else { return groupTitle }
         return "\(groupTitle)_\(deeplink.title)_\(deeplink.url)"

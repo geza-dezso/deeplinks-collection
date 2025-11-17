@@ -48,6 +48,31 @@ class DeeplinkContentModel {
             .eraseToAnyPublisher()
     }
 
+    private func setupListener(user: String, pwd: String) {
+        databaseListener?.cancel()
+        databaseListener = database.updatesPublisher(user: user, pwd: pwd)
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] status in
+                guard let self else { return }
+
+                switch status {
+                case .success(let deeplinkGroups):
+                    state = .ready(deeplinkGroups)
+
+                case .error(let error):
+                    state = .error(error)
+
+                default:
+                    break
+                }
+            }
+    }
+}
+
+// MARK: Update methods
+
+extension DeeplinkContentModel {
+
     func append(group: DeeplinkGroup) {
         guard var deeplinkGroups else { return }
 
@@ -108,24 +133,25 @@ class DeeplinkContentModel {
             return false
         }
     }
+}
 
-    private func setupListener(user: String, pwd: String) {
-        databaseListener?.cancel()
-        databaseListener = database.updatesPublisher(user: user, pwd: pwd)
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] status in
-                guard let self else { return }
+// MARK: Check new/modified items validity
 
-                switch status {
-                case .success(let deeplinkGroups):
-                    state = .ready(deeplinkGroups)
+extension DeeplinkContentModel {
 
-                case .error(let error):
-                    state = .error(error)
+    func checkValidity(for groupTitle: String) -> Bool {
+        return !isDuplicate(groupTitle: groupTitle)
+    }
 
-                default:
-                    break
-                }
-            }
+    func checkValidity(for deeplink: Deeplink, oldValue: Deeplink? = nil, in group: DeeplinkGroup) -> Bool {
+        return !isDuplicate(deeplink: deeplink, oldValue: oldValue, in: group)
+    }
+
+    private func isDuplicate(groupTitle: String) -> Bool {
+        return deeplinkGroups?.first(where: { $0.title == groupTitle }) != nil
+    }
+
+    private func isDuplicate(deeplink: Deeplink, oldValue: Deeplink? = nil, in group: DeeplinkGroup) -> Bool {
+        return group.deeplinks?.filter({$0 != oldValue }).contains(deeplink) == true
     }
 }

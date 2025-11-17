@@ -20,7 +20,6 @@
 		0F2578992BBC2C7A000491D3 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 0F25788C2BBC2C7A000491D3 /* FirebaseDatabase */; };
 		0F25789B2BBC2C7A000491D3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0FCBB3862BA88C7400D80DB7 /* Assets.xcassets */; };
 		0F2578A42BBC3AD0000491D3 /* Info-tvos.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0F2578A32BBC3AD0000491D3 /* Info-tvos.plist */; };
-		0F50876E2EC5C92C0026E281 /* ContentViewModel+Validity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F50876D2EC5C92C0026E281 /* ContentViewModel+Validity.swift */; };
 		0F5087702EC5CDD70026E281 /* DeeplinkContentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F50876F2EC5CDD70026E281 /* DeeplinkContentModel.swift */; };
 		0F5087712EC5CDD70026E281 /* DeeplinkContentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F50876F2EC5CDD70026E281 /* DeeplinkContentModel.swift */; };
 		0F54A2A32DDC5761007987BC /* SwipeActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F54A2A12DDC575A007987BC /* SwipeActions.swift */; };
@@ -71,7 +70,6 @@
 		0F0527E32C10441F0095B5B2 /* TopBottomGradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopBottomGradientView.swift; sourceTree = "<group>"; };
 		0F2578A12BBC2C7A000491D3 /* Deeplinks Collection tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Deeplinks Collection tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0F2578A32BBC3AD0000491D3 /* Info-tvos.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Info-tvos.plist"; sourceTree = "<group>"; };
-		0F50876D2EC5C92C0026E281 /* ContentViewModel+Validity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContentViewModel+Validity.swift"; sourceTree = "<group>"; };
 		0F50876F2EC5CDD70026E281 /* DeeplinkContentModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeeplinkContentModel.swift; sourceTree = "<group>"; };
 		0F54A2A12DDC575A007987BC /* SwipeActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeActions.swift; sourceTree = "<group>"; };
 		0F581DC52BC803460038DDD9 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
@@ -165,7 +163,6 @@
 			children = (
 				0FCBB3912BA88E2700D80DB7 /* ContentView.swift */,
 				0FCBB3A42BA893D500D80DB7 /* ContentViewModel.swift */,
-				0F50876D2EC5C92C0026E281 /* ContentViewModel+Validity.swift */,
 				0F6062F02DDCBC5800B5C502 /* DeeplinkEditOverlay.swift */,
 				0FEBC5CE2BC3FD3C00EBECC8 /* DeeplinkItemView.swift */,
 				0FEBC5C42BC035D600EBECC8 /* Helpers */,
@@ -444,7 +441,6 @@
 				0FCBB3922BA88E2700D80DB7 /* ContentView.swift in Sources */,
 				0F581DD22BC846520038DDD9 /* WelcomeView.swift in Sources */,
 				0FCBB3802BA88C7300D80DB7 /* SceneDelegate.swift in Sources */,
-				0F50876E2EC5C92C0026E281 /* ContentViewModel+Validity.swift in Sources */,
 				0FCBB3A22BA892E800D80DB7 /* DeeplinkContent.swift in Sources */,
 				0F54A2A32DDC5761007987BC /* SwipeActions.swift in Sources */,
 				0FEBC5CA2BC040A600EBECC8 /* UIDevice+Helpers.swift in Sources */,

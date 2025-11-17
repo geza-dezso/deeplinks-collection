@@ -246,12 +246,14 @@ struct DeeplinkEditOverlay: View {
         switch viewModel.overlayState {
 
         case .edit(let deeplink, let group):
-            // TODO: check for valididty
-            return true
+            return viewModel.checkValidity(
+                for: Deeplink(title: deeplinkTitle, url: deeplinkUrl), oldValue: deeplink, in: group
+            )
 
         case .create(let group):
-            // TODO: check for valididty
-            return true
+            return viewModel.checkValidity(
+                for: Deeplink(title: deeplinkTitle, url: deeplinkUrl), in: group
+            )
 
         case .section:
             return viewModel.checkValidity(for: sectionTitle)
