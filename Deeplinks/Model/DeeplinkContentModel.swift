@@ -152,6 +152,6 @@ extension DeeplinkContentModel {
     }
 
     private func isDuplicate(deeplink: Deeplink, oldValue: Deeplink? = nil, in group: DeeplinkGroup) -> Bool {
-        return group.deeplinks?.filter({$0 != oldValue }).contains(deeplink) == true
+        return group.deeplinks?.filter({ $0 != oldValue }).contains(deeplink) == true
     }
 }
