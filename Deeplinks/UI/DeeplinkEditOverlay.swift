@@ -236,7 +236,7 @@ struct DeeplinkEditOverlay: View {
     private var hasChanged: Bool {
         switch viewModel.overlayState {
         case .edit(let deeplink, _):
-            return deeplink.title != deeplinkTitle || deeplink.title != deeplinkUrl
+            return deeplink.title != deeplinkTitle || deeplink.url != deeplinkUrl
         default:
             return true
         }
