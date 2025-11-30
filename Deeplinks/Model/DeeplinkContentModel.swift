@@ -126,12 +126,7 @@ extension DeeplinkContentModel {
     }
 
     func update(content: [DeeplinkGroup]) async -> Bool {
-        do {
-            try await database.update(content: content)
-            return true
-        } catch {
-            return false
-        }
+        (try? await database.update(content: content)) != nil
     }
 }
 
@@ -140,18 +135,18 @@ extension DeeplinkContentModel {
 extension DeeplinkContentModel {
 
     func checkValidity(for groupTitle: String) -> Bool {
-        return !isDuplicate(groupTitle: groupTitle)
+        !isDuplicate(groupTitle: groupTitle)
     }
 
     func checkValidity(for deeplink: Deeplink, oldValue: Deeplink? = nil, in group: DeeplinkGroup) -> Bool {
-        return !isDuplicate(deeplink: deeplink, oldValue: oldValue, in: group)
+        !isDuplicate(deeplink: deeplink, oldValue: oldValue, in: group)
     }
 
     private func isDuplicate(groupTitle: String) -> Bool {
-        return deeplinkGroups?.first(where: { $0.title == groupTitle }) != nil
+        deeplinkGroups?.first(where: { $0.title == groupTitle }) != nil
     }
 
     private func isDuplicate(deeplink: Deeplink, oldValue: Deeplink? = nil, in group: DeeplinkGroup) -> Bool {
-        return group.deeplinks?.filter({ $0 != oldValue }).contains(deeplink) == true
+        group.deeplinks?.filter({ $0 != oldValue }).contains(deeplink) == true
     }
 }
