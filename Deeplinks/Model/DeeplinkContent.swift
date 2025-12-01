@@ -8,7 +8,6 @@
 import Foundation
 
 struct Deeplink: Codable, Hashable {
-    let id = UUID()
     var title: String
     var url: String
 
@@ -22,12 +21,11 @@ struct Deeplink: Codable, Hashable {
     }
 
     static func == (lhs: Self, rhs: Self) -> Bool {
-        return lhs.id == rhs.id
+        return lhs.title == rhs.title && lhs.url == rhs.url
     }
 }
 
 struct DeeplinkGroup: Codable, Hashable {
-    let id = UUID()
     var title: String
     var deeplinks: [Deeplink]?
 
@@ -37,7 +35,7 @@ struct DeeplinkGroup: Codable, Hashable {
     }
 
     static func == (lhs: Self, rhs: Self) -> Bool {
-        return lhs.id == rhs.id
+        return lhs.title == rhs.title && lhs.deeplinks == rhs.deeplinks
     }
 }
 

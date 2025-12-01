@@ -37,6 +37,7 @@ struct ActionButtonStyle: ButtonStyle {
                             lineWidth: 1
                         )
                 )
+                .animation(.none, value: configuration.isPressed)
         }
 
         #else

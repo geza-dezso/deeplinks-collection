@@ -62,25 +62,13 @@ struct ContentView: View {
                                 .mask {
                                     TopBottomGradientView(gradientHeight: scrollViewGradientHeight)
                                 }
-                                .onChange(of: viewModel.lastCreatedItemId) { _ in
-                                    if #available(iOS 17.0, tvOS 17.0, *) {
-                                        withAnimation {
-                                            reader.scrollTo(viewModel.lastCreatedItemId, anchor: .bottom)
-                                        } completion: {
-                                            viewModel.highlightedItemId = viewModel.lastCreatedItemId
-                                            withAnimation( .linear(duration: 1.0)) {
-                                                viewModel.highlightedItemId = nil
-                                            }
-                                        }
-                                    } else {
-                                        withAnimation {
-                                            reader.scrollTo(viewModel.lastCreatedItemId, anchor: .bottom)
-                                        }
-                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                                            viewModel.highlightedItemId = viewModel.lastCreatedItemId
-                                            withAnimation( .linear(duration: 1.0)) {
-                                                viewModel.highlightedItemId = nil
-                                            }
+                                .onChange(of: viewModel.lastCreatedItemId) {
+                                    withAnimation {
+                                        reader.scrollTo(viewModel.lastCreatedItemId, anchor: .bottom)
+                                    } completion: {
+                                        viewModel.highlightedItemId = viewModel.lastCreatedItemId
+                                        withAnimation( .linear(duration: 1.0)) {
+                                            viewModel.highlightedItemId = nil
                                         }
                                     }
                                 }
@@ -106,10 +94,8 @@ struct ContentView: View {
         .onAppear {
             viewModel.onAppear()
         }
-        .onChange(of: viewModel.alertState) { alertState in
-            if alertState != nil {
-                shouldPresentAlert = true
-            }
+        .onChange(of: viewModel.alertState) {
+            shouldPresentAlert = (viewModel.alertState != nil)
         }
         .alert("Error", isPresented: $shouldPresentAlert) {
             if let error = error {
@@ -207,11 +193,11 @@ extension ContentView {
                         group: group,
                         padding: titlePadding
                     )
-                    .id(viewModel.itemIdFor(group: group, deeplink: deeplink))
+                    .id(viewModel.itemIdFor(groupTitle: group.title, deeplink: deeplink))
                 }
             }
         }
-        .id(viewModel.itemIdFor(group: group))
+        .id(viewModel.itemIdFor(groupTitle: group.title))
     }
 
     @ViewBuilder

@@ -16,5 +16,5 @@ var primary: Font {
 }
 
 var secondary: Font {
-    isTV ? .system(.body) : isIPad ? .system(size: 16) : .system(size: 12)
+    isTV ? .system(.body) : isIPad ? .system(size: 16) : .system(size: 14)
 }
