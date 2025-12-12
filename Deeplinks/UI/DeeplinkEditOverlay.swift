@@ -11,15 +11,15 @@ private enum Field: Int, Hashable {
     case title, url
 }
 
-private enum DeeplinkEditError {
-    case duplicate(isSection: Bool)
-
+private extension DeeplinkUpdateError {
     var message: String {
         switch self {
         case .duplicate(isSection: true):
             return "A section with this name already exists."
         case .duplicate(isSection: false):
             return "A deeplink with this title and URL already exists."
+        case .invalidUrl:
+            return "This doesn't seem like a valid deeplink."
         }
     }
 }
@@ -30,10 +30,7 @@ struct DeeplinkEditOverlay: View {
     @State private var isShowing = false
     @FocusState private var focusedField: Field?
 
-    @State var sectionTitle: String = ""
-    @State var deeplinkTitle: String
-    @State var deeplinkUrl: String
-    @State private var error: DeeplinkEditError?
+    @State private var error: DeeplinkUpdateError?
     @State private var hasError: Bool = false
 
     public var willDismiss: (() -> Void)?
@@ -46,17 +43,6 @@ struct DeeplinkEditOverlay: View {
         self.viewModel = viewModel
         self.willDismiss = willDismiss
         self.onDismiss = onDismiss
-
-        switch viewModel.overlayState {
-
-        case .edit(let deeplink, _):
-            deeplinkTitle = deeplink.title
-            deeplinkUrl = deeplink.url
-
-        default:
-            deeplinkTitle = ""
-            deeplinkUrl = ""
-        }
     }
 
     var body: some View {
@@ -128,12 +114,12 @@ struct DeeplinkEditOverlay: View {
     private var linkTitleTextField: some View {
         TextField(
             "",
-            text: $deeplinkTitle,
+            text: $viewModel.editingDeeplinkTitle,
             prompt: Text("Title").foregroundColor(.placeholderText)
         )
         .textFieldStyle(DeeplinkFieldStyle())
         .focused($focusedField, equals: .title)
-        .onChange(of: deeplinkTitle) {
+        .onChange(of: viewModel.editingDeeplinkTitle) {
             setError(nil)
         }
         .onSubmit {
@@ -144,12 +130,12 @@ struct DeeplinkEditOverlay: View {
     private var linkUrlTextField: some View {
         TextField(
             "",
-            text: $deeplinkUrl,
+            text: $viewModel.editingDeeplinkUrl,
             prompt: Text("Url").foregroundColor(.placeholderText)
         )
         .textFieldStyle(DeeplinkFieldStyle())
         .focused($focusedField, equals: .url)
-        .onChange(of: deeplinkUrl) {
+        .onChange(of: viewModel.editingDeeplinkUrl) {
             setError(nil)
         }
         .onSubmit {
@@ -160,12 +146,12 @@ struct DeeplinkEditOverlay: View {
     private var sectionTitleTextField: some View {
         TextField(
             "",
-            text: $sectionTitle,
+            text: $viewModel.editingSectionTitle,
             prompt: Text("Title").foregroundColor(.placeholderText)
         )
         .textFieldStyle(DeeplinkFieldStyle())
         .focused($focusedField, equals: .title)
-        .onChange(of: sectionTitle) {
+        .onChange(of: viewModel.editingSectionTitle) {
             setError(nil)
         }
         .onSubmit {
@@ -176,12 +162,12 @@ struct DeeplinkEditOverlay: View {
     private var buttonsSection: some View {
         HStack {
             Button {
-                if hasChanged {
-                    if isValid {
-                        update()
-                        closeOverlay()
+                if viewModel.hasChanged {
+                    if let error = viewModel.validate() {
+                        setError(error)
                     } else {
-                        setError(.duplicate(isSection: viewModel.overlayState == .section))
+                        viewModel.update()
+                        closeOverlay()
                     }
                 } else {
                     closeOverlay()
@@ -190,7 +176,7 @@ struct DeeplinkEditOverlay: View {
                 Text("Save")
             }
             .buttonStyle(ActionButtonStyle())
-            .disabled(((deeplinkTitle.isEmpty || deeplinkUrl.isEmpty) && sectionTitle.isEmpty) || hasError)
+            .disabled(isSaveDisabled)
 
             Spacer()
                 .frame(width: 32)
@@ -214,59 +200,20 @@ struct DeeplinkEditOverlay: View {
         }
     }
 
-    private func update() {
-        switch viewModel.overlayState {
-
-        case .edit(let deeplink, let group):
-            let newDeeplink = Deeplink(title: deeplinkTitle, url: deeplinkUrl)
-            viewModel.update(deeplink, with: newDeeplink, in: group)
-
-        case .create(let group):
-            let deeplink = Deeplink(title: deeplinkTitle, url: deeplinkUrl)
-            viewModel.append(deeplink, to: group)
-
-        case .section:
-            viewModel.append(group: DeeplinkGroup(title: sectionTitle))
-
-        default:
-            break
+    private func setError(_ error: DeeplinkUpdateError?) {
+        guard self.error != error else { return }
+        DispatchQueue.main.async {
+            hasError = (error != nil)
+            withAnimation(.smooth(duration: 0.1)) {
+                self.error = error
+            }
         }
     }
 
-    private var hasChanged: Bool {
-        switch viewModel.overlayState {
-        case .edit(let deeplink, _):
-            return deeplink.title != deeplinkTitle || deeplink.url != deeplinkUrl
-        default:
-            return true
-        }
-    }
-
-    private var isValid: Bool {
-        switch viewModel.overlayState {
-
-        case .edit(let deeplink, let group):
-            return viewModel.checkValidity(
-                for: Deeplink(title: deeplinkTitle, url: deeplinkUrl), oldValue: deeplink, in: group
-            )
-
-        case .create(let group):
-            return viewModel.checkValidity(
-                for: Deeplink(title: deeplinkTitle, url: deeplinkUrl), in: group
-            )
-
-        case .section:
-            return viewModel.checkValidity(for: sectionTitle)
-
-        default:
-            return true
-        }
-    }
-
-    private func setError(_ error: DeeplinkEditError?) {
-        hasError = (error != nil)
-        withAnimation(.smooth(duration: 0.1)) {
-            self.error = error
-        }
+    private var isSaveDisabled: Bool {
+        guard !hasError else { return true }
+        return
+            (viewModel.editingDeeplinkTitle.isEmpty || viewModel.editingDeeplinkUrl.isEmpty)
+            && viewModel.editingSectionTitle.isEmpty
     }
 }

@@ -19,6 +19,11 @@ enum DeeplinkItemType {
     case deeplink(groupTitle: String, deeplink: Deeplink)
 }
 
+enum DeeplinkUpdateError: Equatable {
+    case duplicate(isSection: Bool)
+    case invalidUrl
+}
+
 class DeeplinkContentModel {
 
     private var database: DatabaseProtocol
@@ -134,19 +139,34 @@ extension DeeplinkContentModel {
 
 extension DeeplinkContentModel {
 
-    func checkValidity(for groupTitle: String) -> Bool {
-        !isDuplicate(groupTitle: groupTitle)
+    func validate(_ groupTitle: String) -> DeeplinkUpdateError? {
+        if isDuplicate(groupTitle) {
+            return .duplicate(isSection: true)
+        }
+        return nil
     }
 
-    func checkValidity(for deeplink: Deeplink, oldValue: Deeplink? = nil, in group: DeeplinkGroup) -> Bool {
-        !isDuplicate(deeplink: deeplink, oldValue: oldValue, in: group)
+    func validate(_ deeplink: Deeplink, oldValue: Deeplink? = nil, in group: DeeplinkGroup) -> DeeplinkUpdateError? {
+        if isDuplicate(deeplink, oldValue: oldValue, in: group) {
+            return .duplicate(isSection: false)
+        }
+        if isInvalidUrl(deeplink) {
+            return .invalidUrl
+        }
+        return nil
     }
 
-    private func isDuplicate(groupTitle: String) -> Bool {
+    private func isDuplicate(_ groupTitle: String) -> Bool {
         deeplinkGroups?.first(where: { $0.title == groupTitle }) != nil
     }
 
-    private func isDuplicate(deeplink: Deeplink, oldValue: Deeplink? = nil, in group: DeeplinkGroup) -> Bool {
+    private func isDuplicate(_ deeplink: Deeplink, oldValue: Deeplink? = nil, in group: DeeplinkGroup) -> Bool {
         group.deeplinks?.filter({ $0 != oldValue }).contains(deeplink) == true
+    }
+
+    private func isInvalidUrl(_ deeplink: Deeplink) -> Bool {
+        // can be of format "https://whatever..." or "scheme://whatever...", so not much to validate here
+        guard deeplink.url.contains("://") else { return true }
+        return false
     }
 }
