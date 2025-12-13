@@ -115,20 +115,16 @@ class ContentViewModel: ObservableObject {
     }
 
     func alertButtonAction(for error: DeeplinkError) -> (() -> Void) {
-        switch error.code {
+        switch error {
         case .invalidLoginCredentials:
             return {
                 self.onEnterCredentials()
             }
-        case .invalidUserToken:
-            return {}
         case .dataNotAvailable:
             return {
                 self.onAuthenticated()
             }
-        case .updateFailed:
-            return {}
-        case .comingSoon:
+        default:
             return {}
         }
     }
@@ -161,7 +157,7 @@ class ContentViewModel: ObservableObject {
         }
     }
 
-    func validate() -> DeeplinkUpdateError? {
+    func validate() -> DeeplinkError? {
         switch overlayState {
 
         case .edit(let deeplink, let group):
@@ -225,11 +221,14 @@ class ContentViewModel: ObservableObject {
     }
 
     private func handleError(_ error: DeeplinkError) {
-        if case .invalidUserToken = error.code {
+        if case .invalidUserToken = error {
             onEnterCredentials()
             return
+        } else if error.shouldShowAlert {
+            self.alertState = .error(error)
+        } else {
+            // not handled here
         }
-        self.alertState = .error(error)
     }
 
     private func clearUserData() {

@@ -11,26 +11,13 @@ private enum Field: Int, Hashable {
     case title, url
 }
 
-private extension DeeplinkUpdateError {
-    var message: String {
-        switch self {
-        case .duplicate(isSection: true):
-            return "A section with this name already exists."
-        case .duplicate(isSection: false):
-            return "A deeplink with this title and URL already exists."
-        case .invalidUrl:
-            return "This doesn't seem like a valid deeplink."
-        }
-    }
-}
-
 struct DeeplinkEditOverlay: View {
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     @ObservedObject var viewModel: ContentViewModel
     @State private var isShowing = false
     @FocusState private var focusedField: Field?
 
-    @State private var error: DeeplinkUpdateError?
+    @State private var error: DeeplinkError?
     @State private var hasError: Bool = false
 
     public var willDismiss: (() -> Void)?
@@ -200,7 +187,7 @@ struct DeeplinkEditOverlay: View {
         }
     }
 
-    private func setError(_ error: DeeplinkUpdateError?) {
+    private func setError(_ error: DeeplinkError?) {
         guard self.error != error else { return }
         DispatchQueue.main.async {
             hasError = (error != nil)

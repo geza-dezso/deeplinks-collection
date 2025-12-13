@@ -19,11 +19,6 @@ enum DeeplinkItemType {
     case deeplink(groupTitle: String, deeplink: Deeplink)
 }
 
-enum DeeplinkUpdateError: Equatable {
-    case duplicate(isSection: Bool)
-    case invalidUrl
-}
-
 class DeeplinkContentModel {
 
     private var database: DatabaseProtocol
@@ -139,18 +134,18 @@ extension DeeplinkContentModel {
 
 extension DeeplinkContentModel {
 
-    func validate(_ groupTitle: String) -> DeeplinkUpdateError? {
+    func validate(_ groupTitle: String) -> DeeplinkError? {
         if isDuplicate(groupTitle) {
             return .duplicate(isSection: true)
         }
         return nil
     }
 
-    func validate(_ deeplink: Deeplink, oldValue: Deeplink? = nil, in group: DeeplinkGroup) -> DeeplinkUpdateError? {
+    func validate(_ deeplink: Deeplink, oldValue: Deeplink? = nil, in group: DeeplinkGroup) -> DeeplinkError? {
         if isDuplicate(deeplink, oldValue: oldValue, in: group) {
             return .duplicate(isSection: false)
         }
-        if isInvalidUrl(deeplink) {
+        if isInvalidUrl(deeplink.url) {
             return .invalidUrl
         }
         return nil
@@ -164,9 +159,20 @@ extension DeeplinkContentModel {
         group.deeplinks?.filter({ $0 != oldValue }).contains(deeplink) == true
     }
 
-    private func isInvalidUrl(_ deeplink: Deeplink) -> Bool {
-        // can be of format "https://whatever..." or "scheme://whatever...", so not much to validate here
-        guard deeplink.url.contains("://") else { return true }
+    private func isInvalidUrl(_ url: String) -> Bool {
+        guard URL(string: url) != nil else { return true }
+
+        // can be of format "https://whatever..." or "scheme://whatever..."
+        guard let range = url.range(of: "://") else { return true }
+
+        // must be some text before "://"
+        let pre = url[..<range.lowerBound].trimmingCharacters(in: .whitespacesAndNewlines)
+        if pre.isEmpty { return true }
+
+        // must be some text after "://"
+        let post = url[range.upperBound...].trimmingCharacters(in: .whitespacesAndNewlines)
+        if post.isEmpty { return true }
+
         return false
     }
 }

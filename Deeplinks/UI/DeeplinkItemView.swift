@@ -41,7 +41,7 @@ struct DeeplinkItemView: View {
                     editAction: {
                         viewModel.overlayState = .edit(deeplink, for: group)
                     }, deleteAction: {
-                        viewModel.alertState = .error(DeeplinkError(.comingSoon))
+                        viewModel.alertState = .error(.comingSoon)
                     })
                 #endif
 
