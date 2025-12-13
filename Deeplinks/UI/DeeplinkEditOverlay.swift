@@ -149,14 +149,12 @@ struct DeeplinkEditOverlay: View {
     private var buttonsSection: some View {
         HStack {
             Button {
-                if viewModel.hasChanged {
-                    if let error = viewModel.validate() {
-                        setError(error)
-                    } else {
-                        viewModel.update()
-                        closeOverlay()
-                    }
+                if let error = viewModel.validate() {
+                    setError(error)
                 } else {
+                    if viewModel.hasChanged {
+                        viewModel.update()
+                    }
                     closeOverlay()
                 }
             } label: {
