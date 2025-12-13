@@ -22,6 +22,7 @@ struct DeeplinkItemView: View {
 
     var body: some View {
         HStack {
+            // TODO: fix if URL(string: deeplink.url) fails, app crashes
             Link(destination: URL(string: deeplink.url)!) {
                 VStack(spacing: 4) {
                     HStack {
