@@ -15,6 +15,10 @@ enum DeeplinkError: Equatable {
     case comingSoon
     case duplicate(isSection: Bool)
     case invalidUrl
+
+    static let alertErrors: [DeeplinkError] = [
+        .invalidLoginCredentials, .dataNotAvailable, .updateFailed, .comingSoon
+    ]
 }
 
 extension DeeplinkError {
@@ -52,10 +56,6 @@ extension DeeplinkError {
     }
 
     var shouldShowAlert: Bool {
-        return alertErrors.contains(self)
-    }
-
-    private var alertErrors: [DeeplinkError] {
-        return [.invalidLoginCredentials, .dataNotAvailable, .updateFailed, .comingSoon]
+        return DeeplinkError.alertErrors.contains(self)
     }
 }
