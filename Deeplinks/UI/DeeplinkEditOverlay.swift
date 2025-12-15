@@ -187,11 +187,9 @@ struct DeeplinkEditOverlay: View {
 
     private func setError(_ error: DeeplinkError?) {
         guard self.error != error else { return }
-        DispatchQueue.main.async {
-            hasError = (error != nil)
-            withAnimation(.smooth(duration: 0.1)) {
-                self.error = error
-            }
+        hasError = (error != nil)
+        withAnimation(.smooth(duration: 0.1)) {
+            self.error = error
         }
     }
 
