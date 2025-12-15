@@ -145,7 +145,7 @@ extension DeeplinkContentModel {
         if isDuplicate(deeplink, oldValue: oldValue, in: group) {
             return .duplicate(isSection: false)
         }
-        if isInvalidUrl(deeplink.url) {
+        if !isValidUrl(deeplink.url) {
             return .invalidUrl
         }
         return nil
@@ -159,20 +159,20 @@ extension DeeplinkContentModel {
         group.deeplinks?.filter({ $0 != oldValue }).contains(deeplink) == true
     }
 
-    private func isInvalidUrl(_ url: String) -> Bool {
-        guard URL(string: url) != nil else { return true }
+    private func isValidUrl(_ url: String) -> Bool {
+        guard URL(string: url) != nil else { return false }
 
         // can be of format "https://whatever..." or "scheme://whatever..."
-        guard let range = url.range(of: "://") else { return true }
+        guard let range = url.range(of: "://") else { return false }
 
         // must be some text before "://"
         let pre = url[..<range.lowerBound].trimmingCharacters(in: .whitespacesAndNewlines)
-        if pre.isEmpty { return true }
+        if pre.isEmpty { return false }
 
         // must be some text after "://"
         let post = url[range.upperBound...].trimmingCharacters(in: .whitespacesAndNewlines)
-        if post.isEmpty { return true }
+        if post.isEmpty { return false }
 
-        return false
+        return true
     }
 }
