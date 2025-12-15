@@ -44,8 +44,25 @@ class ContentViewModel: ObservableObject {
     @Published var deeplinkGroups: [DeeplinkGroup]?
     @Published var user: String = ""
     @Published var pwd: String = ""
-    @Published var state: ContentViewModelState = .initial
-    @Published var overlayState: ContentViewModelOverlayState?
+    @Published var state: ContentViewModelState = .initial {
+        didSet {
+            alertState = nil
+        }
+    }
+    @Published var overlayState: ContentViewModelOverlayState? {
+        didSet {
+            switch overlayState {
+
+            case .edit(let deeplink, _):
+                editingDeeplinkTitle = deeplink.title
+                editingDeeplinkUrl = deeplink.url
+
+            default:
+                editingDeeplinkTitle = ""
+                editingDeeplinkUrl = ""
+            }
+        }
+    }
     @Published var alertState: ContentViewModelAlertState?
 
     @Published var lastCreatedItemId: String?
@@ -57,6 +74,10 @@ class ContentViewModel: ObservableObject {
     private var contentModel: DeeplinkContentModel
     private var contentModelListener: AnyCancellable?
     private var userTokenHandler: UserTokenHandler
+
+    @Published var editingSectionTitle: String = ""
+    @Published var editingDeeplinkTitle: String = ""
+    @Published var editingDeeplinkUrl: String = ""
 
     init(contentModel: DeeplinkContentModel) {
         self.contentModel = contentModel
@@ -94,42 +115,67 @@ class ContentViewModel: ObservableObject {
     }
 
     func alertButtonAction(for error: DeeplinkError) -> (() -> Void) {
-        switch error.code {
+        switch error {
         case .invalidLoginCredentials:
             return {
                 self.onEnterCredentials()
             }
-        case .invalidUserToken:
-            return {}
         case .dataNotAvailable:
             return {
                 self.onAuthenticated()
             }
-        case .updateFailed:
-            return {}
-        case .comingSoon:
+        default:
             return {}
         }
     }
 
-    func update(_ deeplink: Deeplink, with newDeeplink: Deeplink, in group: DeeplinkGroup) {
-        contentModel.update(deeplink, with: newDeeplink, in: group)
+    func update() {
+        switch overlayState {
+
+        case .edit(let deeplink, let group):
+            let newDeeplink = Deeplink(title: editingDeeplinkTitle, url: editingDeeplinkUrl)
+            contentModel.update(deeplink, with: newDeeplink, in: group)
+
+        case .create(let group):
+            let deeplink = Deeplink(title: editingDeeplinkTitle, url: editingDeeplinkUrl)
+            contentModel.append(deeplink, to: group)
+
+        case .section:
+            contentModel.append(group: DeeplinkGroup(title: editingSectionTitle))
+
+        default:
+            break
+        }
     }
 
-    func append(_ deeplink: Deeplink, to group: DeeplinkGroup) {
-        contentModel.append(deeplink, to: group)
+    var hasChanged: Bool {
+        switch overlayState {
+        case .edit(let deeplink, _):
+            return deeplink.title != editingDeeplinkTitle || deeplink.url != editingDeeplinkUrl
+        default:
+            return true
+        }
     }
 
-    func append(group: DeeplinkGroup) {
-        contentModel.append(group: group)
-    }
+    func validate() -> DeeplinkError? {
+        switch overlayState {
 
-    func checkValidity(for groupTitle: String) -> Bool {
-        return contentModel.checkValidity(for: groupTitle)
-    }
+        case .edit(let deeplink, let group):
+            return contentModel.validate(
+                Deeplink(title: editingDeeplinkTitle, url: editingDeeplinkUrl), oldValue: deeplink, in: group
+            )
 
-    func checkValidity(for newDeeplink: Deeplink, oldValue: Deeplink? = nil, in group: DeeplinkGroup) -> Bool {
-        return contentModel.checkValidity(for: newDeeplink, oldValue: oldValue, in: group)
+        case .create(let group):
+            return contentModel.validate(
+                Deeplink(title: editingDeeplinkTitle, url: editingDeeplinkUrl), in: group
+            )
+
+        case .section:
+            return contentModel.validate(editingSectionTitle)
+
+        default:
+            return nil
+        }
     }
 
     func itemIdFor(groupTitle: String, deeplink: Deeplink? = nil) -> String {
@@ -146,6 +192,10 @@ class ContentViewModel: ObservableObject {
                 guard let self else { return }
 
                 switch modelState {
+
+                case .fetching:
+                    state = .fetching
+
                 case .ready(let result):
                     deeplinkGroups = result ?? []
                     userTokenHandler.store(user)
@@ -153,9 +203,6 @@ class ContentViewModel: ObservableObject {
 
                 case .error(let error):
                     handleError(error)
-
-                default:
-                    break
                 }
             }
 
@@ -174,11 +221,14 @@ class ContentViewModel: ObservableObject {
     }
 
     private func handleError(_ error: DeeplinkError) {
-        if case .invalidUserToken = error.code {
+        if case .invalidUserToken = error {
             onEnterCredentials()
             return
+        } else if error.shouldShowAlert {
+            self.alertState = .error(error)
+        } else {
+            // not handled here
         }
-        self.alertState = .error(error)
     }
 
     private func clearUserData() {

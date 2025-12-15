@@ -22,6 +22,7 @@ struct DeeplinkItemView: View {
 
     var body: some View {
         HStack {
+            // TODO: fix if URL(string: deeplink.url) fails, app crashes
             Link(destination: URL(string: deeplink.url)!) {
                 VStack(spacing: 4) {
                     HStack {
@@ -41,7 +42,7 @@ struct DeeplinkItemView: View {
                     editAction: {
                         viewModel.overlayState = .edit(deeplink, for: group)
                     }, deleteAction: {
-                        viewModel.alertState = .error(DeeplinkError(.comingSoon))
+                        viewModel.alertState = .error(.comingSoon)
                     })
                 #endif
 

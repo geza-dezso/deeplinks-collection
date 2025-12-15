@@ -99,7 +99,7 @@ struct ContentView: View {
         }
         .alert("Error", isPresented: $shouldPresentAlert) {
             if let error = error {
-                Button(error.buttonText, role: .cancel) {
+                Button(error.alertButtonText, role: .cancel) {
                     viewModel.alertState = nil
                     viewModel.alertButtonAction(for: error)()
                 }

@@ -7,53 +7,55 @@
 
 import Foundation
 
-enum DeeplinkErrorCode: Int, Codable, CaseIterable {
-
+enum DeeplinkError: Equatable {
     case invalidLoginCredentials
     case invalidUserToken
     case dataNotAvailable
     case updateFailed
     case comingSoon
-}
+    case duplicate(isSection: Bool)
+    case invalidUrl
 
-struct DeeplinkError: Error, Equatable {
-
-    var code: DeeplinkErrorCode
-
-    init(_ code: DeeplinkErrorCode) {
-        self.code = code
-    }
+    static let alertErrors: [DeeplinkError] = [
+        .invalidLoginCredentials, .dataNotAvailable, .updateFailed, .comingSoon
+    ]
 }
 
 extension DeeplinkError {
 
-    var message: String? {
-        switch code {
+    var message: String {
+        switch self {
         case .invalidLoginCredentials:
             return "Login failed! Please check your credentials and try again."
         case .invalidUserToken:
-            return nil
+            return ""
         case .dataNotAvailable:
             return "Data not available!"
         case .updateFailed:
             return "Updating data failed. Please try again later."
         case .comingSoon:
             return "Coming soon!"
+        case .duplicate(isSection: true):
+            return "A section with this name already exists."
+        case .duplicate(isSection: false):
+            return "A deeplink with this title and URL already exists."
+        case .invalidUrl:
+            return "This doesn't seem like a valid deeplink."
         }
     }
 
-    var buttonText: String {
-        switch code {
-        case .invalidLoginCredentials:
+    var alertButtonText: String {
+        switch self {
+        case .invalidLoginCredentials, .updateFailed, .comingSoon:
             return "Ok"
-        case .invalidUserToken:
-            return ""
         case .dataNotAvailable:
             return "Retry"
-        case .updateFailed:
-            return "Ok"
-        case .comingSoon:
-            return "Ok"
+        default:
+            return ""
         }
+    }
+
+    var shouldShowAlert: Bool {
+        return DeeplinkError.alertErrors.contains(self)
     }
 }

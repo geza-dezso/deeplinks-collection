@@ -134,19 +134,45 @@ extension DeeplinkContentModel {
 
 extension DeeplinkContentModel {
 
-    func checkValidity(for groupTitle: String) -> Bool {
-        !isDuplicate(groupTitle: groupTitle)
+    func validate(_ groupTitle: String) -> DeeplinkError? {
+        if isDuplicate(groupTitle) {
+            return .duplicate(isSection: true)
+        }
+        return nil
     }
 
-    func checkValidity(for deeplink: Deeplink, oldValue: Deeplink? = nil, in group: DeeplinkGroup) -> Bool {
-        !isDuplicate(deeplink: deeplink, oldValue: oldValue, in: group)
+    func validate(_ deeplink: Deeplink, oldValue: Deeplink? = nil, in group: DeeplinkGroup) -> DeeplinkError? {
+        if isDuplicate(deeplink, oldValue: oldValue, in: group) {
+            return .duplicate(isSection: false)
+        }
+        if !isValidUrl(deeplink.url) {
+            return .invalidUrl
+        }
+        return nil
     }
 
-    private func isDuplicate(groupTitle: String) -> Bool {
+    private func isDuplicate(_ groupTitle: String) -> Bool {
         deeplinkGroups?.first(where: { $0.title == groupTitle }) != nil
     }
 
-    private func isDuplicate(deeplink: Deeplink, oldValue: Deeplink? = nil, in group: DeeplinkGroup) -> Bool {
+    private func isDuplicate(_ deeplink: Deeplink, oldValue: Deeplink? = nil, in group: DeeplinkGroup) -> Bool {
         group.deeplinks?.filter({ $0 != oldValue }).contains(deeplink) == true
+    }
+
+    private func isValidUrl(_ url: String) -> Bool {
+        guard URL(string: url) != nil else { return false }
+
+        // can be of format "https://whatever..." or "scheme://whatever..."
+        guard let range = url.range(of: "://") else { return false }
+
+        // must be some text before "://"
+        let pre = url[..<range.lowerBound].trimmingCharacters(in: .whitespacesAndNewlines)
+        if pre.isEmpty { return false }
+
+        // must be some text after "://"
+        let post = url[range.upperBound...].trimmingCharacters(in: .whitespacesAndNewlines)
+        if post.isEmpty { return false }
+
+        return true
     }
 }
