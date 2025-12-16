@@ -150,6 +150,7 @@ struct DeeplinkEditOverlay: View {
     private var buttonsSection: some View {
         HStack {
             Button {
+                trimWhitespaces()
                 if let error = viewModel.validate() {
                     setError(error)
                 } else {
@@ -199,5 +200,11 @@ struct DeeplinkEditOverlay: View {
         return
             (viewModel.editingDeeplinkTitle.isEmpty || viewModel.editingDeeplinkUrl.isEmpty)
             && viewModel.editingSectionTitle.isEmpty
+    }
+
+    private func trimWhitespaces() {
+        viewModel.editingSectionTitle = viewModel.editingSectionTitle.trimmingCharacters(in: .whitespacesAndNewlines)
+        viewModel.editingDeeplinkTitle = viewModel.editingDeeplinkTitle.trimmingCharacters(in: .whitespacesAndNewlines)
+        viewModel.editingDeeplinkUrl = viewModel.editingDeeplinkUrl.trimmingCharacters(in: .whitespacesAndNewlines)
     }
 }
