@@ -157,7 +157,7 @@ class ContentViewModel: ObservableObject {
         }
     }
 
-    func validate() -> DeeplinkError? {
+    func validate() -> DeeplinkEditError? {
         switch overlayState {
 
         case .edit(let deeplink, let group):
@@ -183,6 +183,14 @@ class ContentViewModel: ObservableObject {
         return "\(groupTitle)_\(deeplink.title)_\(deeplink.url)"
     }
 
+    func handle(_ error: DeeplinkError) {
+        guard error != .invalidUserToken else {
+            onEnterCredentials()
+            return
+        }
+        self.alertState = .error(error)
+    }
+
     private func setupListeners() {
 
         contentModelListener?.cancel()
@@ -202,7 +210,7 @@ class ContentViewModel: ObservableObject {
                     state = .ready
 
                 case .error(let error):
-                    handleError(error)
+                    handle(error)
                 }
             }
 
@@ -218,17 +226,6 @@ class ContentViewModel: ObservableObject {
                     lastCreatedItemId = itemIdFor(groupTitle: groupTitle, deeplink: deeplink)
                 }
             }.store(in: &bag)
-    }
-
-    private func handleError(_ error: DeeplinkError) {
-        if case .invalidUserToken = error {
-            onEnterCredentials()
-            return
-        } else if error.shouldShowAlert {
-            self.alertState = .error(error)
-        } else {
-            // not handled here
-        }
     }
 
     private func clearUserData() {

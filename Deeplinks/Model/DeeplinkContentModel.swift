@@ -134,18 +134,18 @@ extension DeeplinkContentModel {
 
 extension DeeplinkContentModel {
 
-    func validate(_ groupTitle: String) -> DeeplinkError? {
+    func validate(_ groupTitle: String) -> DeeplinkEditError? {
         if isDuplicate(groupTitle) {
             return .duplicate(isSection: true)
         }
         return nil
     }
 
-    func validate(_ deeplink: Deeplink, oldValue: Deeplink? = nil, in group: DeeplinkGroup) -> DeeplinkError? {
+    func validate(_ deeplink: Deeplink, oldValue: Deeplink? = nil, in group: DeeplinkGroup) -> DeeplinkEditError? {
         if isDuplicate(deeplink, oldValue: oldValue, in: group) {
             return .duplicate(isSection: false)
         }
-        if !isValidUrl(deeplink.url) {
+        if URL(deeplink.url) == nil {
             return .invalidUrl
         }
         return nil
@@ -157,22 +157,5 @@ extension DeeplinkContentModel {
 
     private func isDuplicate(_ deeplink: Deeplink, oldValue: Deeplink? = nil, in group: DeeplinkGroup) -> Bool {
         group.deeplinks?.filter({ $0 != oldValue }).contains(deeplink) == true
-    }
-
-    private func isValidUrl(_ url: String) -> Bool {
-        guard URL(string: url) != nil else { return false }
-
-        // can be of format "https://whatever..." or "scheme://whatever..."
-        guard let range = url.range(of: "://") else { return false }
-
-        // must be some text before "://"
-        let pre = url[..<range.lowerBound].trimmingCharacters(in: .whitespacesAndNewlines)
-        if pre.isEmpty { return false }
-
-        // must be some text after "://"
-        let post = url[range.upperBound...].trimmingCharacters(in: .whitespacesAndNewlines)
-        if post.isEmpty { return false }
-
-        return true
     }
 }
