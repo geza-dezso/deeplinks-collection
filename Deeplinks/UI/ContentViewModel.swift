@@ -190,7 +190,9 @@ class ContentViewModel: ObservableObject {
             withAnimation(.easeInOut(duration: 0.3)) {
                 overlayState = nil
             } completion: {
-                self.alertState = .error(error)
+                DispatchQueue.main.async {
+                    self.alertState = .error(error)
+                }
             }
         } else {
             alertState = .error(error)
