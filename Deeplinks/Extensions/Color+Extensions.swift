@@ -1,5 +1,5 @@
 //
-//  Color+Helpers.swift
+//  Color+Extensions.swift
 //  Deeplinks
 //
 //  Created by Geza Dezso on 11/04/2024.

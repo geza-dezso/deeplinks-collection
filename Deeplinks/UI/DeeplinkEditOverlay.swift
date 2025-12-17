@@ -24,8 +24,6 @@ struct DeeplinkEditOverlay: View {
     public var onDismiss: (() -> Void)?
 
     private let spacing: CGFloat = isIPad ? 24 : 16
-    private let quickAnimationDuration = 0.1
-    private let relaxedAnimationDuration = 0.3
 
     init(viewModel: ContentViewModel, willDismiss: (() -> Void)? = nil, onDismiss: (() -> Void)? = nil) {
         self.viewModel = viewModel
@@ -62,7 +60,7 @@ struct DeeplinkEditOverlay: View {
                                 }
 
                                 if let error {
-                                    withAnimation(.smooth(duration: quickAnimationDuration)) {
+                                    withAnimation(.smooth(duration: 0.1)) {
                                         Text(error.message)
                                             .font(secondary)
                                             .foregroundColor(.lightGray)
@@ -73,7 +71,7 @@ struct DeeplinkEditOverlay: View {
                             }
                             .padding(spacing)
                             .background(Color.mainBackground)
-                            .transition(.scale.animation(.easeInOut(duration: quickAnimationDuration)))
+                            .transition(.scale.animation(.easeInOut(duration: 0.1)))
                         }
                     }
                     .cornerRadius(8)
@@ -180,7 +178,7 @@ struct DeeplinkEditOverlay: View {
     private func closeOverlay() {
         focusedField = nil
         willDismiss?()
-        withAnimation(.easeInOut(duration: relaxedAnimationDuration)) {
+        withAnimation(.easeInOut(duration: 0.3)) {
             isShowing = false
         } completion: {
             onDismiss?()
@@ -190,7 +188,7 @@ struct DeeplinkEditOverlay: View {
     private func setError(_ error: DeeplinkEditError?) {
         guard self.error != error else { return }
         hasError = (error != nil)
-        withAnimation(.smooth(duration: quickAnimationDuration)) {
+        withAnimation(.smooth(duration: 0.1)) {
             self.error = error
         }
     }

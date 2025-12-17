@@ -8,7 +8,6 @@
 import Foundation
 
 extension URL {
-
     init?(_ string: String) {
         guard let url = URL(string: string) else { return nil }
 
