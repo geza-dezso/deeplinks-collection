@@ -51,15 +51,13 @@ class ContentViewModel: ObservableObject {
     }
     @Published var overlayState: ContentViewModelOverlayState? {
         didSet {
-            switch overlayState {
+            editingSectionTitle = ""
+            editingDeeplinkTitle = ""
+            editingDeeplinkUrl = ""
 
-            case .edit(let deeplink, _):
+            if case .edit(let deeplink, _) = overlayState {
                 editingDeeplinkTitle = deeplink.title
                 editingDeeplinkUrl = deeplink.url
-
-            default:
-                editingDeeplinkTitle = ""
-                editingDeeplinkUrl = ""
             }
         }
     }
@@ -116,7 +114,7 @@ class ContentViewModel: ObservableObject {
 
     func alertButtonAction(for error: DeeplinkError) -> (() -> Void) {
         switch error {
-        case .invalidLoginCredentials:
+        case .invalidCredentials:
             return {
                 self.onEnterCredentials()
             }
@@ -188,7 +186,15 @@ class ContentViewModel: ObservableObject {
             onEnterCredentials()
             return
         }
-        self.alertState = .error(error)
+        if overlayState != nil {
+            withAnimation(.easeInOut(duration: 0.3)) {
+                overlayState = nil
+            } completion: {
+                self.alertState = .error(error)
+            }
+        } else {
+            alertState = .error(error)
+        }
     }
 
     private func setupListeners() {
@@ -225,6 +231,13 @@ class ContentViewModel: ObservableObject {
                 case .deeplink(let groupTitle, let deeplink):
                     lastCreatedItemId = itemIdFor(groupTitle: groupTitle, deeplink: deeplink)
                 }
+            }.store(in: &bag)
+
+        contentModel.updateError
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] error in
+                guard let self, let error else { return }
+                handle(error)
             }.store(in: &bag)
     }
 

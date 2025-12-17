@@ -105,14 +105,14 @@ class FirebaseDatabase: DatabaseProtocol {
                         pwdCheckOptions = .none
                         status = .success(deeplinks.groups)
                     } else {
-                        status = .error(.invalidLoginCredentials)
+                        status = .error(.invalidCredentials)
                     }
                 } else {
                     status = .success(deeplinks.groups)
                 }
             } else {
                 if case .enabled = pwdCheckOptions {
-                    status = .error(.invalidLoginCredentials)
+                    status = .error(.invalidCredentials)
                 } else {
                     status = .error(.invalidUserToken)
                 }

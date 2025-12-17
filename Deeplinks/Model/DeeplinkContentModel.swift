@@ -27,6 +27,7 @@ class DeeplinkContentModel {
 
     @Published public var state: DeeplinkContentModelState = .fetching
     var lastCreatedItem = PassthroughSubject<DeeplinkItemType?, Never>()
+    var updateError = PassthroughSubject<DeeplinkError?, Never>()
 
     init(database: DatabaseProtocol) {
         self.database = database
@@ -81,6 +82,8 @@ extension DeeplinkContentModel {
         Task {
             if await update(content: deeplinkGroups) {
                 lastCreatedItem.send(.group(title: group.title))
+            } else {
+                updateError.send(.updateFailed)
             }
         }
     }
@@ -98,10 +101,12 @@ extension DeeplinkContentModel {
             Task {
                 if await update(content: deeplinkGroups) {
                     lastCreatedItem.send(.deeplink(groupTitle: group.title, deeplink: deeplink))
+                } else {
+                    updateError.send(.updateFailed)
                 }
             }
         } else {
-            // TODO: HANDLE group entry not found, might have been deleted
+            updateError.send(.updateSectionNotFound)
         }
     }
 
@@ -114,18 +119,22 @@ extension DeeplinkContentModel {
                 group.deeplinks?[index] = newDeeplink
                 deeplinkGroups[groupIndex] = group
                 Task {
-                    await update(content: deeplinkGroups)
+                    if await update(content: deeplinkGroups) {
+
+                    } else {
+                        updateError.send(.updateFailed)
+                    }
                 }
             } else {
                 // deeplink entry not found, might have been deleted, append to group
                 append(newDeeplink, to: group)
             }
         } else {
-            // TODO: HANDLE group entry not found, might have been deleted
+            updateError.send(.updateSectionNotFound)
         }
     }
 
-    func update(content: [DeeplinkGroup]) async -> Bool {
+    private func update(content: [DeeplinkGroup]) async -> Bool {
         (try? await database.update(content: content)) != nil
     }
 }

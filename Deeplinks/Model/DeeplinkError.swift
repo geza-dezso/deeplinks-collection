@@ -10,11 +10,12 @@ import Foundation
 enum DeeplinkError: Equatable {
     case comingSoon
     case dataNotAvailable
-    case invalidLoginCredentials
+    case invalidCredentials
     case invalidUserToken
     case openUrlInvalid
     case openUrlFailed
     case updateFailed
+    case updateSectionNotFound
 }
 
 extension DeeplinkError {
@@ -25,7 +26,7 @@ extension DeeplinkError {
             return "Coming soon!"
         case .dataNotAvailable:
             return "Data not available!"
-        case .invalidLoginCredentials:
+        case .invalidCredentials:
             return "Login failed! Please check your credentials and try again."
         case .invalidUserToken:
             return ""
@@ -34,13 +35,15 @@ extension DeeplinkError {
         case .openUrlFailed:
             return "Failed to open deeplink!"
         case .updateFailed:
-            return "Updating data failed. Please try again later."
+            return "Updating data failed! Please try again later."
+        case .updateSectionNotFound:
+            return "Updating data failed! The section trying to update doesn't exist, might be deleted by another user."
         }
     }
 
     var alertButtonText: String {
         switch self {
-        case  .comingSoon, .invalidLoginCredentials, .openUrlFailed, .openUrlInvalid, .updateFailed:
+        case .comingSoon, .invalidCredentials, .openUrlFailed, .openUrlInvalid, .updateFailed, .updateSectionNotFound:
             return "Ok"
         case .dataNotAvailable:
             return "Retry"
