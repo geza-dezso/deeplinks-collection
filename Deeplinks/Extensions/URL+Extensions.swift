@@ -8,7 +8,7 @@
 import Foundation
 
 extension URL {
-    init?(_ string: String) {
+    init?(validating string: String) {
         guard let url = URL(string: string) else { return nil }
 
         // can be of format "https://whatever..." or "scheme://whatever..."

@@ -119,7 +119,7 @@ extension DeeplinkContentModel {
                 group.deeplinks?[index] = newDeeplink
                 deeplinkGroups[groupIndex] = group
                 Task {
-                    if !await update(content: deeplinkGroups) {
+                    if await update(content: deeplinkGroups) == false {
                         updateError.send(.updateFailed)
                     }
                 }
@@ -152,7 +152,7 @@ extension DeeplinkContentModel {
         if isDuplicate(deeplink, oldValue: oldValue, in: group) {
             return .duplicate(isSection: false)
         }
-        if URL(deeplink.url) == nil {
+        if URL(validating: deeplink.url) == nil {
             return .invalidUrl
         }
         return nil

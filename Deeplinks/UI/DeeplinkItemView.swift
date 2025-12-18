@@ -25,7 +25,7 @@ struct DeeplinkItemView: View {
     var body: some View {
         HStack {
             Button {
-                if let url = URL(deeplink.url) {
+                if let url = URL(validating: deeplink.url) {
                     openURL(url) { success in
                         if !success {
                             viewModel.handle(.openUrlFailed)
