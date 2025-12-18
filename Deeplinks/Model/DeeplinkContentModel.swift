@@ -119,9 +119,7 @@ extension DeeplinkContentModel {
                 group.deeplinks?[index] = newDeeplink
                 deeplinkGroups[groupIndex] = group
                 Task {
-                    if await update(content: deeplinkGroups) {
-
-                    } else {
+                    if !await update(content: deeplinkGroups) {
                         updateError.send(.updateFailed)
                     }
                 }
