@@ -11,6 +11,8 @@ import SwipeActions
 #endif
 
 struct DeeplinkItemView: View {
+    @Environment(\.openURL) private var openURL
+
     #if os(iOS)
     @ObservedObject var viewModel: ContentViewModel
     @Binding var swipeState: SwipeState
@@ -22,8 +24,17 @@ struct DeeplinkItemView: View {
 
     var body: some View {
         HStack {
-            // TODO: fix if URL(string: deeplink.url) fails, app crashes
-            Link(destination: URL(string: deeplink.url)!) {
+            Button {
+                if let url = URL(validating: deeplink.url) {
+                    openURL(url) { success in
+                        if !success {
+                            viewModel.handle(.openUrlFailed)
+                        }
+                    }
+                } else {
+                    viewModel.handle(.openUrlInvalid)
+                }
+            } label: {
                 VStack(spacing: 4) {
                     HStack {
                         title(deeplink.title)

@@ -67,7 +67,7 @@ struct ContentView: View {
                                         reader.scrollTo(viewModel.lastCreatedItemId, anchor: .bottom)
                                     } completion: {
                                         viewModel.highlightedItemId = viewModel.lastCreatedItemId
-                                        withAnimation( .linear(duration: 1.0)) {
+                                        withAnimation(.linear(duration: 1.0)) {
                                             viewModel.highlightedItemId = nil
                                         }
                                     }

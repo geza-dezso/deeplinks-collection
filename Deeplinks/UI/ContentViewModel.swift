@@ -51,15 +51,13 @@ class ContentViewModel: ObservableObject {
     }
     @Published var overlayState: ContentViewModelOverlayState? {
         didSet {
-            switch overlayState {
+            editingSectionTitle = ""
+            editingDeeplinkTitle = ""
+            editingDeeplinkUrl = ""
 
-            case .edit(let deeplink, _):
+            if case .edit(let deeplink, _) = overlayState {
                 editingDeeplinkTitle = deeplink.title
                 editingDeeplinkUrl = deeplink.url
-
-            default:
-                editingDeeplinkTitle = ""
-                editingDeeplinkUrl = ""
             }
         }
     }
@@ -116,7 +114,7 @@ class ContentViewModel: ObservableObject {
 
     func alertButtonAction(for error: DeeplinkError) -> (() -> Void) {
         switch error {
-        case .invalidLoginCredentials:
+        case .invalidCredentials:
             return {
                 self.onEnterCredentials()
             }
@@ -157,7 +155,7 @@ class ContentViewModel: ObservableObject {
         }
     }
 
-    func validate() -> DeeplinkError? {
+    func validate() -> DeeplinkEditError? {
         switch overlayState {
 
         case .edit(let deeplink, let group):
@@ -183,6 +181,24 @@ class ContentViewModel: ObservableObject {
         return "\(groupTitle)_\(deeplink.title)_\(deeplink.url)"
     }
 
+    func handle(_ error: DeeplinkError) {
+        guard error != .invalidUserToken else {
+            onEnterCredentials()
+            return
+        }
+        if overlayState != nil {
+            withAnimation(.easeInOut(duration: 0.3)) {
+                overlayState = nil
+            } completion: {
+                DispatchQueue.main.async {
+                    self.alertState = .error(error)
+                }
+            }
+        } else {
+            alertState = .error(error)
+        }
+    }
+
     private func setupListeners() {
 
         contentModelListener?.cancel()
@@ -202,7 +218,7 @@ class ContentViewModel: ObservableObject {
                     state = .ready
 
                 case .error(let error):
-                    handleError(error)
+                    handle(error)
                 }
             }
 
@@ -218,17 +234,13 @@ class ContentViewModel: ObservableObject {
                     lastCreatedItemId = itemIdFor(groupTitle: groupTitle, deeplink: deeplink)
                 }
             }.store(in: &bag)
-    }
 
-    private func handleError(_ error: DeeplinkError) {
-        if case .invalidUserToken = error {
-            onEnterCredentials()
-            return
-        } else if error.shouldShowAlert {
-            self.alertState = .error(error)
-        } else {
-            // not handled here
-        }
+        contentModel.updateError
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] error in
+                guard let self, let error else { return }
+                handle(error)
+            }.store(in: &bag)
     }
 
     private func clearUserData() {

@@ -17,14 +17,13 @@ struct DeeplinkEditOverlay: View {
     @State private var isShowing = false
     @FocusState private var focusedField: Field?
 
-    @State private var error: DeeplinkError?
+    @State private var error: DeeplinkEditError?
     @State private var hasError: Bool = false
 
     public var willDismiss: (() -> Void)?
     public var onDismiss: (() -> Void)?
 
     private let spacing: CGFloat = isIPad ? 24 : 16
-    private let animationDuration = 0.3
 
     init(viewModel: ContentViewModel, willDismiss: (() -> Void)? = nil, onDismiss: (() -> Void)? = nil) {
         self.viewModel = viewModel
@@ -72,7 +71,7 @@ struct DeeplinkEditOverlay: View {
                             }
                             .padding(spacing)
                             .background(Color.mainBackground)
-                            .transition(.scale.animation(.easeInOut(duration: animationDuration)))
+                            .transition(.scale.animation(.easeInOut(duration: 0.1)))
                         }
                     }
                     .cornerRadius(8)
@@ -149,6 +148,7 @@ struct DeeplinkEditOverlay: View {
     private var buttonsSection: some View {
         HStack {
             Button {
+                trimWhitespaces()
                 if let error = viewModel.validate() {
                     setError(error)
                 } else {
@@ -178,14 +178,14 @@ struct DeeplinkEditOverlay: View {
     private func closeOverlay() {
         focusedField = nil
         willDismiss?()
-        withAnimation(.easeInOut(duration: animationDuration)) {
+        withAnimation(.easeInOut(duration: 0.3)) {
             isShowing = false
         } completion: {
             onDismiss?()
         }
     }
 
-    private func setError(_ error: DeeplinkError?) {
+    private func setError(_ error: DeeplinkEditError?) {
         guard self.error != error else { return }
         hasError = (error != nil)
         withAnimation(.smooth(duration: 0.1)) {
@@ -198,5 +198,11 @@ struct DeeplinkEditOverlay: View {
         return
             (viewModel.editingDeeplinkTitle.isEmpty || viewModel.editingDeeplinkUrl.isEmpty)
             && viewModel.editingSectionTitle.isEmpty
+    }
+
+    private func trimWhitespaces() {
+        viewModel.editingSectionTitle = viewModel.editingSectionTitle.trimmingCharacters(in: .whitespacesAndNewlines)
+        viewModel.editingDeeplinkTitle = viewModel.editingDeeplinkTitle.trimmingCharacters(in: .whitespacesAndNewlines)
+        viewModel.editingDeeplinkUrl = viewModel.editingDeeplinkUrl.trimmingCharacters(in: .whitespacesAndNewlines)
     }
 }

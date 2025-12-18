@@ -31,12 +31,14 @@
 		0F581DD02BC82EC10038DDD9 /* ActionButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F581DCE2BC82EC10038DDD9 /* ActionButtonStyle.swift */; };
 		0F581DD22BC846520038DDD9 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F581DD12BC846520038DDD9 /* WelcomeView.swift */; };
 		0F581DD32BC846520038DDD9 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F581DD12BC846520038DDD9 /* WelcomeView.swift */; };
-		0F581DD82BCF01140038DDD9 /* Color+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F581DD72BCF01140038DDD9 /* Color+Helpers.swift */; };
-		0F581DD92BCF01140038DDD9 /* Color+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F581DD72BCF01140038DDD9 /* Color+Helpers.swift */; };
+		0F581DD82BCF01140038DDD9 /* Color+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F581DD72BCF01140038DDD9 /* Color+Extensions.swift */; };
+		0F581DD92BCF01140038DDD9 /* Color+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F581DD72BCF01140038DDD9 /* Color+Extensions.swift */; };
 		0F581DE42BD030CD0038DDD9 /* UserTokenHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F581DE12BD030CD0038DDD9 /* UserTokenHandler.swift */; };
 		0F581DE52BD030CD0038DDD9 /* UserTokenHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F581DE12BD030CD0038DDD9 /* UserTokenHandler.swift */; };
 		0F6062F12DDCBC7000B5C502 /* DeeplinkEditOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F6062F02DDCBC5800B5C502 /* DeeplinkEditOverlay.swift */; };
 		0F6062F72DDCF18E00B5C502 /* DeeplinkFieldStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F6062F62DDCF13E00B5C502 /* DeeplinkFieldStyle.swift */; };
+		0F8513102EF0CCE700E39E65 /* URL+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F85130F2EF0CCE700E39E65 /* URL+Extensions.swift */; };
+		0F8513112EF0CCE700E39E65 /* URL+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F85130F2EF0CCE700E39E65 /* URL+Extensions.swift */; };
 		0F94D5D92DE4718900C91B51 /* Encodable+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F94D5D82DE4717400C91B51 /* Encodable+Extensions.swift */; };
 		0F94D5DA2DE4718900C91B51 /* Encodable+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F94D5D82DE4717400C91B51 /* Encodable+Extensions.swift */; };
 		0FA17E8B2C6283B100282F1E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0FA17E8A2C6283B100282F1E /* GoogleService-Info.plist */; };
@@ -76,10 +78,11 @@
 		0F581DC82BC81CAD0038DDD9 /* LoginTextFieldStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginTextFieldStyle.swift; sourceTree = "<group>"; };
 		0F581DCE2BC82EC10038DDD9 /* ActionButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionButtonStyle.swift; sourceTree = "<group>"; };
 		0F581DD12BC846520038DDD9 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
-		0F581DD72BCF01140038DDD9 /* Color+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Color+Helpers.swift"; sourceTree = "<group>"; };
+		0F581DD72BCF01140038DDD9 /* Color+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Color+Extensions.swift"; sourceTree = "<group>"; };
 		0F581DE12BD030CD0038DDD9 /* UserTokenHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserTokenHandler.swift; sourceTree = "<group>"; };
 		0F6062F02DDCBC5800B5C502 /* DeeplinkEditOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeeplinkEditOverlay.swift; sourceTree = "<group>"; };
 		0F6062F62DDCF13E00B5C502 /* DeeplinkFieldStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeeplinkFieldStyle.swift; sourceTree = "<group>"; };
+		0F85130F2EF0CCE700E39E65 /* URL+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Extensions.swift"; sourceTree = "<group>"; };
 		0F94D5D82DE4717400C91B51 /* Encodable+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Encodable+Extensions.swift"; sourceTree = "<group>"; };
 		0FA17E8A2C6283B100282F1E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		0FCBB37A2BA88C7300D80DB7 /* Deeplinks Collection iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Deeplinks Collection iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -125,6 +128,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0F9962822EF36660005FA85A /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				0F581DD72BCF01140038DDD9 /* Color+Extensions.swift */,
+				0F94D5D82DE4717400C91B51 /* Encodable+Extensions.swift */,
+				0F85130F2EF0CCE700E39E65 /* URL+Extensions.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		0FCBB3712BA88C7300D80DB7 = {
 			isa = PBXGroup;
 			children = (
@@ -152,6 +165,7 @@
 				0FCBB39C2BA8924200D80DB7 /* Database */,
 				0FCBB39F2BA892D000D80DB7 /* Model */,
 				0FCBB39B2BA8918B00D80DB7 /* System */,
+				0F9962822EF36660005FA85A /* Extensions */,
 				0FCBB3932BA88E3A00D80DB7 /* UI */,
 				0FCBB3982BA8910F00D80DB7 /* Resources */,
 			);
@@ -208,7 +222,6 @@
 				0FCBB3A02BA892E800D80DB7 /* DeeplinkContent.swift */,
 				0F50876F2EC5CDD70026E281 /* DeeplinkContentModel.swift */,
 				0FCBB3A12BA892E800D80DB7 /* DeeplinkError.swift */,
-				0F94D5D82DE4717400C91B51 /* Encodable+Extensions.swift */,
 				0F581DE12BD030CD0038DDD9 /* UserTokenHandler.swift */,
 			);
 			path = Model;
@@ -218,7 +231,6 @@
 			isa = PBXGroup;
 			children = (
 				0F54A2A12DDC575A007987BC /* SwipeActions.swift */,
-				0F581DD72BCF01140038DDD9 /* Color+Helpers.swift */,
 				0FEBC5C62BC040A600EBECC8 /* UIDevice+Helpers.swift */,
 				0FD1259E2BC578220056F3AE /* Font+Helpers.swift */,
 				0FEBC5D42BC41E1B00EBECC8 /* DeeplinkItemStyle.swift */,
@@ -401,7 +413,7 @@
 				0FD125A02BC578220056F3AE /* Font+Helpers.swift in Sources */,
 				0F2578912BBC2C7A000491D3 /* HostingViewController.swift in Sources */,
 				0F94D5DA2DE4718900C91B51 /* Encodable+Extensions.swift in Sources */,
-				0F581DD92BCF01140038DDD9 /* Color+Helpers.swift in Sources */,
+				0F581DD92BCF01140038DDD9 /* Color+Extensions.swift in Sources */,
 				0F581DD02BC82EC10038DDD9 /* ActionButtonStyle.swift in Sources */,
 				0F581DCA2BC81CAD0038DDD9 /* LoginTextFieldStyle.swift in Sources */,
 				0F5087712EC5CDD70026E281 /* DeeplinkContentModel.swift in Sources */,
@@ -415,6 +427,7 @@
 				0F2578972BBC2C7A000491D3 /* DeeplinkContent.swift in Sources */,
 				0FEBC5CB2BC040A600EBECC8 /* UIDevice+Helpers.swift in Sources */,
 				0F0527E52C10441F0095B5B2 /* TopBottomGradientView.swift in Sources */,
+				0F8513112EF0CCE700E39E65 /* URL+Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -429,9 +442,10 @@
 				0F581DC62BC803460038DDD9 /* LoginView.swift in Sources */,
 				0FD1259F2BC578220056F3AE /* Font+Helpers.swift in Sources */,
 				0FCBB3822BA88C7300D80DB7 /* HostingViewController.swift in Sources */,
-				0F581DD82BCF01140038DDD9 /* Color+Helpers.swift in Sources */,
+				0F581DD82BCF01140038DDD9 /* Color+Extensions.swift in Sources */,
 				0F581DCF2BC82EC10038DDD9 /* ActionButtonStyle.swift in Sources */,
 				0F581DC92BC81CAD0038DDD9 /* LoginTextFieldStyle.swift in Sources */,
+				0F8513102EF0CCE700E39E65 /* URL+Extensions.swift in Sources */,
 				0FCBB37E2BA88C7300D80DB7 /* AppDelegate.swift in Sources */,
 				0F5087702EC5CDD70026E281 /* DeeplinkContentModel.swift in Sources */,
 				0F581DE42BD030CD0038DDD9 /* UserTokenHandler.swift in Sources */,
@@ -470,7 +484,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 251215;
 				DEVELOPMENT_TEAM = W244RLEDMB;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -507,7 +521,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 251215;
 				DEVELOPMENT_TEAM = W244RLEDMB;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
