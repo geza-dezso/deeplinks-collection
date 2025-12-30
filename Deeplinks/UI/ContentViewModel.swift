@@ -19,7 +19,7 @@ enum ContentViewModelOverlayState: Equatable {
     case edit(_ deeplink: Deeplink, in: DeeplinkGroup)
     case create(for: DeeplinkGroup)
     case section
-    case delete(_ deepLink: Deeplink, in: DeeplinkGroup)
+    case delete(_ deeplink: Deeplink, in: DeeplinkGroup)
 }
 
 extension ContentViewModelOverlayState {
