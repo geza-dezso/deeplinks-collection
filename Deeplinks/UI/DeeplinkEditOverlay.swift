@@ -115,6 +115,7 @@ struct DeeplinkEditOverlay: View {
             prompt: Text("Title").foregroundColor(.placeholderText),
             axis: .vertical
         )
+        .lineLimit(3)
         .textFieldStyle(DeeplinkFieldStyle())
         .focused($focusedField, equals: .title)
         .onChange(of: viewModel.editingDeeplinkTitle) {
