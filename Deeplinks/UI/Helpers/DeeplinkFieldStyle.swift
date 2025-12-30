@@ -8,13 +8,14 @@
 import SwiftUI
 
 struct DeeplinkFieldStyle: TextFieldStyle {
+    @Environment(\.isEnabled) var isEnabled
 
     // swiftlint:disable:next identifier_name
     func _body(configuration: TextField<Self._Label>) -> some View {
         configuration
             .font(primary)
             .accentColor(.lightGray)
-            .foregroundColor(.lightGray)
+            .foregroundColor(isEnabled ? .lightGray : .darkGray)
             .padding(8)
             .background(Color.black)
             .disableAutocorrection(true)

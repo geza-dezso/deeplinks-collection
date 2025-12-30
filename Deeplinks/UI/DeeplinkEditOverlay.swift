@@ -39,53 +39,64 @@ struct DeeplinkEditOverlay: View {
                     .ignoresSafeArea(.all)
             }
 
-            GeometryReader { _ in
+            VStack {
+                Spacer()
+
                 VStack {
-                    Spacer()
+                    if isShowing {
+                        VStack(spacing: spacing) {
+                            Text(viewModel.overlayState?.title ?? "")
+                                .font(primary)
+                                .foregroundColor(.white)
 
-                    VStack {
-                        if isShowing {
-                            VStack(spacing: spacing) {
-                                Text(viewModel.overlayState?.title ?? "")
-                                    .font(primary)
-                                    .foregroundColor(.white)
+                            if let overlayState = viewModel.overlayState {
 
-                                if case .section = viewModel.overlayState {
+                                if let message = overlayState.message, !message.isEmpty {
+                                    Text(message)
+                                        .font(secondary)
+                                        .foregroundColor(.lightGray)
+                                }
+
+                                switch overlayState {
+                                case .section:
                                     sectionTitleTextField
-                                } else {
+                                case .create, .edit:
                                     VStack {
                                         linkTitleTextField
                                         linkUrlTextField
                                     }
+                                case .delete:
+                                    linkUrlTextField
+                                        .disabled(true)
                                 }
-
-                                if let error {
-                                    withAnimation(.smooth(duration: 0.1)) {
-                                        Text(error.message)
-                                            .font(secondary)
-                                            .foregroundColor(.lightGray)
-                                    }
-                                }
-
-                                buttonsSection
                             }
-                            .padding(spacing)
-                            .background(Color.mainBackground)
-                            .transition(.scale.animation(.easeInOut(duration: 0.1)))
-                        }
-                    }
-                    .cornerRadius(8)
-                    .padding(.horizontal, isIPad ? 16 : 8)
-                    .offset(y: isIPad ? (horizontalSizeClass == .compact ? -128 : -192) : -64)
 
-                    Spacer()
+                            if let error {
+                                withAnimation(.smooth(duration: 0.1)) {
+                                    Text(error.message)
+                                        .font(secondary)
+                                        .foregroundColor(.lightGray)
+                                }
+                            }
+
+                            buttonsSection
+                        }
+                        .padding(spacing)
+                        .frame(maxWidth: .infinity)
+                        .background(Color.mainBackground)
+                        .transition(.scale.animation(.easeInOut(duration: 0.1)))
+                    }
                 }
-                .onAppear {
-                    isShowing = true
-                    focusedField = .title
-                }
+                .cornerRadius(8)
+                .padding(.horizontal, isIPad ? 16 : 8)
+                .offset(y: isIPad ? (horizontalSizeClass == .compact ? -128 : -192) : -64)
+
+                Spacer()
             }
-            .ignoresSafeArea(.keyboard)
+            .onAppear {
+                isShowing = true
+                focusedField = .title
+            }
 
             if viewModel.isUpdating {
                 Color.black.opacity(0.3)
@@ -101,7 +112,8 @@ struct DeeplinkEditOverlay: View {
         TextField(
             "",
             text: $viewModel.editingDeeplinkTitle,
-            prompt: Text("Title").foregroundColor(.placeholderText)
+            prompt: Text("Title").foregroundColor(.placeholderText),
+            axis: .vertical
         )
         .textFieldStyle(DeeplinkFieldStyle())
         .focused($focusedField, equals: .title)
@@ -117,7 +129,8 @@ struct DeeplinkEditOverlay: View {
         TextField(
             "",
             text: $viewModel.editingDeeplinkUrl,
-            prompt: Text("Url").foregroundColor(.placeholderText)
+            prompt: Text("Url").foregroundColor(.placeholderText),
+            axis: .vertical
         )
         .textFieldStyle(DeeplinkFieldStyle())
         .focused($focusedField, equals: .url)
@@ -133,7 +146,8 @@ struct DeeplinkEditOverlay: View {
         TextField(
             "",
             text: $viewModel.editingSectionTitle,
-            prompt: Text("Title").foregroundColor(.placeholderText)
+            prompt: Text("Title").foregroundColor(.placeholderText),
+            axis: .vertical
         )
         .textFieldStyle(DeeplinkFieldStyle())
         .focused($focusedField, equals: .title)
@@ -158,10 +172,10 @@ struct DeeplinkEditOverlay: View {
                     closeOverlay()
                 }
             } label: {
-                Text("Save")
+                Text(viewModel.overlayState?.actionButtonText ?? "Save")
             }
             .buttonStyle(ActionButtonStyle())
-            .disabled(isSaveDisabled)
+            .disabled(isActionDisabled)
 
             Spacer()
                 .frame(width: 32)
@@ -193,11 +207,19 @@ struct DeeplinkEditOverlay: View {
         }
     }
 
-    private var isSaveDisabled: Bool {
-        guard !hasError else { return true }
-        return
-            (viewModel.editingDeeplinkTitle.isEmpty || viewModel.editingDeeplinkUrl.isEmpty)
-            && viewModel.editingSectionTitle.isEmpty
+    private var isActionDisabled: Bool {
+        guard !hasError, let overlayState = viewModel.overlayState else {
+            return true
+        }
+
+        switch overlayState {
+        case .edit, .create:
+            return viewModel.editingDeeplinkTitle.isEmpty || viewModel.editingDeeplinkUrl.isEmpty
+        case .section:
+            return viewModel.editingSectionTitle.isEmpty
+        case .delete:
+            return false
+        }
     }
 
     private func trimWhitespaces() {

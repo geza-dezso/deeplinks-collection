@@ -8,7 +8,6 @@
 import Foundation
 
 enum DeeplinkError: Equatable {
-    case comingSoon
     case dataNotAvailable
     case invalidCredentials
     case invalidUserToken
@@ -22,8 +21,6 @@ extension DeeplinkError {
 
     var message: String {
         switch self {
-        case .comingSoon:
-            return "Coming soon!"
         case .dataNotAvailable:
             return "Data not available!"
         case .invalidCredentials:
@@ -43,7 +40,7 @@ extension DeeplinkError {
 
     var alertButtonText: String {
         switch self {
-        case .comingSoon, .invalidCredentials, .openUrlFailed, .openUrlInvalid, .updateFailed, .updateSectionNotFound:
+        case .invalidCredentials, .openUrlFailed, .openUrlInvalid, .updateFailed, .updateSectionNotFound:
             return "Ok"
         case .dataNotAvailable:
             return "Retry"
