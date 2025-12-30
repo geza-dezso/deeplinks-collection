@@ -134,6 +134,7 @@ struct DeeplinkEditOverlay: View {
             axis: .vertical
         )
         .textFieldStyle(DeeplinkFieldStyle())
+        .lineLimit(3)
         .focused($focusedField, equals: .url)
         .onChange(of: viewModel.editingDeeplinkUrl) {
             setError(nil)
