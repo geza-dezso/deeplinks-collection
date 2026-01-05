@@ -132,6 +132,25 @@ extension DeeplinkContentModel {
         }
     }
 
+    func delete(_ deeplink: Deeplink, in group: DeeplinkGroup) {
+        guard var deeplinkGroups else { return }
+
+        if let groupIndex = deeplinkGroups.firstIndex(where: { group == $0 }) {
+            var group = deeplinkGroups[groupIndex]
+            if let index = group.deeplinks?.firstIndex(where: { deeplink == $0 }) {
+                group.deeplinks?.remove(at: index)
+                deeplinkGroups[groupIndex] = group
+                Task {
+                    if await update(content: deeplinkGroups) == false {
+                        updateError.send(.updateFailed)
+                    }
+                }
+            }
+        } else {
+            updateError.send(.updateSectionNotFound)
+        }
+    }
+
     private func update(content: [DeeplinkGroup]) async -> Bool {
         (try? await database.update(content: content)) != nil
     }

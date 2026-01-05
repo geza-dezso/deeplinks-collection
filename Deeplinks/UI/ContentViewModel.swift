@@ -16,9 +16,10 @@ enum ContentViewModelState: Equatable {
 }
 
 enum ContentViewModelOverlayState: Equatable {
-    case edit(_ deeplink: Deeplink, for: DeeplinkGroup)
+    case edit(_ deeplink: Deeplink, in: DeeplinkGroup)
     case create(for: DeeplinkGroup)
     case section
+    case delete(_ deeplink: Deeplink, in: DeeplinkGroup)
 }
 
 extension ContentViewModelOverlayState {
@@ -30,6 +31,26 @@ extension ContentViewModelOverlayState {
             return "Create Deeplink"
         case .section:
             return "Create Section"
+        case .delete:
+            return "Delete Deeplink"
+        }
+    }
+
+    var message: String? {
+        switch self {
+        case .delete:
+            return "Are you sure you want to delete this deeplink?"
+        default:
+            return nil
+        }
+    }
+
+    var actionButtonText: String {
+        switch self {
+        case .delete:
+            return "Delete"
+        default:
+            return "Save"
         }
     }
 }
@@ -57,6 +78,10 @@ class ContentViewModel: ObservableObject {
 
             if case .edit(let deeplink, _) = overlayState {
                 editingDeeplinkTitle = deeplink.title
+                editingDeeplinkUrl = deeplink.url
+            }
+
+            if case .delete(let deeplink, _) = overlayState {
                 editingDeeplinkUrl = deeplink.url
             }
         }
@@ -140,6 +165,9 @@ class ContentViewModel: ObservableObject {
 
         case .section:
             contentModel.append(group: DeeplinkGroup(title: editingSectionTitle))
+
+        case .delete(let deeplink, let group):
+            contentModel.delete(deeplink, in: group)
 
         default:
             break
