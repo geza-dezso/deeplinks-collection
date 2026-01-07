@@ -197,7 +197,6 @@ extension ContentView {
                 }
             } else {
                 Divider()
-                    .foregroundColor(.secondaryText)
             }
         }
         .id(viewModel.itemIdFor(groupTitle: group.title))
