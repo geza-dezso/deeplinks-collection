@@ -98,6 +98,8 @@ class ContentViewModel: ObservableObject {
     private var contentModelListener: AnyCancellable?
     private var userTokenHandler: UserTokenHandler
 
+    @Published var collapsedSections: Set<String> = []
+
     @Published var editingSectionTitle: String = ""
     @Published var editingDeeplinkTitle: String = ""
     @Published var editingDeeplinkUrl: String = ""
@@ -106,6 +108,8 @@ class ContentViewModel: ObservableObject {
         self.contentModel = contentModel
         self.userTokenHandler = UserTokenHandler()
     }
+
+    // MARK: Lifecycle/states
 
     func onAppear() {
         if let user = userTokenHandler.load() {
@@ -132,10 +136,14 @@ class ContentViewModel: ObservableObject {
     }
 
     func onLogout() {
+        removeListeners()
+        clearDeeplinkData()
         clearUserData()
         userTokenHandler.delete()
         onEnterCredentials()
     }
+
+    // MARK: Actions
 
     func alertButtonAction(for error: DeeplinkError) -> (() -> Void) {
         switch error {
@@ -174,15 +182,6 @@ class ContentViewModel: ObservableObject {
         }
     }
 
-    var hasChanged: Bool {
-        switch overlayState {
-        case .edit(let deeplink, _):
-            return deeplink.title != editingDeeplinkTitle || deeplink.url != editingDeeplinkUrl
-        default:
-            return true
-        }
-    }
-
     func validate() -> DeeplinkEditError? {
         switch overlayState {
 
@@ -204,11 +203,6 @@ class ContentViewModel: ObservableObject {
         }
     }
 
-    func itemIdFor(groupTitle: String, deeplink: Deeplink? = nil) -> String {
-        guard let deeplink else { return groupTitle }
-        return "\(groupTitle)_\(deeplink.title)_\(deeplink.url)"
-    }
-
     func handle(_ error: DeeplinkError) {
         guard error != .invalidUserToken else {
             onEnterCredentials()
@@ -226,6 +220,40 @@ class ContentViewModel: ObservableObject {
             alertState = .error(error)
         }
     }
+
+    var hasChanged: Bool {
+        switch overlayState {
+        case .edit(let deeplink, _):
+            return deeplink.title != editingDeeplinkTitle || deeplink.url != editingDeeplinkUrl
+        default:
+            return true
+        }
+    }
+
+    func itemIdFor(groupTitle: String, deeplink: Deeplink? = nil) -> String {
+        guard let deeplink else { return groupTitle }
+        return "\(groupTitle)_\(deeplink.title)_\(deeplink.url)"
+    }
+
+    // MARK: Section toggle
+
+    func toggle(_ group: DeeplinkGroup) {
+        if collapsedSections.contains(group.title) {
+            expand(group)
+        } else {
+            collapsedSections.insert(group.title)
+        }
+    }
+
+    func expand(_ group: DeeplinkGroup) {
+        collapsedSections.remove(group.title)
+    }
+
+    func isCollapsed(_ group: DeeplinkGroup) -> Bool {
+        collapsedSections.contains(group.title)
+    }
+
+    // MARK: Private
 
     private func setupListeners() {
 
@@ -271,8 +299,17 @@ class ContentViewModel: ObservableObject {
             }.store(in: &bag)
     }
 
+    private func removeListeners() {
+        contentModelListener?.cancel()
+        bag.removeAll()
+    }
+
     private func clearUserData() {
         user = ""
         pwd = ""
+    }
+
+    private func clearDeeplinkData() {
+        deeplinkGroups = nil
     }
 }

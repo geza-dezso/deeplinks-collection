@@ -184,7 +184,7 @@ extension ContentView {
     @ViewBuilder
     private func groupContent(for group: DeeplinkGroup) -> some View {
         Section(header: sectionHeaderView(group)) {
-            if let deeplinks = group.deeplinks {
+            if let deeplinks = group.deeplinks, !viewModel.isCollapsed(group) {
                 ForEach(deeplinks, id: \.self) { deeplink in
                     DeeplinkItemView(
                         viewModel: viewModel,
@@ -195,6 +195,8 @@ extension ContentView {
                     )
                     .id(viewModel.itemIdFor(groupTitle: group.title, deeplink: deeplink))
                 }
+            } else {
+                Divider()
             }
         }
         .id(viewModel.itemIdFor(groupTitle: group.title))
@@ -203,18 +205,33 @@ extension ContentView {
     @ViewBuilder
     private func sectionHeaderView(_ group: DeeplinkGroup) -> some View {
         HStack {
-            Text(group.title)
-                .font(primary)
-                .foregroundColor(.secondaryText)
-                .padding(EdgeInsets(
-                    top: 12, leading: titlePadding, bottom: 12, trailing: titlePadding
-                ))
+            Button {
+                withAnimation(.smooth(duration: toggleDuration(for: group))) {
+                    viewModel.toggle(group)
+                }
+            } label: {
+                HStack {
+                    Text(group.title)
+                        .lineLimit(1)
+                        .font(primary)
+                        .foregroundColor(.secondaryText)
+                        .padding(EdgeInsets(
+                            top: 12, leading: titlePadding, bottom: 12, trailing: titlePadding
+                        ))
 
-            Spacer()
+                    Spacer()
+
+                    Image(systemName: viewModel.isCollapsed(group) ? "chevron.down" : "chevron.up")
+                        .foregroundColor(.white)
+                }
+            }
 
             Button {
                 resetSwipeState()
                 viewModel.overlayState = .create(for: group)
+                withAnimation(.smooth(duration: toggleDuration(for: group))) {
+                    viewModel.expand(group)
+                }
             } label: {
                 Image(systemName: "plus")
                     .foregroundColor(.white)
@@ -258,6 +275,11 @@ extension ContentView {
 
     private func resetSwipeState() {
         swipeState = .swiped(UUID())
+    }
+
+    private func toggleDuration(for group: DeeplinkGroup) -> TimeInterval {
+        guard let deeplinks = group.deeplinks else { return 0 }
+        return max(Double(deeplinks.count) / 50.0, 0.3)
     }
 }
 
