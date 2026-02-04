@@ -12,9 +12,9 @@ import SwipeActions
 
 struct DeeplinkItemView: View {
     @Environment(\.openURL) private var openURL
+    @ObservedObject var viewModel: ContentViewModel
 
     #if os(iOS)
-    @ObservedObject var viewModel: ContentViewModel
     @Binding var swipeState: SwipeState
     #endif
 

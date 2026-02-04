@@ -318,7 +318,7 @@ extension ContentView {
         Section(header: sectionHeaderView(group.title)) {
             if let deeplinks = group.deeplinks {
                 ForEach(deeplinks, id: \.self) { deeplink in
-                    DeeplinkItemView(deeplink: deeplink, group: group, padding: titlePadding)
+                    DeeplinkItemView(viewModel: viewModel, deeplink: deeplink, group: group, padding: titlePadding)
                 }
             }
         }
