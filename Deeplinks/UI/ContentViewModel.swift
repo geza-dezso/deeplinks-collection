@@ -13,6 +13,9 @@ enum ContentViewModelState: Equatable {
     case login
     case fetching
     case ready
+    #if os(iOS)
+    case project
+    #endif
 }
 
 enum ContentViewModelOverlayState: Equatable {
@@ -142,6 +145,12 @@ class ContentViewModel: ObservableObject {
         userTokenHandler.delete()
         onEnterCredentials()
     }
+
+    #if os(iOS)
+    func onNewProject() {
+        state = .project
+    }
+    #endif
 
     // MARK: Actions
 
