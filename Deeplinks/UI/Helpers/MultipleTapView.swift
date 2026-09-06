@@ -9,8 +9,8 @@ import SwiftUI
 
 struct MultipleTapView: View {
 
-    var numberOfTaps: Int
-    var action: () -> Void
+    let numberOfTaps: Int
+    let action: () -> Void
 
     var body: some View {
         Color.clear
