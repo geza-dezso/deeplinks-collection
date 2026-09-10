@@ -10,6 +10,10 @@ import SwiftUI
 struct WelcomeView: View {
     @ObservedObject var viewModel: ContentViewModel
 
+    #if os(iOS)
+    @AppStorage("admin_tools") private var adminTools: Bool = false
+    #endif
+
     private var background: UIImage? {
         if isTV {
             return UIImage(named: "Back_TV")
@@ -47,9 +51,24 @@ struct WelcomeView: View {
                 .frame(width: isTV ? 480 : isIPad ? 320 : 280, height: isTV ? 400 : isIPad ? 280 : 200)
 
                 Spacer()
+
+                #if os(iOS)
+                if adminTools {
+                    adminTapView
+                }
+                #endif
             }
             .offset(y: -32)
             .ignoresSafeArea(.keyboard)
         }
     }
+
+    #if os(iOS)
+    private var adminTapView: some View {
+        MultipleTapView(numberOfTaps: 3) {
+            viewModel.onNewProject()
+        }
+        .frame(height: 100)
+    }
+    #endif
 }

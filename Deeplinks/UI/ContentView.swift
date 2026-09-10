@@ -28,67 +28,15 @@ struct ContentView: View {
 
         ZStack {
 
-            if viewModel.state != .ready {
-                WelcomeView(viewModel: viewModel)
-
+            #if os(iOS)
+            if viewModel.state == .project {
+                NewProjectView(viewModel: viewModel)
             } else {
-
-                ZStack {
-                    Color.mainBackground
-                        .edgesIgnoringSafeArea(.all)
-
-                    VStack {
-
-                        titleView
-                            .padding(.horizontal, 16)
-
-                        if let groups = viewModel.deeplinkGroups {
-                            ScrollViewReader { reader in
-                                ScrollView(.vertical, showsIndicators: false) {
-                                    VStack(spacing: isTV ? 8 : isIPad ? 4 : 2) {
-                                        ForEach(groups, id: \.self) { group in
-                                            groupContent(for: group)
-                                        }
-                                        .padding(.horizontal, isTV ? 16 : 0)
-
-                                        #if os(iOS)
-                                        newSectionButton
-                                        #endif
-                                    }
-                                    .padding(.top, 8)
-                                    .padding(.bottom, scrollViewGradientHeight - 8)
-                                }
-                                .padding(.horizontal, isTV ? 0 : 16)
-                                .mask {
-                                    TopBottomGradientView(gradientHeight: scrollViewGradientHeight)
-                                }
-                                .onChange(of: viewModel.lastCreatedItemId) {
-                                    withAnimation {
-                                        reader.scrollTo(viewModel.lastCreatedItemId, anchor: .bottom)
-                                    } completion: {
-                                        viewModel.highlightedItemId = viewModel.lastCreatedItemId
-                                        withAnimation(.linear(duration: 1.0)) {
-                                            viewModel.highlightedItemId = nil
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-                        Spacer()
-                    }
-                    .padding(.horizontal, isIPad ? 24 : 0)
-                    .padding(.vertical, isTV ? 0 : 8)
-                    .onAppear {
-                        enableLogout()
-                    }
-                }
-                #if os(iOS)
-                if viewModel.overlayState != nil {
-                    editOverlay
-                }
-                #endif
+                mainContentView
             }
+            #else
+            mainContentView
+            #endif
         }
         .ignoresSafeArea(.keyboard)
         .onAppear {
@@ -111,6 +59,70 @@ struct ContentView: View {
             if viewModel.overlayState == nil {
                 resetSwipeState()
             }
+        }
+    }
+
+    @ViewBuilder
+    private var mainContentView: some View {
+        if viewModel.state != .ready {
+            WelcomeView(viewModel: viewModel)
+
+        } else {
+            ZStack {
+                Color.mainBackground
+                    .edgesIgnoringSafeArea(.all)
+
+                VStack {
+
+                    titleView
+                        .padding(.horizontal, 16)
+
+                    if let groups = viewModel.deeplinkGroups {
+                        ScrollViewReader { reader in
+                            ScrollView(.vertical, showsIndicators: false) {
+                                VStack(spacing: isTV ? 8 : isIPad ? 4 : 2) {
+                                    ForEach(groups, id: \.self) { group in
+                                        groupContent(for: group)
+                                    }
+                                    .padding(.horizontal, isTV ? 16 : 0)
+
+                                    #if os(iOS)
+                                    newSectionButton
+                                    #endif
+                                }
+                                .padding(.top, 8)
+                                .padding(.bottom, scrollViewGradientHeight - 8)
+                            }
+                            .padding(.horizontal, isTV ? 0 : 16)
+                            .mask {
+                                TopBottomGradientView(gradientHeight: scrollViewGradientHeight)
+                            }
+                            .onChange(of: viewModel.lastCreatedItemId) {
+                                withAnimation {
+                                    reader.scrollTo(viewModel.lastCreatedItemId, anchor: .bottom)
+                                } completion: {
+                                    viewModel.highlightedItemId = viewModel.lastCreatedItemId
+                                    withAnimation(.linear(duration: 1.0)) {
+                                        viewModel.highlightedItemId = nil
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    Spacer()
+                }
+                .padding(.horizontal, isIPad ? 24 : 0)
+                .padding(.vertical, isTV ? 0 : 8)
+                .onAppear {
+                    enableLogout()
+                }
+            }
+            #if os(iOS)
+            if viewModel.overlayState != nil {
+                editOverlay
+            }
+            #endif
         }
     }
 
