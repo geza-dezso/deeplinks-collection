@@ -27,16 +27,7 @@ struct ContentView: View {
     var body: some View {
 
         ZStack {
-
-            #if os(iOS)
-            if viewModel.state == .project {
-                NewProjectView(viewModel: viewModel)
-            } else {
-                mainContentView
-            }
-            #else
             mainContentView
-            #endif
         }
         .ignoresSafeArea(.keyboard)
         .onAppear {

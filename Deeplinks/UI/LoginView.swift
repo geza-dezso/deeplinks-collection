@@ -21,13 +21,10 @@ struct LoginView: View {
     }
 
     var body: some View {
-        VStack {
+        VStack(spacing: isTV ? 24 : isIPad ? 12 : 8) {
             usernameTextField
 
             passwordTextField
-
-            Spacer()
-                .frame(height: isTV ? 48 : isIPad ? 32 : 24)
 
             Button(action: {
                 focusedField = nil
@@ -37,6 +34,7 @@ struct LoginView: View {
             })
             .buttonStyle(ActionButtonStyle())
             .disabled(isLoginDisabled)
+            .padding(.top, 16)
         }
     }
 
