@@ -17,7 +17,10 @@ struct NewProjectView: View {
     @FocusState private var focusedField: Field?
 
     private var isCreateDisabled: Bool {
-        viewModel.user.isEmpty || viewModel.pwd.isEmpty || viewModel.confirmPwd.isEmpty
+        viewModel.user.count < 3 ||
+        viewModel.pwd.count < 3 ||
+        viewModel.confirmPwd.count < 3 ||
+        viewModel.pwd != viewModel.confirmPwd
     }
 
     var body: some View {
@@ -54,7 +57,7 @@ struct NewProjectView: View {
         TextField(
             "",
             text: $viewModel.user,
-            prompt: Text("Username").foregroundColor(.placeholderText)
+            prompt: Text("User (min. 3 chars)").foregroundColor(.placeholderText)
         )
         .textFieldStyle(LoginTextFieldStyle())
         .focused($focusedField, equals: .username)
@@ -64,12 +67,11 @@ struct NewProjectView: View {
     }
 
     private var passwordTextField: some View {
-        SecureField(
-            "",
+        ToggleSecureField(
+            title: "",
             text: $viewModel.pwd,
-            prompt: Text("Password").foregroundColor(.placeholderText)
+            prompt: Text("Password (min. 3 chars)").foregroundColor(.placeholderText)
         )
-        .textFieldStyle(LoginTextFieldStyle())
         .focused($focusedField, equals: .password)
         .onSubmit {
             focusedField = .confirmPassword
@@ -77,12 +79,11 @@ struct NewProjectView: View {
     }
 
     private var confirmPasswordTextField: some View {
-        SecureField(
-            "",
+        ToggleSecureField(
+            title: "",
             text: $viewModel.confirmPwd,
             prompt: Text("Confirm password").foregroundColor(.placeholderText)
         )
-        .textFieldStyle(LoginTextFieldStyle())
         .focused($focusedField, equals: .confirmPassword)
         .onSubmit {
             focusedField = nil
