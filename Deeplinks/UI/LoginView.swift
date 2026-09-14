@@ -42,7 +42,7 @@ struct LoginView: View {
         TextField(
             "",
             text: $viewModel.user,
-            prompt: Text("Username").foregroundColor(.placeholderText)
+            prompt: Text("User").foregroundColor(.placeholderText)
         )
         .textFieldStyle(LoginTextFieldStyle())
         .focused($focusedField, equals: .username)
@@ -50,6 +50,22 @@ struct LoginView: View {
             focusedField = .password
         }
     }
+
+    #if os(iOS)
+
+    private var passwordTextField: some View {
+        ToggleSecureField(
+            title: "",
+            text: $viewModel.pwd,
+            prompt: Text("Password").foregroundColor(.placeholderText)
+        )
+        .focused($focusedField, equals: .password)
+        .onSubmit {
+            focusedField = .password
+        }
+    }
+
+    #else
 
     private var passwordTextField: some View {
         SecureField(
@@ -63,4 +79,6 @@ struct LoginView: View {
             focusedField = nil
         }
     }
+
+    #endif
 }
