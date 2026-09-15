@@ -61,7 +61,7 @@ struct LoginView: View {
         )
         .focused($focusedField, equals: .password)
         .onSubmit {
-            focusedField = .password
+            focusedField = nil
         }
     }
 
