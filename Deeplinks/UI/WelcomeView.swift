@@ -41,10 +41,14 @@ struct WelcomeView: View {
                 Group {
                     switch viewModel.state {
 
-                    #if os(iOS)
                     case .project:
+
+                        Text("Create new project")
+                            .font(primary)
+                            .foregroundColor(.secondaryText)
+                            .padding(.bottom, 24)
+
                         NewProjectView(viewModel: viewModel)
-                    #endif
 
                     case .login:
                         LoginView(viewModel: viewModel)
