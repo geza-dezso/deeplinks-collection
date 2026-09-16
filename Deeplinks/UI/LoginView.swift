@@ -57,9 +57,10 @@ struct LoginView: View {
         ToggleSecureField(
             title: "",
             text: $viewModel.pwd,
-            prompt: Text("Password").foregroundColor(.placeholderText)
+            prompt: Text("Password").foregroundColor(.placeholderText),
+            focusedField: $focusedField,
+            field: .password
         )
-        .focused($focusedField, equals: .password)
         .onSubmit {
             focusedField = nil
         }

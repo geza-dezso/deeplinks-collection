@@ -70,9 +70,10 @@ struct NewProjectView: View {
         ToggleSecureField(
             title: "",
             text: $viewModel.pwd,
-            prompt: Text("Password (min. 3 chars)").foregroundColor(.placeholderText)
+            prompt: Text("Password (min. 3 chars)").foregroundColor(.placeholderText),
+            focusedField: $focusedField,
+            field: .password,
         )
-        .focused($focusedField, equals: .password)
         .onSubmit {
             focusedField = .confirmPassword
         }
@@ -82,9 +83,10 @@ struct NewProjectView: View {
         ToggleSecureField(
             title: "",
             text: $viewModel.confirmPwd,
-            prompt: Text("Confirm password").foregroundColor(.placeholderText)
+            prompt: Text("Confirm password").foregroundColor(.placeholderText),
+            focusedField: $focusedField,
+            field: .confirmPassword,
         )
-        .focused($focusedField, equals: .confirmPassword)
         .onSubmit {
             focusedField = nil
         }
