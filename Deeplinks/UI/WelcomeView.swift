@@ -36,19 +36,35 @@ struct WelcomeView: View {
                     .font(headline)
                     .bold()
                     .foregroundColor(.primaryText)
+                    .padding(.bottom, 32)
 
                 Group {
-                    if viewModel.state == .login {
+                    switch viewModel.state {
+
+                    #if os(iOS)
+
+                    case .project:
+
+                        Text("Create new project")
+                            .font(primary)
+                            .foregroundColor(.secondaryText)
+                            .padding(.bottom, 24)
+
+                        NewProjectView(viewModel: viewModel)
+
+                    #endif
+
+                    case .login:
                         LoginView(viewModel: viewModel)
 
-                    } else if viewModel.state == .fetching {
+                    case .fetching:
                         ProgressView()
 
-                    } else {
+                    default:
                         Spacer()
                     }
                 }
-                .frame(width: isTV ? 480 : isIPad ? 320 : 280, height: isTV ? 400 : isIPad ? 280 : 200)
+                .frame(width: isTV ? 480 : isIPad ? 320 : 280)
 
                 Spacer()
 
@@ -60,6 +76,10 @@ struct WelcomeView: View {
             }
             .offset(y: -32)
             .ignoresSafeArea(.keyboard)
+            .contentShape(Rectangle())
+            .onTapGesture {
+                hideKeyboard()
+            }
         }
     }
 

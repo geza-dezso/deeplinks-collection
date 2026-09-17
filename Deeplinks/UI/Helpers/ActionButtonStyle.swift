@@ -25,6 +25,7 @@ struct ActionButtonStyle: ButtonStyle {
                 .font(primary)
                 .padding(.vertical, 8)
                 .padding(.horizontal, 24)
+                .frame(height: isIPad ? 44 : 36)
                 .foregroundColor(isEnabled ? (configuration.isPressed ? .darkGray : .primaryText) : .darkGray)
                 .background(
                     isEnabled ? (configuration.isPressed ? .clear : Color.buttonBackground) : .clear

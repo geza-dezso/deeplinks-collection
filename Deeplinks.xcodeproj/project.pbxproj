@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		0F0527E42C10441F0095B5B2 /* TopBottomGradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F0527E32C10441F0095B5B2 /* TopBottomGradientView.swift */; };
 		0F0527E52C10441F0095B5B2 /* TopBottomGradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F0527E32C10441F0095B5B2 /* TopBottomGradientView.swift */; };
+		0F11F40C30581D1A00BCC750 /* SecureTextFieldStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F11F40B30581D1A00BCC750 /* SecureTextFieldStyle.swift */; };
+		0F11F410305821F900BCC750 /* ToggleSecureField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F11F40E305821F900BCC750 /* ToggleSecureField.swift */; };
 		0F25788F2BBC2C7A000491D3 /* ContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FCBB3A42BA893D500D80DB7 /* ContentViewModel.swift */; };
 		0F2578902BBC2C7A000491D3 /* FirebaseDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FCBB39D2BA892A700D80DB7 /* FirebaseDatabase.swift */; };
 		0F2578912BBC2C7A000491D3 /* HostingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FCBB3812BA88C7300D80DB7 /* HostingViewController.swift */; };
@@ -47,6 +49,8 @@
 		0F94D5DA2DE4718900C91B51 /* Encodable+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F94D5D82DE4717400C91B51 /* Encodable+Extensions.swift */; };
 		0FA17E8B2C6283B100282F1E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0FA17E8A2C6283B100282F1E /* GoogleService-Info.plist */; };
 		0FA17E8C2C6283B100282F1E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0FA17E8A2C6283B100282F1E /* GoogleService-Info.plist */; };
+		0FB190DA305465D800A7F7BE /* View+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FB190D9305465D800A7F7BE /* View+Extensions.swift */; };
+		0FB190DB305465D800A7F7BE /* View+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FB190D9305465D800A7F7BE /* View+Extensions.swift */; };
 		0FCBB37E2BA88C7300D80DB7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FCBB37D2BA88C7300D80DB7 /* AppDelegate.swift */; };
 		0FCBB3802BA88C7300D80DB7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FCBB37F2BA88C7300D80DB7 /* SceneDelegate.swift */; };
 		0FCBB3822BA88C7300D80DB7 /* HostingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FCBB3812BA88C7300D80DB7 /* HostingViewController.swift */; };
@@ -74,6 +78,8 @@
 
 /* Begin PBXFileReference section */
 		0F0527E32C10441F0095B5B2 /* TopBottomGradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopBottomGradientView.swift; sourceTree = "<group>"; };
+		0F11F40B30581D1A00BCC750 /* SecureTextFieldStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureTextFieldStyle.swift; sourceTree = "<group>"; };
+		0F11F40E305821F900BCC750 /* ToggleSecureField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleSecureField.swift; sourceTree = "<group>"; };
 		0F2578A12BBC2C7A000491D3 /* Deeplinks Collection tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Deeplinks Collection tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0F2578A32BBC3AD0000491D3 /* Info-tvos.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Info-tvos.plist"; sourceTree = "<group>"; };
 		0F50876F2EC5CDD70026E281 /* DeeplinkContentModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeeplinkContentModel.swift; sourceTree = "<group>"; };
@@ -92,6 +98,7 @@
 		0F85130F2EF0CCE700E39E65 /* URL+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Extensions.swift"; sourceTree = "<group>"; };
 		0F94D5D82DE4717400C91B51 /* Encodable+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Encodable+Extensions.swift"; sourceTree = "<group>"; };
 		0FA17E8A2C6283B100282F1E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		0FB190D9305465D800A7F7BE /* View+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extensions.swift"; sourceTree = "<group>"; };
 		0FCBB37A2BA88C7300D80DB7 /* Deeplinks Collection iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Deeplinks Collection iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0FCBB37D2BA88C7300D80DB7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0FCBB37F2BA88C7300D80DB7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -141,6 +148,7 @@
 				0F581DD72BCF01140038DDD9 /* Color+Extensions.swift */,
 				0F94D5D82DE4717400C91B51 /* Encodable+Extensions.swift */,
 				0F85130F2EF0CCE700E39E65 /* URL+Extensions.swift */,
+				0FB190D9305465D800A7F7BE /* View+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -247,6 +255,8 @@
 				0F6062F62DDCF13E00B5C502 /* DeeplinkFieldStyle.swift */,
 				0F581DCE2BC82EC10038DDD9 /* ActionButtonStyle.swift */,
 				0F5A940430447FE500CF27AA /* MultipleTapView.swift */,
+				0F11F40B30581D1A00BCC750 /* SecureTextFieldStyle.swift */,
+				0F11F40E305821F900BCC750 /* ToggleSecureField.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -439,6 +449,7 @@
 				0F2578972BBC2C7A000491D3 /* DeeplinkContent.swift in Sources */,
 				0FEBC5CB2BC040A600EBECC8 /* UIDevice+Helpers.swift in Sources */,
 				0F0527E52C10441F0095B5B2 /* TopBottomGradientView.swift in Sources */,
+				0FB190DA305465D800A7F7BE /* View+Extensions.swift in Sources */,
 				0F8513112EF0CCE700E39E65 /* URL+Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -454,15 +465,18 @@
 				0FCBB39E2BA892A700D80DB7 /* FirebaseDatabase.swift in Sources */,
 				0F581DC62BC803460038DDD9 /* LoginView.swift in Sources */,
 				0FD1259F2BC578220056F3AE /* Font+Helpers.swift in Sources */,
+				0F11F410305821F900BCC750 /* ToggleSecureField.swift in Sources */,
 				0FCBB3822BA88C7300D80DB7 /* HostingViewController.swift in Sources */,
 				0F581DD82BCF01140038DDD9 /* Color+Extensions.swift in Sources */,
 				0F581DCF2BC82EC10038DDD9 /* ActionButtonStyle.swift in Sources */,
+				0FB190DB305465D800A7F7BE /* View+Extensions.swift in Sources */,
 				0F581DC92BC81CAD0038DDD9 /* LoginTextFieldStyle.swift in Sources */,
 				0F8513102EF0CCE700E39E65 /* URL+Extensions.swift in Sources */,
 				0FCBB37E2BA88C7300D80DB7 /* AppDelegate.swift in Sources */,
 				0F5087702EC5CDD70026E281 /* DeeplinkContentModel.swift in Sources */,
 				0F581DE42BD030CD0038DDD9 /* UserTokenHandler.swift in Sources */,
 				0F94D5D92DE4718900C91B51 /* Encodable+Extensions.swift in Sources */,
+				0F11F40C30581D1A00BCC750 /* SecureTextFieldStyle.swift in Sources */,
 				0FCBB3A32BA892E800D80DB7 /* DeeplinkError.swift in Sources */,
 				0FEBC5D52BC41E1B00EBECC8 /* DeeplinkItemStyle.swift in Sources */,
 				0FCBB3922BA88E2700D80DB7 /* ContentView.swift in Sources */,

@@ -18,10 +18,12 @@ struct LoginTextFieldStyle: TextFieldStyle {
             .accentColor(.lightGray)
             .foregroundColor(.lightGray)
             .padding(8)
+            .frame(height: isIPad ? 44 : 36)
             .background(Color.itemBackground)
             .disableAutocorrection(true)
             .keyboardType(.alphabet)
             .autocapitalization(.none)
+            .textContentType(.oneTimeCode)
             .cornerRadius(4.0)
             .overlay(
                 RoundedRectangle(cornerRadius: 4)

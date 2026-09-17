@@ -68,6 +68,7 @@ class ContentViewModel: ObservableObject {
     @Published var deeplinkGroups: [DeeplinkGroup]?
     @Published var user: String = ""
     @Published var pwd: String = ""
+    @Published var confirmPwd: String = ""
     @Published var state: ContentViewModelState = .initial {
         didSet {
             alertState = nil
@@ -148,6 +149,7 @@ class ContentViewModel: ObservableObject {
 
     #if os(iOS)
     func onNewProject() {
+        clearUserData()
         state = .project
     }
     #endif
@@ -316,6 +318,7 @@ class ContentViewModel: ObservableObject {
     private func clearUserData() {
         user = ""
         pwd = ""
+        confirmPwd = ""
     }
 
     private func clearDeeplinkData() {
