@@ -34,7 +34,7 @@ struct NewProjectView: View {
             HStack(spacing: isIPad ? 12: 8) {
                 Button(action: {
                     focusedField = nil
-                    // handle create action
+                    viewModel.onCreateProject()
                 }, label: {
                     Text("Create")
                 })

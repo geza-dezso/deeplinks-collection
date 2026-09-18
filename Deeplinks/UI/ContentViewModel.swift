@@ -152,6 +152,23 @@ class ContentViewModel: ObservableObject {
         clearUserData()
         state = .project
     }
+
+    func onCreateProject() {
+        state = .fetching
+
+        Task {
+            do {
+                try await contentModel.create(user: user, pwd: pwd)
+                onLogin()
+            } catch let error as DeeplinkError {
+                state = .project
+                handle(error)
+            } catch {
+                state = .project
+                handle(.updateFailed)
+            }
+        }
+    }
     #endif
 
     // MARK: Actions
@@ -166,6 +183,14 @@ class ContentViewModel: ObservableObject {
             return {
                 self.onAuthenticated()
             }
+        case .duplicateUser:
+            #if os(iOS)
+            return {
+                self.onNewProject()
+            }
+            #else
+            return {}
+            #endif
         default:
             return {}
         }

@@ -24,6 +24,7 @@ enum PwdCheckOptions {
 protocol DatabaseProtocol {
 
     func updatesPublisher(user: String, pwd: String) -> AnyPublisher<DatabaseQueryStatus, Never>
+    func create(content: DeeplinkContent) async throws
     func update(content: [DeeplinkGroup]) async throws
 }
 
@@ -130,5 +131,16 @@ class FirebaseDatabase: DatabaseProtocol {
 
         collection[index].groups = content
         try await Database.database().reference().child("content").setValue(collection.map({ $0.asDictionary }))
+    }
+
+    public func create(content: DeeplinkContent) async throws {
+        var collection = try await snapshot() ?? []
+        guard !collection.contains(where: { $0.user == content.user }) else {
+            throw DeeplinkError.duplicateUser
+        }
+        collection.append(content)
+
+        try await Database.database().reference().child("content").setValue(collection.map({ $0.asDictionary }))
+        self.collection = collection
     }
 }

@@ -49,6 +49,10 @@ class DeeplinkContentModel {
             .eraseToAnyPublisher()
     }
 
+    func create(user: String, pwd: String) async throws {
+        try await database.create(content: DeeplinkContent(user: user, pwd: pwd, groups: []))
+    }
+
     private func setupListener(user: String, pwd: String) {
         databaseListener?.cancel()
         databaseListener = database.updatesPublisher(user: user, pwd: pwd)
