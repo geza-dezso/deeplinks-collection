@@ -142,5 +142,6 @@ class FirebaseDatabase: DatabaseProtocol {
 
         try await Database.database().reference().child("content").setValue(collection.map({ $0.asDictionary }))
         self.collection = collection
+        setupDatabaseListener()
     }
 }
