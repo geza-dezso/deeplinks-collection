@@ -7,20 +7,16 @@
 
 import SwiftUI
 
-private enum Field: Int, Hashable {
-    case username, password, confirmPassword
-}
-
 struct NewProjectView: View {
     @ObservedObject var viewModel: ContentViewModel
 
-    @FocusState private var focusedField: Field?
+    @FocusState private var focusedField: FormField?
 
     private var isCreateDisabled: Bool {
         viewModel.user.count < 3 ||
-        viewModel.pwd.count < 3 ||
+        viewModel.newPwd.count < 3 ||
         viewModel.confirmPwd.count < 3 ||
-        viewModel.pwd != viewModel.confirmPwd
+        viewModel.newPwd != viewModel.confirmPwd
     }
 
     var body: some View {
@@ -62,17 +58,17 @@ struct NewProjectView: View {
         .textFieldStyle(LoginTextFieldStyle())
         .focused($focusedField, equals: .username)
         .onSubmit {
-            focusedField = .password
+            focusedField = .newPassword
         }
     }
 
     private var passwordTextField: some View {
         ToggleSecureField(
             title: "",
-            text: $viewModel.pwd,
+            text: $viewModel.newPwd,
             prompt: Text("Password (min. 3 chars)").foregroundColor(.placeholderText),
             focusedField: $focusedField,
-            field: .password,
+            field: .newPassword,
         )
         .onSubmit {
             focusedField = .confirmPassword

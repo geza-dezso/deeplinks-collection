@@ -68,6 +68,7 @@ class ContentViewModel: ObservableObject {
     @Published var deeplinkGroups: [DeeplinkGroup]?
     @Published var user: String = ""
     @Published var pwd: String = ""
+    @Published var newPwd: String = ""
     @Published var confirmPwd: String = ""
     @Published var state: ContentViewModelState = .initial {
         didSet {
@@ -158,7 +159,8 @@ class ContentViewModel: ObservableObject {
 
         Task {
             do {
-                try await contentModel.create(user: user, pwd: pwd)
+                try await contentModel.create(user: user, pwd: newPwd)
+                pwd = newPwd
                 onLogin()
             } catch let error as DeeplinkError {
                 state = .project
@@ -343,6 +345,7 @@ class ContentViewModel: ObservableObject {
     private func clearUserData() {
         user = ""
         pwd = ""
+        newPwd = ""
         confirmPwd = ""
     }
 

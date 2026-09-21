@@ -7,7 +7,14 @@
 
 import SwiftUI
 
-struct ToggleSecureField<Field: Hashable>: View {
+enum FormField: Hashable {
+    case username
+    case password
+    case newPassword
+    case confirmPassword
+}
+
+struct ToggleSecureField: View {
     private enum InputField: Hashable {
         case secure
         case revealed
@@ -16,11 +23,20 @@ struct ToggleSecureField<Field: Hashable>: View {
     let title: String
     @Binding var text: String
     var prompt: Text?
-    @FocusState.Binding var focusedField: Field?
-    let field: Field
+    @FocusState.Binding var focusedField: FormField?
+    let field: FormField
 
     @FocusState private var focusedInput: InputField?
     @State private var isShowingPassword = false
+
+    @State private var shouldPreserveSecureValue = false
+
+    private var isFocused: Binding<Bool> {
+        Binding(
+            get: { focusedField == field },
+            set: { focusedField = $0 ? field : nil }
+        )
+    }
 
     var body: some View {
         HStack(spacing: 0) {
@@ -39,6 +55,18 @@ struct ToggleSecureField<Field: Hashable>: View {
                     .opacity(isShowingPassword ? 0 : 1)
                     .allowsHitTesting(!isShowingPassword)
                     .accessibilityHidden(isShowingPassword)
+                    .simultaneousGesture(TapGesture().onEnded {
+                        shouldPreserveSecureValue = true
+                    })
+                    .onChange(of: text) { oldValue, newValue in
+                        if shouldPreserveSecureValue {
+                            text = oldValue + newValue
+                            shouldPreserveSecureValue = false
+                        }
+                    }
+                    .onChange(of: isShowingPassword) {
+                        shouldPreserveSecureValue = !isShowingPassword
+                    }
             }
 
             Button(action: togglePasswordVisibility, label: {
@@ -54,30 +82,30 @@ struct ToggleSecureField<Field: Hashable>: View {
                 .stroke(.gray, lineWidth: 1)
         )
         .onAppear {
-            updateInputFocus(for: focusedField)
+            updateInputFocus(for: isFocused.wrappedValue)
         }
-        .onChange(of: focusedField) { _, newValue in
+        .onChange(of: isFocused.wrappedValue) { _, newValue in
             updateInputFocus(for: newValue)
         }
         .onChange(of: focusedInput) { _, newValue in
             guard newValue != nil else {
-                if focusedField == field {
-                    focusedField = nil
+                if isFocused.wrappedValue {
+                    isFocused.wrappedValue = false
                 }
                 return
             }
-            focusedField = field
+            isFocused.wrappedValue = true
         }
     }
 
     private func togglePasswordVisibility() {
         isShowingPassword.toggle()
         focusedInput = isShowingPassword ? .revealed : .secure
-        focusedField = field
+        isFocused.wrappedValue = true
     }
 
-    private func updateInputFocus(for focusedField: Field?) {
-        guard focusedField == field else {
+    private func updateInputFocus(for isFocused: Bool) {
+        guard isFocused else {
             focusedInput = nil
             return
         }
