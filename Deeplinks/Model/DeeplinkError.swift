@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum DeeplinkError: Equatable {
+enum DeeplinkError: Error, Equatable {
     case dataNotAvailable
     case invalidCredentials
     case invalidUserToken
@@ -15,6 +15,7 @@ enum DeeplinkError: Equatable {
     case openUrlFailed
     case updateFailed
     case updateSectionNotFound
+    case duplicateUser
 }
 
 extension DeeplinkError {
@@ -35,12 +36,14 @@ extension DeeplinkError {
             return "Updating data failed! Please try again later."
         case .updateSectionNotFound:
             return "Updating data failed! The section trying to update doesn't exist, might be deleted by another user."
+        case .duplicateUser:
+            return "A project with this username already exists."
         }
     }
 
     var alertButtonText: String {
         switch self {
-        case .invalidCredentials, .openUrlFailed, .openUrlInvalid, .updateFailed, .updateSectionNotFound:
+        case .invalidCredentials, .openUrlFailed, .openUrlInvalid, .updateFailed, .updateSectionNotFound, .duplicateUser:
             return "Ok"
         case .dataNotAvailable:
             return "Retry"

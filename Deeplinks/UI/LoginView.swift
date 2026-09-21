@@ -7,14 +7,10 @@
 
 import SwiftUI
 
-private enum Field: Int, Hashable {
-    case username, password
-}
-
 struct LoginView: View {
     @ObservedObject var viewModel: ContentViewModel
 
-    @FocusState private var focusedField: Field?
+    @FocusState private var focusedField: FormField?
 
     private var isLoginDisabled: Bool {
         viewModel.user.isEmpty || viewModel.pwd.isEmpty
