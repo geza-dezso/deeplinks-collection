@@ -43,6 +43,8 @@
 		0F5A94093044834900CF27AA /* NewProjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F5A94073044834900CF27AA /* NewProjectView.swift */; };
 		0F6062F12DDCBC7000B5C502 /* DeeplinkEditOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F6062F02DDCBC5800B5C502 /* DeeplinkEditOverlay.swift */; };
 		0F6062F72DDCF18E00B5C502 /* DeeplinkFieldStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F6062F62DDCF13E00B5C502 /* DeeplinkFieldStyle.swift */; };
+		0F71543A30617F570031E577 /* FormField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F71543930617F570031E577 /* FormField.swift */; };
+		0F71543B30617F570031E577 /* FormField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F71543930617F570031E577 /* FormField.swift */; };
 		0F8513102EF0CCE700E39E65 /* URL+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F85130F2EF0CCE700E39E65 /* URL+Extensions.swift */; };
 		0F8513112EF0CCE700E39E65 /* URL+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F85130F2EF0CCE700E39E65 /* URL+Extensions.swift */; };
 		0F94D5D92DE4718900C91B51 /* Encodable+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F94D5D82DE4717400C91B51 /* Encodable+Extensions.swift */; };
@@ -95,6 +97,7 @@
 		0F5A94073044834900CF27AA /* NewProjectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewProjectView.swift; sourceTree = "<group>"; };
 		0F6062F02DDCBC5800B5C502 /* DeeplinkEditOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeeplinkEditOverlay.swift; sourceTree = "<group>"; };
 		0F6062F62DDCF13E00B5C502 /* DeeplinkFieldStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeeplinkFieldStyle.swift; sourceTree = "<group>"; };
+		0F71543930617F570031E577 /* FormField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormField.swift; sourceTree = "<group>"; };
 		0F85130F2EF0CCE700E39E65 /* URL+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Extensions.swift"; sourceTree = "<group>"; };
 		0F94D5D82DE4717400C91B51 /* Encodable+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Encodable+Extensions.swift"; sourceTree = "<group>"; };
 		0FA17E8A2C6283B100282F1E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -257,6 +260,7 @@
 				0F5A940430447FE500CF27AA /* MultipleTapView.swift */,
 				0F11F40B30581D1A00BCC750 /* SecureTextFieldStyle.swift */,
 				0F11F40E305821F900BCC750 /* ToggleSecureField.swift */,
+				0F71543930617F570031E577 /* FormField.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -437,6 +441,7 @@
 				0F94D5DA2DE4718900C91B51 /* Encodable+Extensions.swift in Sources */,
 				0F581DD92BCF01140038DDD9 /* Color+Extensions.swift in Sources */,
 				0F581DD02BC82EC10038DDD9 /* ActionButtonStyle.swift in Sources */,
+				0F71543B30617F570031E577 /* FormField.swift in Sources */,
 				0F581DCA2BC81CAD0038DDD9 /* LoginTextFieldStyle.swift in Sources */,
 				0F5087712EC5CDD70026E281 /* DeeplinkContentModel.swift in Sources */,
 				0F2578922BBC2C7A000491D3 /* AppDelegate.swift in Sources */,
@@ -463,6 +468,7 @@
 				0F5A94093044834900CF27AA /* NewProjectView.swift in Sources */,
 				0FEBC5CF2BC3FD3C00EBECC8 /* DeeplinkItemView.swift in Sources */,
 				0FCBB39E2BA892A700D80DB7 /* FirebaseDatabase.swift in Sources */,
+				0F71543A30617F570031E577 /* FormField.swift in Sources */,
 				0F581DC62BC803460038DDD9 /* LoginView.swift in Sources */,
 				0FD1259F2BC578220056F3AE /* Font+Helpers.swift in Sources */,
 				0F11F410305821F900BCC750 /* ToggleSecureField.swift in Sources */,

@@ -7,13 +7,6 @@
 
 import SwiftUI
 
-enum FormField: Hashable {
-    case username
-    case password
-    case newPassword
-    case confirmPassword
-}
-
 struct ToggleSecureField: View {
     private enum InputField: Hashable {
         case secure
